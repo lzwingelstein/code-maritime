@@ -87,6 +87,19 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Feu d'avis de vent fort : blanc scintillant, de jour seulement, force 6 et plus observée ou prévue | SHOM ouvrage 3C | ✅ simplifié (deux rythmes non distingués) |
 | Signaux visuels internationaux d'avis de tempête (formes) | — | ❌ non couverts |
 
+## Unité 6 · Sécurité et matériel d'armement — division 240 (version ministère de la Mer, 2024)
+
+| Affirmation de l'appli | Article | Statut |
+|------------------------|---------|--------|
+| Zones : basique < 2 milles, côtier 2 à < 6, semi-hauturier 6 à < 60, hauturier ≥ 60 milles d'un abri | 240-2.03 à 2.06 | ✅ |
+| Gilets : 50 N en basique, 100 N en côtier ; enfants de 30 kg ou moins 100 N partout ; moins d'un an non comptés | 240-2.03, 2.04, notes | ✅ |
+| Dispositif lumineux étanche, 6 h, collectif ou individuel porté/fixé au gilet | 240-2.03 | ✅ |
+| Basique : extincteurs, assèchement manuel (non autovideur ou habitable), remorquage, ligne de mouillage (exemptions < 250 kg, VNM), marée (sauf Méditerranée), pavillon hors eaux territoriales | 240-2.03 | ✅ |
+| Coupe-circuit attaché au pilote moteur en marche, second accessible | 240-2.01 | ✅ |
+| Côtier : bouée (≥ 142 N, au nom du bateau), 3 feux rouges à main, compas magnétique étanche, cartes officielles, RIPAM, document balisage | 240-2.04 | ✅ — le texte officiel ne prévoit **pas** de GPS à la place du compas (contrairement à plusieurs sites) |
+| 196 et VHF canal 16 pour joindre le CROSS, VHF prioritaire en mer | Ministère de la Mer | ✅ |
+| Réflexes homme à la mer (crier, bouée, garder le contact visuel, débrayer, position, alerte) | Formation pratique (arrêté 2007, art. 3) | ⚠️ bonnes pratiques, pas de texte détaillé |
+
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
 | Affirmation de l'appli | Règle | Statut |
