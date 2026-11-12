@@ -64,6 +64,6 @@ export function buildLesson<E extends BaseExercise>(plan: LessonPlan, ctx: Build
 }
 
 /** 10 XP per lesson, +5 without losing a heart, +1 per 3 answers in a row (at most +5). */
-export function lessonXp(r: { hearts: number, maxHearts: number, maxCombo: number }): number {
+export function lessonXp(r: { hearts: number | null, maxHearts: number | null, maxCombo: number }): number {
   return 10 + (r.hearts === r.maxHearts ? 5 : 0) + Math.min(5, Math.floor(r.maxCombo / 3))
 }

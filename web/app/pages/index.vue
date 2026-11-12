@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { COURSES, LESSON_IDS } from '~/courses'
-import { DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
+import { EXAM, EXAM_ID } from '~/courses/exam'
+import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
 
 const { progress, reset } = useProgress()
@@ -18,6 +19,9 @@ const units = computed(() => COURSES.map((course, u) => ({
   }),
 })))
 const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
+
+const best = computed(() => bestExam(progress.value))
+const last = computed(() => progress.value.exams?.[0] ?? null)
 
 const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 const confirming = ref(false)
@@ -76,6 +80,16 @@ function onReset() {
       </nav>
     </template>
 
+    <section class="exam" aria-labelledby="exam-title">
+      <h2 id="exam-title">🎓 Examen blanc</h2>
+      <p>{{ EXAM.questions }} questions de toutes les unités, {{ EXAM.maxErrors }} erreurs au plus, environ {{ EXAM.minutes }} minutes : comme le jour de l’examen.</p>
+      <p v-if="best" class="score">
+        Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}
+        <template v-if="last"> · Dernier : {{ last.total - last.errors }}/{{ last.total }}</template>
+      </p>
+      <NuxtLink :to="`/lecon/${EXAM_ID}`" class="btn">Passer un examen blanc</NuxtLink>
+    </section>
+
     <footer class="foot">
       <button type="button" @click="onReset">
         {{ confirming ? 'Touche encore pour tout effacer' : 'Réinitialiser ma progression' }}
@@ -128,6 +142,11 @@ function onReset() {
 }
 @keyframes bob { 50% { transform: translate(-50%, -5px); } }
 .nlab { max-width: 150px; margin-top: 12px; font-size: 14px; color: var(--ink-mute); text-align: center; }
+.exam { margin: 0 16px 34px; padding: 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
+.exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 900; }
+.exam p { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-mute); line-height: 1.4; }
+.exam .score { color: var(--ink); font-weight: 800; }
+.exam .btn { display: block; text-decoration: none; line-height: 28px; }
 .foot { padding: 0 0 30px; text-align: center; }
 .foot button { min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }
 </style>

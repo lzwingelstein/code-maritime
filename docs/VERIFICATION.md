@@ -14,6 +14,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 ## Format de l'examen
 
 - **40 questions, 5 erreurs admises**, réussite valable 18 mois (art. 1.1). ✅ (corrigé : nous avions écrit 30)
+- Durée d'environ 30 minutes : indiquée par des fiches de formation, pas par l'arrêté. ⚠️ chrono indicatif dans l'examen blanc
 
 ## Programme officiel de l'option côtière (art. 1.2) et couverture
 

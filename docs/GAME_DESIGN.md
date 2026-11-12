@@ -49,7 +49,13 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
   1 jour, 3 jours, 1 semaine puis 3 semaines ; erreur → elle redescend et redevient à revoir. Sert aux révisions.
 - Tout est gardé dans le navigateur (pas de compte dans le prototype).
 
+## Examen blanc
+- Au format officiel : **40 questions**, **5 erreurs au plus**, environ **30 minutes** (chrono affiché, pas bloquant).
+- Questions tirées **à parts égales de toutes les unités** (leur leçon de révision), jamais deux fois la même.
+- Pas de cœurs ni de question qui revient : chaque erreur compte. On garde la correction après chaque réponse pour apprendre.
+- Résultat : « Reçu » ou « Pas encore », score, erreurs, temps ; 20 XP si reçu, 10 sinon. Les 10 derniers résultats sont gardés ; l'accueil affiche le meilleur et le dernier.
+- Toujours accessible, sous le parcours.
+
 ## Pistes
 - Unités suivantes (issues GitHub) : règles de barre et de route, signaux sonores et de détresse, VHF,
   sécurité et armement, météo.
-- Examen blanc au format officiel (40 questions, 5 erreurs maximum).

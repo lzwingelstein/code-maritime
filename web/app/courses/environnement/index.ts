@@ -12,6 +12,7 @@ export const environnement = quizCourse({
   unit: 'Permis côtier',
   title: 'Environnement, pêche, carte et marée',
   badge: 'À retenir',
+  heading: 'Environnement',
   cards: [
     {
       id: 'waste', name: 'Les déchets', visual: e('🗑️'),

@@ -15,6 +15,7 @@ export const plages = quizCourse({
   unit: 'Permis côtier',
   title: 'Balisage : plages, région B, épaves',
   badge: 'Nouvelle marque',
+  heading: 'Balisage',
   cards: [
     {
       id: 'beach-limit', name: 'Limite de la bande des 300 m', visual: mark('beach-limit'),

@@ -96,4 +96,19 @@ describe('session', () => {
     expect(() => check(s, regenerate)).toThrow()
     expect(() => select(s, 'b')).toThrow()
   })
+
+  it('exam mode: no retries, no heart limit, errors counted', () => {
+    const s = startSession([q('x'), q('y'), q('z')], { hearts: null, retryWrong: false })
+    for (const choice of ['b', 'b', 'a']) { select(s, choice); check(s, regenerate); advance(s) }
+    expect(s.steps).toHaveLength(3)
+    expect(s.phase).toBe('won')
+    expect(s.errors).toBe(2)
+    expect(progress(s)).toBe(1)
+  })
+
+  it('exam mode: a wrong answer still moves the progress bar', () => {
+    const s = startSession([q('x'), q('y')], { hearts: null, retryWrong: false })
+    select(s, 'b'); check(s, regenerate)
+    expect(progress(s)).toBe(0.5)
+  })
 })

@@ -47,6 +47,8 @@ export function quizCourse(def: {
   title: string
   /** Label of the intro card: « Nouvelle règle », « Nouveau signal »… */
   badge: string
+  /** Small heading above every question; neutral, so it never gives the answer away. */
+  heading: string
   cards: QuizCard[]
   lessons: QuizLessonDef[]
 }): QuizCourse {
@@ -70,7 +72,7 @@ export function quizCourse(def: {
     const q = card.questions[i]!
     const labels = shuffle([q.answer, ...shuffle(q.wrong, rng).slice(0, 3)], rng)
     return {
-      cardId: card.id, kind, statement: i, heading: q.heading ?? card.name, prompt: q.prompt, answer: q.answer,
+      cardId: card.id, kind, statement: i, heading: q.heading ?? def.heading, prompt: q.prompt, answer: q.answer,
       layout: labels.length === 2 ? 'pair' : 'list', visual: q.visual ?? null,
       choices: labels.map(label => ({ id: label, name: label })),
       explanation: q.explanation ?? plain(card.intro),

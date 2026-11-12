@@ -10,6 +10,15 @@ export interface Progress {
   streak: Streak
   completions: Record<string, number>
   mastery: Record<string, CardMastery>
+  /** Mock exam attempts, newest first (ten at most). */
+  exams?: ExamResult[]
+}
+
+export interface ExamResult {
+  day: string
+  errors: number
+  total: number
+  passed: boolean
 }
 
 export const DAILY_GOAL = 30
@@ -49,6 +58,7 @@ export function recordLesson(
 
   const today = dayKey(new Date(now))
   return {
+    ...p,
     xp: p.xp + r.xp,
     daily: { [today]: todayXp(p, today) + r.xp },
     streak: recordPlay(p.streak, today),
@@ -59,4 +69,14 @@ export function recordLesson(
 
 export function isUnlocked(p: Progress, lessonIds: string[], index: number): boolean {
   return index === 0 || (p.completions[lessonIds[index - 1]!] ?? 0) > 0
+}
+
+export function recordExam(p: Progress, r: Omit<ExamResult, 'day'>, now: number): Progress {
+  const entry: ExamResult = { day: dayKey(new Date(now)), ...r }
+  return { ...p, exams: [entry, ...(p.exams ?? [])].slice(0, 10) }
+}
+
+export function bestExam(p: Progress): ExamResult | null {
+  const list = p.exams ?? []
+  return list.length ? list.reduce((a, b) => (b.errors < a.errors ? b : a)) : null
 }

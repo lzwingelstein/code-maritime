@@ -35,7 +35,8 @@ code-maritime/
 │       │   ├── builder.ts       #   build a lesson from a plan: tip, new-card intros, mix, review weighting, XP
 │       │   ├── mastery.ts       #   spaced repetition (1 d, 3 d, 1 wk, 3 wk), same rule as BirdGuessr
 │       │   ├── streak.ts, progress.ts, random.ts (injected, seedable)
-│       ├── courses/             # types.ts (the Course contract), index.ts (all courses in path order), shared.ts
+│       ├── courses/             # types.ts (the Course contract), index.ts (all courses in path order), shared.ts,
+│       │                        #   quiz.ts (authored-QCM course factory), exam.ts (40-question mock exam)
 │       │   ├── balisage/        #   unit 1: marks, lessons, exercise generator
 │       │   └── navires/         #   unit 2: vessels (lights by aspect, day shapes), lessons, exercise generator
 │       ├── components/          # CardVisual (dispatch), BuoyMark, NightLight, ShipScene (SVG), RichText
@@ -59,6 +60,9 @@ code-maritime/
 2. Test the generator: answer among unique choices, kinds only where they make sense, every lesson fills its count.
 3. New picture types: add a `Visual` variant in `courses/types.ts` and draw it from `CardVisual.vue`.
 4. Register the course in `courses/index.ts`. Card ids and lesson ids must be unique across courses (tested).
+5. Mostly rules and numbers? Write it with `quizCourse()` (cards with authored questions and statements);
+   `QUIZ_COURSES` content is checked by `quiz.test.ts`. Give it a neutral `heading` (never the card name).
+6. Every fact goes in `docs/VERIFICATION.md` with its source, verified against official texts first.
 
 ## Deployment
 - CI (GitHub Actions) runs lint, typecheck, tests and build on every PR; on `main` it pushes

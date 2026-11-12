@@ -28,6 +28,7 @@ export const vhf = quizCourse({
   unit: 'Permis côtier',
   title: 'VHF et sauvetage',
   badge: 'À retenir',
+  heading: 'VHF',
   cards: [
     {
       id: 'ch16', name: 'Le canal 16', visual: e('📻'),

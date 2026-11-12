@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { choiceName, findLesson, regenerator } from '~/courses'
+import { choiceName, COURSES, findLesson, regenerator } from '~/courses'
+import { buildExam, EXAM, EXAM_ID } from '~/courses/exam'
 import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
-import { DAILY_GOAL, introduce, recordLesson, todayXp } from '~/engine/progress'
+import { DAILY_GOAL, introduce, recordExam, recordLesson, todayXp } from '~/engine/progress'
 import { pick, seeded } from '~/engine/random'
 import { advance, check, currentStep, progress as share, select, startSession, type Session } from '~/engine/session'
 import { currentStreak, dayKey } from '~/engine/streak'
 
 const route = useRoute()
-const found = findLesson(String(route.params.id))
+const isExam = String(route.params.id) === EXAM_ID
+const found = isExam ? undefined : findLesson(String(route.params.id))
 const lesson = found?.lesson
 const course = found?.course
 const { progress, save } = useProgress()
@@ -17,10 +19,12 @@ const sound = useSound()
 
 const rng = seeded(Date.now())
 const generate = found ? found.course.generator(found.lesson) : null
-const regenerate = generate ? regenerator(generate, rng) : null
+// The exam never brings a question back, so it never regenerates one.
+const regenerate = generate ? regenerator(generate, rng) : (e: CourseExercise) => e
 
 function newSession(): Session<CourseExercise> {
   const now = Date.now()
+  if (isExam) return reactive(startSession(buildExam(COURSES, rng), { hearts: null, retryWrong: false })) as Session<CourseExercise>
   const steps = lesson && generate
     ? buildLesson(lesson.plan, {
         rng,
@@ -38,8 +42,9 @@ const startedAt = ref(Date.now())
 const step = computed(() => currentStep(s.value))
 const exercise = computed(() => (step.value?.type === 'question' ? step.value.exercise : null))
 const card = computed(() => (step.value?.type === 'intro' && course ? course.card(step.value.cardId) : null))
+const tip = lesson?.tip
 const verdictTitle = ref('')
-const result = ref<{ xp: number, seconds: number, accuracy: number } | null>(null)
+const result = ref<{ xp: number, seconds: number, accuracy: number, passed?: boolean } | null>(null)
 
 const PRAISE = ['Bien joué !', 'Excellent !', 'Parfait !', 'Bravo, moussaillon !', 'Cap tenu !']
 
@@ -52,7 +57,7 @@ function choose(id: string) {
 function onMain() {
   const session = s.value
   if (session.phase === 'step' && exercise.value) {
-    const v = check(session, regenerate!)
+    const v = check(session, regenerate)
     if (v.correct) {
       sound.right()
       verdictTitle.value = session.combo >= 3 && session.combo % 2 === 1 ? `🔥 ${session.combo} bonnes réponses d’affilée !` : pick(PRAISE, rng)
@@ -71,15 +76,32 @@ function onMain() {
 
 function finish(won: boolean) {
   const session = s.value
-  const xp = won ? lessonXp(session) : 0
-  save(recordLesson(progress.value, { lessonId: lesson!.id, won, xp, answers: session.answers }, Date.now()))
-  result.value = {
-    xp,
-    seconds: Math.round((Date.now() - startedAt.value) / 1000),
-    accuracy: Math.round(session.firstTry / Math.max(1, session.questions) * 100),
+  const now = Date.now()
+  const seconds = Math.round((now - startedAt.value) / 1000)
+  if (isExam) {
+    const passed = session.errors <= EXAM.maxErrors
+    const xp = passed ? 20 : 10
+    const after = recordLesson(progress.value, { lessonId: EXAM_ID, won: true, xp, answers: session.answers }, now)
+    save(recordExam(after, { errors: session.errors, total: session.questions, passed }, now))
+    result.value = { xp, seconds, accuracy: Math.round((session.questions - session.errors) / session.questions * 100), passed }
+    if (passed) sound.win()
+    return
   }
+  const xp = won ? lessonXp(session) : 0
+  save(recordLesson(progress.value, { lessonId: lesson!.id, won, xp, answers: session.answers }, now))
+  result.value = { xp, seconds, accuracy: Math.round(session.firstTry / Math.max(1, session.questions) * 100) }
   if (won) sound.win()
 }
+
+// Exam clock, shown in the header.
+const elapsed = ref(0)
+let clock: ReturnType<typeof setInterval> | undefined
+onMounted(() => {
+  if (isExam) clock = setInterval(() => { elapsed.value = Math.floor((Date.now() - startedAt.value) / 1000) }, 1000)
+})
+onBeforeUnmount(() => clearInterval(clock))
+const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`
+const answered = computed(() => s.value.answers.length)
 
 function retry() {
   s.value = newSession()
@@ -115,14 +137,34 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 <template>
   <div class="shell">
     <!-- Unknown lesson -->
-    <div v-if="!lesson" class="end">
+    <div v-if="!lesson && !isExam" class="end">
       <p>Cette leçon n’existe pas.</p>
       <NuxtLink to="/" class="btn">Retour au parcours</NuxtLink>
     </div>
 
     <!-- End of lesson -->
     <div v-else-if="result" class="end">
-      <template v-if="s.phase === 'won'">
+      <template v-if="isExam">
+        <template v-if="result.passed">
+          <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
+        </template>
+        <div class="big" aria-hidden="true">{{ result.passed ? '🎓' : '📚' }}</div>
+        <h1 :class="{ fail: !result.passed }">{{ result.passed ? 'Reçu à l’examen blanc !' : 'Pas encore…' }}</h1>
+        <div class="tiles">
+          <div class="tile ok"><b>Bonnes réponses</b><span>✓ {{ s.questions - s.errors }} / {{ s.questions }}</span></div>
+          <div class="tile gold"><b>Erreurs</b><span>✗ {{ s.errors }} / {{ EXAM.maxErrors }} max</span></div>
+          <div class="tile blue"><b>Temps</b><span>⏱ {{ mmss(result.seconds) }}</span></div>
+        </div>
+        <p class="sub">
+          {{ result.passed ? 'Comme à l’examen : 5 erreurs au plus.' : `Il faut 5 erreurs au plus : continue les révisions, les questions ratées reviendront plus souvent.` }}
+          · ⚡ {{ result.xp }} XP
+        </p>
+        <div class="endbtns">
+          <button type="button" class="btn" :class="{ ok: result.passed }" @click="retry">Nouvel examen</button>
+          <NuxtLink to="/" class="btn ghost">Retour au parcours</NuxtLink>
+        </div>
+      </template>
+      <template v-else-if="s.phase === 'won'">
         <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
         <div class="big" aria-hidden="true">🏆</div>
         <h1>Leçon terminée !</h1>
@@ -155,15 +197,19 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <div class="bar" role="progressbar" :aria-valuenow="Math.round(share(s) * 100)" aria-valuemax="100">
           <i :style="{ width: share(s) * 100 + '%', background: 'var(--ok-fill)' }" />
         </div>
-        <span class="hearts" :aria-label="`${s.hearts} cœurs restants`">❤️ {{ s.hearts }}</span>
+        <span v-if="isExam" class="hearts" :aria-label="`${s.errors} erreurs sur ${EXAM.maxErrors} permises`">✗ {{ s.errors }}/{{ EXAM.maxErrors }}</span>
+        <span v-else class="hearts" :aria-label="`${s.hearts} cœurs restants`">❤️ {{ s.hearts }}</span>
       </header>
+      <p v-if="isExam" class="examline">
+        Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · ⏱ {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
+      </p>
 
       <main class="body" :class="{ shake: s.verdict && !s.verdict.correct }">
         <!-- Tip -->
-        <div v-if="step?.type === 'tip' && lesson.tip" class="card tip">
-          <div class="big" aria-hidden="true">{{ lesson.tip.emoji }}</div>
-          <h2>{{ lesson.tip.title }}</h2>
-          <p><RichText :text="lesson.tip.text" /></p>
+        <div v-if="step?.type === 'tip' && tip" class="card tip">
+          <div class="big" aria-hidden="true">{{ tip.emoji }}</div>
+          <h2>{{ tip.title }}</h2>
+          <p><RichText :text="tip.text" /></p>
         </div>
 
         <!-- New card -->
@@ -231,6 +277,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .close { display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px; color: var(--ink-mute); text-decoration: none; }
 .lhead .bar { flex: 1; height: 16px; }
 .hearts { min-width: 48px; text-align: right; font-size: 18px; color: var(--ko); }
+.examline { margin: 0; padding: 0 18px; font-size: 14px; color: var(--ink-mute); }
 
 .body { flex: 1; display: flex; flex-direction: column; padding: 8px 18px 190px; }
 .heading { margin: 6px 0 4px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
