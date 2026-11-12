@@ -45,7 +45,7 @@ export const MARKS: Record<MarkId, Mark> = {
   port: {
     id: 'port', name: 'Latérale bâbord', family: 'lateral',
     bands: [['red', 1]], topmark: 'can', side: 'babord',
-    light: { colour: 'red', sequence: PERIOD_GAP([600], 4000), description: 'Feu rouge, rythme libre (ici 1 éclat toutes les 4 s)' },
+    light: { colour: 'red', sequence: PERIOD_GAP([600], 4000), description: 'Feu rouge, tout rythme sauf 2+1 (réservé au chenal préféré) ; ici 1 éclat toutes les 4 s' },
     meaning: 'Limite gauche du chenal quand on rentre au port',
     intro: 'Rouge, voyant **cylindrique**. En venant du large vers le port, on la laisse à **bâbord** (à gauche).',
     statements: [
@@ -57,7 +57,7 @@ export const MARKS: Record<MarkId, Mark> = {
   starboard: {
     id: 'starboard', name: 'Latérale tribord', family: 'lateral',
     bands: [['green', 1]], topmark: 'cone', side: 'tribord',
-    light: { colour: 'green', sequence: PERIOD_GAP([600], 4000), description: 'Feu vert, rythme libre (ici 1 éclat toutes les 4 s)' },
+    light: { colour: 'green', sequence: PERIOD_GAP([600], 4000), description: 'Feu vert, tout rythme sauf 2+1 (réservé au chenal préféré) ; ici 1 éclat toutes les 4 s' },
     meaning: 'Limite droite du chenal quand on rentre au port',
     intro: 'Verte, voyant **conique**, pointe en haut. En rentrant au port, on la laisse à **tribord** (à droite).',
     statements: [
@@ -69,7 +69,7 @@ export const MARKS: Record<MarkId, Mark> = {
   north: {
     id: 'north', name: 'Cardinale Nord', family: 'cardinal',
     bands: [['black', 0.5], ['yellow', 0.5]], topmark: 'north', side: 'N',
-    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(16), 8000), description: 'Feu blanc, scintillement continu' },
+    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(16), 8000), description: 'Feu blanc, scintillement continu (rapide ou très rapide)' },
     meaning: 'Eaux saines au nord de la marque',
     intro: 'Noire **en haut**, jaune en bas. Voyant : 2 cônes **pointes vers le haut**. Les eaux saines sont **au nord** : on passe au nord.',
     statements: [
@@ -81,7 +81,7 @@ export const MARKS: Record<MarkId, Mark> = {
   east: {
     id: 'east', name: 'Cardinale Est', family: 'cardinal',
     bands: [['black', 1 / 3], ['yellow', 1 / 3], ['black', 1 / 3]], topmark: 'east', side: 'E',
-    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(3), 5000), description: 'Feu blanc, 3 scintillements (3 h sur l’horloge)' },
+    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(3), 5000), description: 'Feu blanc, 3 scintillements toutes les 5 ou 10 s (3 h sur l’horloge)' },
     meaning: 'Eaux saines à l’est de la marque',
     intro: 'Noire, jaune, noire. Voyant : 2 cônes **base contre base**, comme un losange. Les eaux saines sont **à l’est**.',
     statements: [
@@ -93,7 +93,7 @@ export const MARKS: Record<MarkId, Mark> = {
   south: {
     id: 'south', name: 'Cardinale Sud', family: 'cardinal',
     bands: [['yellow', 0.5], ['black', 0.5]], topmark: 'south', side: 'S',
-    light: { colour: 'white', sequence: PERIOD_GAP([...veryQuick(6), 250, 2000], 10000), description: 'Feu blanc, 6 scintillements puis 1 éclat long (6 h)' },
+    light: { colour: 'white', sequence: PERIOD_GAP([...veryQuick(6), 250, 2000], 10000), description: 'Feu blanc, 6 scintillements puis 1 éclat long toutes les 10 ou 15 s (6 h)' },
     meaning: 'Eaux saines au sud de la marque',
     intro: 'Jaune en haut, noire **en bas**. Voyant : 2 cônes **pointes vers le bas**. Les eaux saines sont **au sud**.',
     statements: [
@@ -105,7 +105,7 @@ export const MARKS: Record<MarkId, Mark> = {
   west: {
     id: 'west', name: 'Cardinale Ouest', family: 'cardinal',
     bands: [['yellow', 1 / 3], ['black', 1 / 3], ['yellow', 1 / 3]], topmark: 'west', side: 'W',
-    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(9), 10000), description: 'Feu blanc, 9 scintillements (9 h)' },
+    light: { colour: 'white', sequence: PERIOD_GAP(veryQuick(9), 10000), description: 'Feu blanc, 9 scintillements toutes les 10 ou 15 s (9 h)' },
     meaning: 'Eaux saines à l’ouest de la marque',
     intro: 'Jaune, noire, jaune. Voyant : 2 cônes **pointe contre pointe**, comme un sablier. Les eaux saines sont **à l’ouest**.',
     statements: [
@@ -117,7 +117,7 @@ export const MARKS: Record<MarkId, Mark> = {
   isolated: {
     id: 'isolated', name: 'Danger isolé', family: 'other',
     bands: [['black', 0.36], ['red', 0.28], ['black', 0.36]], topmark: 'two-spheres',
-    light: { colour: 'white', sequence: PERIOD_GAP([400, 600, 400], 5000), description: 'Feu blanc, 2 éclats groupés' },
+    light: { colour: 'white', sequence: PERIOD_GAP([400, 600, 400], 5000), description: 'Feu blanc, 2 éclats groupés toutes les 5 ou 10 s' },
     meaning: 'Danger de faible étendue, eaux saines tout autour',
     intro: 'Noire avec une bande **rouge**. Voyant : **2 sphères noires**. Petit danger isolé : on peut passer tout autour, à bonne distance.',
     statements: [
@@ -129,7 +129,7 @@ export const MARKS: Record<MarkId, Mark> = {
   safe: {
     id: 'safe', name: 'Eaux saines', family: 'other',
     stripes: ['red', 'white'], topmark: 'sphere',
-    light: { colour: 'white', sequence: PERIOD_GAP([2000], 10000), description: 'Feu blanc, 1 éclat long toutes les 10 s (ou isophase, ou à occultations)' },
+    light: { colour: 'white', sequence: PERIOD_GAP([2000], 10000), description: 'Feu blanc : 1 éclat long toutes les 10 s, isophase, à occultations ou lettre Morse « A »' },
     meaning: 'Eaux saines tout autour : milieu de chenal ou atterrissage',
     intro: 'Bandes **verticales** rouges et blanches. Voyant : **1 sphère rouge**. Eaux sûres tout autour : milieu de chenal, arrivée vers la côte.',
     statements: [
@@ -141,7 +141,7 @@ export const MARKS: Record<MarkId, Mark> = {
   special: {
     id: 'special', name: 'Marque spéciale', family: 'other',
     bands: [['yellow', 1]], topmark: 'x',
-    light: { colour: 'yellow', sequence: PERIOD_GAP([700], 4000), description: 'Feu jaune' },
+    light: { colour: 'yellow', sequence: PERIOD_GAP([700], 4000), description: 'Feu jaune, d’un rythme qui ne se confond pas avec les autres' },
     meaning: 'Zone ou usage particulier : baignade, câble, zone militaire…',
     intro: 'Toute **jaune**, voyant en **croix de Saint-André** (un X) jaune. Elle signale une zone particulière : baignade, câble, mouillage, zone militaire…',
     statements: [

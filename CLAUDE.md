@@ -35,8 +35,10 @@ code-maritime/
 │       │   ├── builder.ts       #   build a lesson from a plan: tip, new-card intros, mix, review weighting, XP
 │       │   ├── mastery.ts       #   spaced repetition (1 d, 3 d, 1 wk, 3 wk), same rule as BirdGuessr
 │       │   ├── streak.ts, progress.ts, random.ts (injected, seedable)
-│       ├── courses/balisage/    # One course = cards (marks.ts), lessons (lessons.ts), exercise generator
-│       ├── components/          # BuoyMark (SVG), NightLight (light rhythms), RichText
+│       ├── courses/             # types.ts (the Course contract), index.ts (all courses in path order), shared.ts
+│       │   ├── balisage/        #   unit 1: marks, lessons, exercise generator
+│       │   └── navires/         #   unit 2: vessels (lights by aspect, day shapes), lessons, exercise generator
+│       ├── components/          # CardVisual (dispatch), BuoyMark, NightLight, ShipScene (SVG), RichText
 │       ├── composables/         # useProgress (localStorage), useSound
 │       ├── pages/               # index (path), lecon/[id] (lesson)
 │       └── assets/themes/fixed.css  # the one UI palette — never hard-code a UI colour
@@ -51,9 +53,12 @@ code-maritime/
 - Randomness and time are injected (`seeded()`, `now`) so the engine is deterministic in tests.
 
 ## Adding a course
-1. `courses/<id>/`: the cards, a `lessons.ts` (plans + tips) and an exercise generator `(cardId, kind, rng) => exercise | null`.
+1. `courses/<id>/`: the cards and an `index.ts` exporting a `Course` (lessons with plans and tips, `card(id)` for intros,
+   `generator(lesson)` → `(cardId, kind, rng, statement?) => CourseExercise | null`, null when the kind does not apply
+   or fewer than two choices exist).
 2. Test the generator: answer among unique choices, kinds only where they make sense, every lesson fills its count.
-3. Components to draw its cards; then route it from the home path.
+3. New picture types: add a `Visual` variant in `courses/types.ts` and draw it from `CardVisual.vue`.
+4. Register the course in `courses/index.ts`. Card ids and lesson ids must be unique across courses (tested).
 
 ## Deployment
 - CI (GitHub Actions) runs lint, typecheck, tests and build on every PR; on `main` it pushes

@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { seeded } from '~/engine/random'
 import { buildLesson } from '~/engine/builder'
-import { exerciseGenerator, KINDS, regenerator } from './exercises'
+import { regenerator } from '../index'
+import { exerciseGenerator, KINDS } from './exercises'
 import { LESSONS } from './lessons'
 import { MARK_IDS, MARKS } from './marks'
 
@@ -49,7 +50,7 @@ describe('balisage exercises', () => {
     const [text, truth] = MARKS.port.statements[e.statement!]!
     expect(e.prompt).toBe(text)
     expect(e.answer).toBe(String(truth))
-    const again = regenerator(LESSONS[0]!, rng)(e)
+    const again = regenerator(exerciseGenerator(LESSONS[0]!), rng)(e)
     expect(again.prompt).toBe(e.prompt)
   })
 
@@ -70,7 +71,7 @@ describe('balisage exercises', () => {
   it('every lesson builds the planned number of questions', () => {
     for (const lesson of LESSONS) {
       const steps = buildLesson(lesson.plan, {
-        rng: seeded(7), isKnown: () => false, generate: exerciseGenerator(lesson), firstKind: lesson.topOnly ? 'identify' : 'find',
+        rng: seeded(7), isKnown: () => false, generate: exerciseGenerator(lesson), firstKind: lesson.firstKind,
       })
       expect(steps.filter(s => s.type === 'question')).toHaveLength(lesson.plan.count)
     }
