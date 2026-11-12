@@ -21,7 +21,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 |---|--------------------|------------|
 | 1 | Balisage des côtes, des plages et pictogrammes (sauf marques de musoir) | Côtes : unité 1. Plages : unité 3. Pictogrammes : issue à part |
 | 2 | Initiation au balisage région B | Unité 3 |
-| 3 | Règles de barre et de route | #3 |
+| 3 | Règles de barre et de route | Unité 4 |
 | 4 | Signaux phoniques (manœuvre, avertissement, visibilité réduite), de détresse, de trafic portuaire, météorologiques | #4 |
 | 5 | Feux et marques des navires | Unité 2 (#2) |
 | 6 | Navigation et sécurité (plaisance / professionnels, catégories CE, personnes embarquées, zones interdites, vitesse, plongeurs, conchyliculture, visibilité restreinte, matériel côtier, papiers du bord) | #5, #6 |
@@ -60,6 +60,19 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Bouée d'épave d'urgence : bandes verticales bleues et jaunes, croix jaune, feu alternatif bleu et jaune | SHOM ouvrage 3C | ✅ |
 | Danger nouveau : cardinales ou latérales à feux scintillants, marque doublée si grave, Morse « D » | SHOM ouvrage 3C | ✅ |
 | Pictogrammes des plages | — | ❌ non couverts (issue dédiée) |
+
+## Unité 4 · Règles de barre et de route — points vérifiés (RIPAM, SHOM ouvrage 2)
+
+| Affirmation de l'appli | Règle | Statut |
+|------------------------|-------|--------|
+| Chenal étroit : moins de 20 m et voiliers ne gênent pas un navire qui ne peut naviguer que dans le chenal ; serrer le bord tribord | 9 | ✅ |
+| Dispositif de séparation du trafic : suivre le sens, traverser à peu près perpendiculairement | 10 | ✅ |
+| Voiliers : vent de bords différents → celui qui reçoit le vent de bâbord s'écarte ; même bord → celui au vent s'écarte ; doute → s'écarter | 12 | ✅ |
+| Rattrapant (plus de 22,5° sur l'arrière du travers) s'écarte, même un voilier ; le reste jusqu'à être dégagé | 13, 18 | ✅ |
+| Face à face : chacun vient sur tribord, bâbord contre bâbord | 14 | ✅ |
+| Routes croisées : celui qui voit l'autre sur tribord s'écarte, en évitant de passer devant | 15 | ✅ |
+| Non privilégié : tôt et franchement ; privilégié : cap et vitesse, peut agir seul, pas sur bâbord pour un navire à bâbord, manœuvre la plus utile si l'abordage est inévitable | 16, 17 | ✅ |
+| Hiérarchie : moteur < voilier < pêche < capacité restreinte et non maître de sa manœuvre (même niveau) ; ne pas gêner un navire handicapé par son tirant d'eau | 18 | ✅ |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 

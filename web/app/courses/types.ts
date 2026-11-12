@@ -14,6 +14,21 @@ export type Visual =
   | { type: 'light', markId: MarkId }
   | { type: 'ship', vesselId: VesselId, aspect: Aspect, mode: 'night' | 'day', silhouette?: boolean }
   | { type: 'emoji', char: string }
+  | {
+    /** Seen from above: my boat heading up, another vessel at a bearing (degrees clockwise from my bow). */
+    type: 'encounter'
+    me: EncounterVessel
+    other: EncounterVessel
+    bearing: number
+    /** True heading of the other vessel (mine is 0, up). */
+    heading: number
+    /** Direction the wind comes from, in degrees. */
+    wind?: number
+    /** Draw a narrow channel along my route. */
+    channel?: boolean
+  }
+
+export type EncounterVessel = 'power' | 'sail' | 'fishing' | 'nuc' | 'big'
 
 export interface Choice {
   id: string
