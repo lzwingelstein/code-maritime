@@ -6,7 +6,7 @@ const icon = (markId: MarkId): Visual => ({ type: 'mark', markId, topOnly: true 
 
 export const COURSE = {
   id: 'balisage',
-  unit: 'Unité 1 · Permis côtier',
+  unit: 'Permis côtier',
   title: 'Le balisage (région A)',
 }
 

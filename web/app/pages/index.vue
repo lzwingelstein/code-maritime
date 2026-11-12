@@ -9,8 +9,9 @@ const today = dayKey(new Date())
 const streak = computed(() => currentStreak(progress.value.streak, today))
 const dayXp = computed(() => todayXp(progress.value, today))
 // Lessons are unlocked in path order, across units.
-const units = computed(() => COURSES.map(course => ({
+const units = computed(() => COURSES.map((course, u) => ({
   course,
+  label: `Unité ${u + 1} · ${course.unit}`,
   nodes: course.lessons.map((lesson) => {
     const i = LESSON_IDS.indexOf(lesson.id)
     return { lesson, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done: progress.value.completions[lesson.id] ?? 0 }
@@ -49,7 +50,7 @@ function onReset() {
 
     <template v-for="u in units" :key="u.course.id">
       <section class="unit" :class="{ locked: !u.nodes[0]?.unlocked }">
-        <small>{{ u.course.unit }}</small>
+        <small>{{ u.label }}</small>
         <h1>{{ u.course.title }}</h1>
       </section>
 

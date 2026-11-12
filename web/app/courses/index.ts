@@ -2,9 +2,14 @@
 import type { Random } from '~/engine/random'
 import { balisage } from './balisage'
 import { navires } from './navires'
+import { plages } from './plages'
+import type { QuizCourse } from './quiz'
 import type { Course, CourseExercise, Generator, Lesson } from './types'
 
-export const COURSES: Course[] = [balisage, navires]
+export const COURSES: Course[] = [balisage, navires, plages]
+
+/** Courses written as authored quizzes: their content is checked by quiz.test.ts. */
+export const QUIZ_COURSES: QuizCourse[] = [plages]
 
 export const LESSON_IDS = COURSES.flatMap(c => c.lessons.map(l => l.id))
 

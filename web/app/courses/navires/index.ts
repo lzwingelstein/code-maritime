@@ -53,7 +53,7 @@ export const LESSONS: Lesson[] = [
 
 export const navires: Course = {
   id: 'navires',
-  unit: 'Unité 2 · Permis côtier',
+  unit: 'Permis côtier',
   title: 'Feux et marques des navires',
   lessons: LESSONS,
   card: (id) => {
