@@ -28,7 +28,24 @@ export type Visual =
     channel?: boolean
   }
 
+  | {
+    /** A sound signal, played and drawn (bars) so it can also be read. */
+    type: 'horn'
+    pattern: HornNote[]
+    /** Text under the bars, e.g. « toutes les 2 minutes ». */
+    caption?: string
+  }
+  | {
+    /** Port traffic signal: main column of three lights, top to bottom, and an optional yellow exemption light. */
+    type: 'port'
+    lights: PortLight[]
+    flashing?: boolean
+    exemption?: boolean
+  }
+
 export type EncounterVessel = 'power' | 'sail' | 'fishing' | 'nuc' | 'big'
+export type HornNote = 'short' | 'long' | 'bell'
+export type PortLight = 'red' | 'green' | 'white'
 
 export interface Choice {
   id: string

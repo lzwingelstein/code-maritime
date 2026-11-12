@@ -22,7 +22,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 | 1 | Balisage des côtes, des plages et pictogrammes (sauf marques de musoir) | Côtes : unité 1. Plages : unité 3. Pictogrammes : issue à part |
 | 2 | Initiation au balisage région B | Unité 3 |
 | 3 | Règles de barre et de route | Unité 4 |
-| 4 | Signaux phoniques (manœuvre, avertissement, visibilité réduite), de détresse, de trafic portuaire, météorologiques | #4 |
+| 4 | Signaux phoniques (manœuvre, avertissement, visibilité réduite), de détresse, de trafic portuaire, météorologiques | Unité 5 (sauf signaux visuels de tempête) |
 | 5 | Feux et marques des navires | Unité 2 (#2) |
 | 6 | Navigation et sécurité (plaisance / professionnels, catégories CE, personnes embarquées, zones interdites, vitesse, plongeurs, conchyliculture, visibilité restreinte, matériel côtier, papiers du bord) | #5, #6 |
 | 7 | Réglementation du titre de conduite | #6 |
@@ -73,6 +73,19 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Routes croisées : celui qui voit l'autre sur tribord s'écarte, en évitant de passer devant | 15 | ✅ |
 | Non privilégié : tôt et franchement ; privilégié : cap et vitesse, peut agir seul, pas sur bâbord pour un navire à bâbord, manœuvre la plus utile si l'abordage est inévitable | 16, 17 | ✅ |
 | Hiérarchie : moteur < voilier < pêche < capacité restreinte et non maître de sa manœuvre (même niveau) ; ne pas gêner un navire handicapé par son tirant d'eau | 18 | ✅ |
+
+## Unité 5 · Signaux sonores, de détresse et portuaires
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Bref ≈ 1 s, prolongé 4 à 6 s (la lecture dans l'appli est raccourcie) | RIPAM 32 | ✅ |
+| 1 bref tribord, 2 brefs bâbord, 3 brefs je bats en arrière, au moins 5 brefs doute, 1 prolongé coude (réponse 1 prolongé) | RIPAM 34 | ✅ |
+| Chenal étroit : 2 prolongés + 1 bref (dépasser par tribord) / + 2 brefs (par bâbord), accord prolongé-bref-prolongé-bref | RIPAM 34 | ✅ |
+| Brume : moteur avec erre 1 prolongé / 2 min ; sans erre 2 prolongés ; voilier, pêche, NUC, RAM, tirant d'eau, remorqueur 1 prolongé + 2 brefs ; mouillage cloche ≈ 5 s chaque minute ; moins de 12 m tout signal efficace | RIPAM 35 | ✅ |
+| Détresse : son continu, coups de canon, SOS, MAYDAY, N sur C, pavillon carré et boule, flammes, feu rouge (parachute ou à main), fumigène orange, bras levés et abaissés, ASN (canal 70), radiobalise | RIPAM 37, annexe IV | ✅ |
+| Trafic portuaire : 3 rouges à éclats danger grave ; 3 rouges interdit ; 3 verts sens unique ; vert-vert-blanc double sens ; vert-blanc-vert sur instruction ; feu jaune à gauche = exception hors chenal principal | SHOM ouvrage 3C (sens des 5 signaux) ; couleurs recoupées avec Vagnon et bateaux-écoles | ✅ (couleurs non lues dans le tableau SHOM) |
+| Feu d'avis de vent fort : blanc scintillant, de jour seulement, force 6 et plus observée ou prévue | SHOM ouvrage 3C | ✅ simplifié (deux rythmes non distingués) |
+| Signaux visuels internationaux d'avis de tempête (formes) | — | ❌ non couverts |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
