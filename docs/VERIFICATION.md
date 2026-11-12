@@ -23,17 +23,17 @@ reste à faire (formulations de l'examen, pièges classiques).
 | 2 | Initiation au balisage région B | Unité 3 |
 | 3 | Règles de barre et de route | Unité 4 |
 | 4 | Signaux phoniques (manœuvre, avertissement, visibilité réduite), de détresse, de trafic portuaire, météorologiques | Unité 5 (sauf signaux visuels de tempête) |
-| 5 | Feux et marques des navires | Unité 2 (#2) |
-| 6 | Navigation et sécurité (plaisance / professionnels, catégories CE, personnes embarquées, zones interdites, vitesse, plongeurs, conchyliculture, visibilité restreinte, matériel côtier, papiers du bord) | #5, #6 |
-| 7 | Réglementation du titre de conduite | #6 |
+| 5 | Feux et marques des navires | Unité 2 |
+| 6 | Navigation et sécurité (plaisance / professionnels, catégories CE, personnes embarquées, zones interdites, vitesse, plongeurs, conchyliculture, visibilité restreinte, matériel côtier, papiers du bord) | Unités 6 et 7 (sauf conchyliculture) |
+| 7 | Réglementation du titre de conduite | Unité 7 |
 | 8 | Service mobile maritime, SMDSM, VHF (voies, alphabet phonétique, anglais de base, MMSI, ASN, détresse, sauvetage) | Unité 8 |
-| 9 | Ski nautique et engins tractés, responsabilité du chef de bord, réactions en cas de danger grave ou de détresse | #6 |
-| 10 | Autonomie en carburant | #6 |
-| 11 | Environnement : rejets, équipements sanitaires, peintures antisalissures | #9 |
-| 12 | Ressource halieutique : pêche de loisir, pêche sous-marine, faune et flore | #9 |
+| 9 | Ski nautique et engins tractés, responsabilité du chef de bord, réactions en cas de danger grave ou de détresse | Unités 6, 7, 8 |
+| 10 | Autonomie en carburant | Unité 7 |
+| 11 | Environnement : rejets, équipements sanitaires, peintures antisalissures | Unité 10 |
+| 12 | Ressource halieutique : pêche de loisir, pêche sous-marine, faune et flore | Unité 10 |
 | 13 | Météo : prévisions, Beaufort, état de la mer | Unité 9 |
-| 14 | Carte marine : symboles, marée | #9 |
-| 15 | Écluses gardées ou automatiques | #6 |
+| 14 | Carte marine : symboles, marée | Unité 10 |
+| 15 | Écluses gardées ou automatiques | Unité 7 |
 
 ## Unité 1 · Balisage — points vérifiés (SHOM ouvrage 3C)
 
@@ -135,6 +135,20 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Bulletin côte jusqu'à 20 milles, diffusé par les CROSS en VHF, annoncé sur le 16 puis canal de travail, affiché en capitainerie, site et appli | Météo-France (Guide marine), SHOM | ✅ |
 | État de la mer : calme, ridée, belle, peu agitée, agitée, forte, très forte, grosse, très grosse, énorme (hauteurs) | Échelle de Météo-France (Guide marine) | ✅ |
 | Brise thermique, vent contre courant, rafales | Bonnes pratiques (MAIF, Météo-France) | ⚠️ notions générales |
+
+## Unité 10 · Environnement, pêche, carte et marée
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Ne rien jeter à la mer, déposer les déchets au port | Ministère / MARPOL annexe V | ✅ |
+| Bateaux avec toilettes construits depuis 2008 et allant aux ports et mouillages : stockage ou traitement des eaux noires ; rejet interdit dans les ports | Loi sur l'eau 2006 (art. 43) ; code des ports (R. 322-2) | ✅ |
+| Antifouling au TBT interdit ; carénage sur aire équipée | Règlement (CE) 782/2003 ; bonnes pratiques | ✅ |
+| Pêche de loisir : tailles minimales, marquage (ablation de la partie inférieure de la nageoire caudale) pour certaines espèces, vente interdite | Arrêtés du 26/10/2012 et du 17/05/2011 ; préfectures | ✅ |
+| Pêche sous-marine : 16 ans, assurance RC, bouée, interdite la nuit et en bouteille, 150 m des engins de pêche signalés | Code rural (R. 921-90 à 92) ; préfectures | ✅ |
+| Sondes au zéro hydrographique (≈ plus basses mers, coef. 120) ; sonde soulignée = découvrant ; bistre terre, vert estran, bleu petits fonds | SHOM (infographie carte marine) | ✅ |
+| Mille = 1 852 m = 1 minute de latitude ; nœud = 1 mille/h | Définition | ✅ |
+| Coefficient 20-120, 70 moyenne, vives-eaux / mortes-eaux ; ~6 h entre BM et PM ; règle des douzièmes 1-2-3-3-2-1 ; hauteur d'eau = sonde + hauteur de marée | SHOM ; usage | ✅ |
+| Zones protégées (parcs, réserves) | — | ❌ non couvert (réglementations locales) |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
