@@ -1,23 +1,8 @@
-import type { LessonPlan } from '~/engine/builder'
+import type { Visual } from '../types'
+import type { BalisageLesson } from './exercises'
 import { MARK_IDS, type MarkId } from './marks'
-import type { Kind } from './exercises'
 
-export interface Tip {
-  emoji: string
-  title: string
-  /** **bold** is rendered. */
-  text: string
-}
-
-export interface Lesson {
-  id: string
-  title: string
-  icon: MarkId
-  plan: LessonPlan & { cards: MarkId[], kinds: Kind[] }
-  /** Show topmarks only (the first thing to read on a cardinal). */
-  topOnly?: boolean
-  tip?: Tip
-}
+const icon = (markId: MarkId): Visual => ({ type: 'mark', markId, topOnly: true })
 
 export const COURSE = {
   id: 'balisage',
@@ -25,9 +10,9 @@ export const COURSE = {
   title: 'Le balisage (région A)',
 }
 
-export const LESSONS: Lesson[] = [
+export const LESSONS: BalisageLesson[] = [
   {
-    id: 'laterales', title: 'Marques latérales', icon: 'port',
+    id: 'laterales', title: 'Marques latérales', icon: icon('port'), firstKind: 'find',
     plan: { cards: ['port', 'starboard'], count: 8, kinds: ['identify', 'side', 'truefalse', 'find', 'light'], tip: true },
     tip: {
       emoji: '⚓', title: 'Rouge à gauche en rentrant',
@@ -35,7 +20,7 @@ export const LESSONS: Lesson[] = [
     },
   },
   {
-    id: 'voyants', title: 'Voyants cardinaux', icon: 'north', topOnly: true,
+    id: 'voyants', title: 'Voyants cardinaux', icon: icon('north'), topOnly: true, firstKind: 'identify',
     plan: { cards: ['north', 'east', 'south', 'west'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🧭', title: 'Lis les cônes',
@@ -43,7 +28,7 @@ export const LESSONS: Lesson[] = [
     },
   },
   {
-    id: 'cardinales', title: 'Couleurs et passage', icon: 'west',
+    id: 'cardinales', title: 'Couleurs et passage', icon: icon('west'), firstKind: 'find',
     plan: { cards: ['north', 'east', 'south', 'west'], count: 10, kinds: ['identify', 'find', 'side', 'side', 'truefalse'], tip: true },
     tip: {
       emoji: '💡', title: 'L’astuce des pointes',
@@ -51,7 +36,7 @@ export const LESSONS: Lesson[] = [
     },
   },
   {
-    id: 'feux-cardinaux', title: 'Feux cardinaux', icon: 'east',
+    id: 'feux-cardinaux', title: 'Feux cardinaux', icon: icon('east'), firstKind: 'find',
     plan: { cards: ['north', 'east', 'south', 'west'], count: 8, kinds: ['light', 'light', 'truefalse'], tip: true },
     tip: {
       emoji: '🕒', title: 'Pense à une horloge',
@@ -59,15 +44,11 @@ export const LESSONS: Lesson[] = [
     },
   },
   {
-    id: 'autres', title: 'Autres marques', icon: 'isolated',
+    id: 'autres', title: 'Autres marques', icon: icon('isolated'), firstKind: 'find',
     plan: { cards: ['isolated', 'safe', 'special'], count: 10, kinds: ['identify', 'find', 'meaning', 'light', 'truefalse'] },
   },
   {
-    id: 'revision', title: 'Révision', icon: 'safe',
+    id: 'revision', title: 'Révision', icon: icon('safe'), firstKind: 'find',
     plan: { cards: MARK_IDS, count: 12, kinds: ['identify', 'find', 'side', 'light', 'meaning', 'truefalse'], review: true },
   },
 ]
-
-export function findLesson(id: string): Lesson | undefined {
-  return LESSONS.find(l => l.id === id)
-}

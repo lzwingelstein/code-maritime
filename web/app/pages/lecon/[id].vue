@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { choiceLabel, explain, exerciseGenerator, regenerator, type MarkExercise } from '~/courses/balisage/exercises'
-import { findLesson } from '~/courses/balisage/lessons'
-import { MARKS } from '~/courses/balisage/marks'
+import { choiceName, findLesson, regenerator } from '~/courses'
+import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
 import { DAILY_GOAL, introduce, recordLesson, todayXp } from '~/engine/progress'
@@ -10,32 +9,35 @@ import { advance, check, currentStep, progress as share, select, startSession, t
 import { currentStreak, dayKey } from '~/engine/streak'
 
 const route = useRoute()
-const lesson = findLesson(String(route.params.id))
+const found = findLesson(String(route.params.id))
+const lesson = found?.lesson
+const course = found?.course
 const { progress, save } = useProgress()
 const sound = useSound()
 
 const rng = seeded(Date.now())
-const generate = lesson ? exerciseGenerator(lesson) : null
-const regenerate = lesson ? regenerator(lesson, rng) : null
+const generate = found ? found.course.generator(found.lesson) : null
+const regenerate = generate ? regenerator(generate, rng) : null
 
-function newSession(): Session<MarkExercise> {
+function newSession(): Session<CourseExercise> {
   const now = Date.now()
   const steps = lesson && generate
     ? buildLesson(lesson.plan, {
         rng,
         generate,
         isKnown: id => id in progress.value.mastery,
-        firstKind: lesson.topOnly ? 'identify' : 'find',
+        firstKind: lesson.firstKind,
         weight: id => reviewWeight(progress.value.mastery[id], now),
       })
     : []
-  return reactive(startSession(steps)) as Session<MarkExercise>
+  return reactive(startSession(steps)) as Session<CourseExercise>
 }
 
 const s = shallowRef(newSession())
 const startedAt = ref(Date.now())
 const step = computed(() => currentStep(s.value))
 const exercise = computed(() => (step.value?.type === 'question' ? step.value.exercise : null))
+const card = computed(() => (step.value?.type === 'intro' && course ? course.card(step.value.cardId) : null))
 const verdictTitle = ref('')
 const result = ref<{ xp: number, seconds: number, accuracy: number } | null>(null)
 
@@ -91,13 +93,13 @@ function choiceState(id: string): 'sel' | 'good' | 'bad' | '' {
   return s.value.selected === id ? 'sel' : ''
 }
 
-const wrongDetail = computed(() => {
+const detail = computed(() => {
   const v = s.value.verdict
   const e = exercise.value
   if (!v || !e) return ''
-  if (v.correct) return e.kind === 'light' ? `${MARKS[e.cardId].light.description}.` : ''
-  const answer = e.kind === 'truefalse' ? `C’était « ${choiceLabel(e, v.expected)} ».` : `Bonne réponse : ${choiceLabel(e, v.expected)}.`
-  return `${answer} ${explain(e)}`
+  if (v.correct) return e.afterRight ?? ''
+  const answer = e.kind === 'truefalse' ? `C’était « ${choiceName(e, v.expected)} ».` : `Bonne réponse : ${choiceName(e, v.expected)}.`
+  return `${answer} ${e.explanation}`
 })
 
 const today = dayKey(new Date())
@@ -164,24 +166,25 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <p><RichText :text="lesson.tip.text" /></p>
         </div>
 
-        <!-- New mark -->
-        <div v-else-if="step?.type === 'intro'" class="card">
-          <span class="new">Nouvelle marque</span>
-          <h2>{{ MARKS[step.cardId as keyof typeof MARKS].name }}</h2>
-          <BuoyMark :mark-id="step.cardId as keyof typeof MARKS" class="intro-buoy" />
-          <p><RichText :text="MARKS[step.cardId as keyof typeof MARKS].intro" /></p>
-          <p class="lightinfo">🌙 {{ MARKS[step.cardId as keyof typeof MARKS].light.description }}</p>
+        <!-- New card -->
+        <div v-else-if="card" class="card">
+          <span class="new">{{ card.badge }}</span>
+          <h2>{{ card.name }}</h2>
+          <div class="intro-visual">
+            <CardVisual :visual="card.visual" />
+          </div>
+          <p><RichText :text="card.intro" /></p>
+          <p v-if="card.note" class="lightinfo">{{ card.note }}</p>
         </div>
 
         <!-- Question -->
         <template v-else-if="exercise">
           <p class="heading">{{ exercise.heading }}</p>
           <h2 class="prompt">{{ exercise.prompt }}</h2>
-          <div v-if="exercise.visual" class="visual">
-            <NightLight v-if="exercise.visual.type === 'light'" :key="s.index" :mark-id="exercise.visual.markId" />
-            <BuoyMark v-else :mark-id="exercise.visual.markId" :top-only="exercise.visual.topOnly" :class="exercise.visual.topOnly ? 'v-top' : 'v-full'" />
+          <div v-if="exercise.visual" class="visual" :class="`v-${exercise.visual.type}${exercise.visual.type === 'mark' && exercise.visual.topOnly ? '-top' : ''}`">
+            <CardVisual :key="s.index" :visual="exercise.visual" />
           </div>
-          <div :class="['choices', exercise.layout, { tops: exercise.topOnly }]">
+          <div :class="['choices', exercise.layout, exercise.choices[0]?.visual ? `pics-${exercise.choices[0].visual.type}` : '', { tops: exercise.choices[0]?.visual?.type === 'mark' && exercise.choices[0].visual.topOnly }]">
             <button
               v-for="(c, i) in exercise.choices"
               :key="c.id"
@@ -189,12 +192,12 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
               class="choice"
               :class="choiceState(c.id)"
               :aria-pressed="s.selected === c.id"
-              :aria-label="c.markId ? `Marque ${LETTERS[i]}` : undefined"
+              :aria-label="c.visual ? `Choix ${LETTERS[i]}` : undefined"
               :disabled="!!s.verdict"
               @click="choose(c.id)"
             >
-              <BuoyMark v-if="c.markId" :mark-id="c.markId" :top-only="exercise.topOnly" />
-              <span v-else>{{ c.label }}</span>
+              <CardVisual v-if="c.visual" :visual="c.visual" />
+              <span v-else>{{ c.name }}</span>
               <span v-if="choiceState(c.id) === 'good'" class="mark" aria-hidden="true">✓</span>
               <span v-else-if="choiceState(c.id) === 'bad'" class="mark" aria-hidden="true">✗</span>
             </button>
@@ -206,7 +209,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <div>
           <template v-if="s.verdict">
             <h3>{{ s.verdict.correct ? '✓' : '✗' }} {{ verdictTitle }}</h3>
-            <p v-if="wrongDetail">{{ wrongDetail }}</p>
+            <p v-if="detail">{{ detail }}</p>
           </template>
           <button
             type="button"
@@ -233,8 +236,9 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .heading { margin: 6px 0 4px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
 .prompt { margin: 0 0 14px; font-size: 21px; font-weight: 900; line-height: 1.25; }
 .visual { display: flex; justify-content: center; margin: 4px 0 16px; }
-.v-full { height: 200px; }
-.v-top { height: 130px; }
+.v-mark :deep(svg) { height: 200px; }
+.v-mark-top :deep(svg) { height: 130px; }
+.visual.v-ship, .visual.v-light { display: block; }
 
 .choices { display: flex; flex-direction: column; gap: 10px; }
 .choices.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -245,8 +249,9 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 }
 .pair .choice { text-align: center; }
 .grid .choice { display: flex; justify-content: center; padding: 10px; }
-.grid .choice :deep(svg) { height: 130px; }
-.grid.tops .choice :deep(svg) { height: 84px; }
+.grid .choice :deep(svg.buoy) { height: 130px; }
+.grid.tops .choice :deep(svg.buoy) { height: 84px; }
+.grid.pics-ship .choice { padding: 6px; }
 .choice.sel { border-color: var(--primary-soft-line); background: var(--primary-soft); box-shadow: 0 4px 0 var(--primary-soft-line); color: var(--primary); }
 .choice.good { border-color: var(--ok-fill); background: var(--ok-soft); box-shadow: 0 4px 0 var(--ok-fill); color: var(--ok-text); }
 .choice.bad { border-color: var(--ko-fill); background: var(--ko-soft); box-shadow: 0 4px 0 var(--ko-fill); color: var(--ko-text); }
@@ -259,7 +264,8 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .card.tip { background: var(--tip-soft); border-color: var(--tip-line); }
 .card .big { font-size: 44px; }
 .new { display: inline-block; padding: 2px 10px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-.intro-buoy { display: block; height: 190px; margin: 8px auto 0; }
+.intro-visual { display: flex; justify-content: center; margin: 8px 0 0; }
+.intro-visual :deep(svg.buoy) { height: 190px; }
 .lightinfo { color: var(--ink-mute); font-size: 14px !important; font-weight: 700 !important; }
 
 .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: center; border-top: 2px solid var(--line); background: var(--surface); }

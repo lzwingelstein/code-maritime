@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { COURSE, LESSONS } from '~/courses/balisage/lessons'
+import { COURSES, LESSON_IDS } from '~/courses'
 import { DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
 
 const { progress, reset } = useProgress()
 const today = dayKey(new Date())
-const ids = LESSONS.map(l => l.id)
 
 const streak = computed(() => currentStreak(progress.value.streak, today))
 const dayXp = computed(() => todayXp(progress.value, today))
-const nodes = computed(() => LESSONS.map((lesson, i) => ({
-  lesson,
-  unlocked: isUnlocked(progress.value, ids, i),
-  done: progress.value.completions[lesson.id] ?? 0,
+// Lessons are unlocked in path order, across units.
+const units = computed(() => COURSES.map(course => ({
+  course,
+  nodes: course.lessons.map((lesson) => {
+    const i = LESSON_IDS.indexOf(lesson.id)
+    return { lesson, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done: progress.value.completions[lesson.id] ?? 0 }
+  }),
 })))
-const current = computed(() => nodes.value.findIndex(n => n.unlocked && !n.done))
+const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
 
 const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 const confirming = ref(false)
@@ -45,31 +47,33 @@ function onReset() {
       </div>
     </section>
 
-    <section class="unit">
-      <small>{{ COURSE.unit }}</small>
-      <h1>{{ COURSE.title }}</h1>
-    </section>
+    <template v-for="u in units" :key="u.course.id">
+      <section class="unit" :class="{ locked: !u.nodes[0]?.unlocked }">
+        <small>{{ u.course.unit }}</small>
+        <h1>{{ u.course.title }}</h1>
+      </section>
 
-    <nav class="path" aria-label="Leçons">
-      <div v-for="(n, i) in nodes" :key="n.lesson.id" class="nwrap" :style="{ transform: `translateX(${OFFSETS[i % 8]}px)` }">
-        <NuxtLink
-          v-if="n.unlocked"
-          :to="`/lecon/${n.lesson.id}`"
-          class="node"
-          :class="{ done: n.done }"
-          :aria-label="`${n.lesson.title}${n.done ? `, terminée ${n.done} fois` : ''}`"
-        >
-          <BuoyMark :mark-id="n.lesson.icon" top-only />
-          <span v-if="n.done" class="crown">👑 {{ n.done }}</span>
-          <span v-if="i === current" class="bubble">Commencer</span>
-        </NuxtLink>
-        <span v-else class="node locked" :aria-label="`${n.lesson.title}, verrouillée`">
-          <BuoyMark :mark-id="n.lesson.icon" top-only />
-          <span class="lock" aria-hidden="true">🔒</span>
-        </span>
-        <span class="nlab">{{ n.lesson.title }}</span>
-      </div>
-    </nav>
+      <nav class="path" :aria-label="`Leçons : ${u.course.title}`">
+        <div v-for="n in u.nodes" :key="n.lesson.id" class="nwrap" :style="{ transform: `translateX(${OFFSETS[n.index % 8]}px)` }">
+          <NuxtLink
+            v-if="n.unlocked"
+            :to="`/lecon/${n.lesson.id}`"
+            class="node"
+            :class="{ done: n.done }"
+            :aria-label="`${n.lesson.title}${n.done ? `, terminée ${n.done} fois` : ''}`"
+          >
+            <CardVisual :visual="n.lesson.icon" />
+            <span v-if="n.done" class="crown">👑 {{ n.done }}</span>
+            <span v-if="n.index === current" class="bubble">Commencer</span>
+          </NuxtLink>
+          <span v-else class="node locked" :aria-label="`${n.lesson.title}, verrouillée`">
+            <CardVisual :visual="n.lesson.icon" />
+            <span class="lock" aria-hidden="true">🔒</span>
+          </span>
+          <span class="nlab">{{ n.lesson.title }}</span>
+        </div>
+      </nav>
+    </template>
 
     <footer class="foot">
       <button type="button" @click="onReset">
@@ -95,6 +99,7 @@ function onReset() {
 }
 .unit small { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
 .unit h1 { margin: 2px 0 0; font-size: 20px; font-weight: 900; }
+.unit.locked { background: var(--ink-mute); box-shadow: 0 4px 0 var(--ink); }
 .path { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 62px 0 40px; }
 .nwrap { display: flex; flex-direction: column; align-items: center; }
 .node {
@@ -105,7 +110,7 @@ function onReset() {
 .node:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--primary-shadow); }
 .node.done { background: var(--gold); box-shadow: 0 7px 0 var(--gold-shadow); }
 .node.locked { background: var(--disabled); box-shadow: 0 7px 0 var(--disabled-shadow); }
-.node.locked :deep(svg) { filter: grayscale(1) opacity(.4); }
+.node.locked :deep(svg), .node.locked :deep(.emoji) { filter: grayscale(1) opacity(.4); }
 .lock { position: absolute; right: -4px; bottom: -6px; font-size: 18px; }
 .crown {
   position: absolute; right: -8px; bottom: -8px; padding: 1px 6px; border: 2px solid var(--line); border-radius: 99px;
