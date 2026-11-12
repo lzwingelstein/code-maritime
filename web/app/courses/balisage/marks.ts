@@ -4,8 +4,10 @@
  */
 export type MarkId = 'port' | 'starboard' | 'north' | 'east' | 'south' | 'west' | 'isolated' | 'safe' | 'special'
 export type Family = 'lateral' | 'cardinal' | 'other'
-export type SignalColour = 'red' | 'green' | 'yellow' | 'black' | 'white'
-export type Topmark = 'can' | 'cone' | 'north' | 'south' | 'east' | 'west' | 'two-spheres' | 'sphere' | 'x'
+export type SignalColour = 'red' | 'green' | 'yellow' | 'black' | 'white' | 'blue'
+export type Topmark = 'can' | 'cone' | 'north' | 'south' | 'east' | 'west' | 'two-spheres' | 'sphere' | 'x' | 'plus' | 'none'
+/** Shape of the buoy itself: a pillar with a topmark, or a plain sphere, can or cone. */
+export type BuoyBody = 'pillar' | 'sphere' | 'can' | 'cone'
 export type Side = 'babord' | 'tribord' | 'N' | 'E' | 'S' | 'W'
 
 export interface Light {
@@ -153,6 +155,30 @@ export const MARKS: Record<MarkId, Mark> = {
 }
 
 export const MARK_IDS = Object.keys(MARKS) as MarkId[]
+
+/** Marks only drawn (beach buoyage, region B, wreck): their lessons are authored quizzes. */
+export type ExtraMarkId = 'beach-limit' | 'beach-port' | 'beach-starboard' | 'port-b' | 'starboard-b' | 'wreck'
+export interface DrawnMark {
+  bands?: [SignalColour, number][]
+  stripes?: [SignalColour, SignalColour]
+  topmark: Topmark
+  /** Colour of a can or cone topmark (defaults: red can, green cone). */
+  topmarkColour?: SignalColour
+  body?: BuoyBody
+}
+
+export const EXTRA_MARKS: Record<ExtraMarkId, DrawnMark> = {
+  'beach-limit': { bands: [['yellow', 1]], topmark: 'none', body: 'sphere' },
+  'beach-port': { bands: [['yellow', 1]], topmark: 'none', body: 'can' },
+  'beach-starboard': { bands: [['yellow', 1]], topmark: 'none', body: 'cone' },
+  'port-b': { bands: [['green', 1]], topmark: 'can', topmarkColour: 'green' },
+  'starboard-b': { bands: [['red', 1]], topmark: 'cone', topmarkColour: 'red' },
+  'wreck': { stripes: ['blue', 'yellow'], topmark: 'plus' },
+}
+
+export function drawnMark(id: MarkId | ExtraMarkId): DrawnMark {
+  return id in MARKS ? MARKS[id as MarkId] : EXTRA_MARKS[id as ExtraMarkId]
+}
 
 export const SIDE_LABELS: Record<Side, string> = {
   babord: 'Bâbord (gauche)',

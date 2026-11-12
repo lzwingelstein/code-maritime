@@ -19,8 +19,8 @@ reste à faire (formulations de l'examen, pièges classiques).
 
 | # | Point du programme | Couverture |
 |---|--------------------|------------|
-| 1 | Balisage des côtes, des plages et pictogrammes (sauf marques de musoir) | Côtes : unité 1. Plages et pictogrammes : issue à part |
-| 2 | Initiation au balisage région B | Issue à part |
+| 1 | Balisage des côtes, des plages et pictogrammes (sauf marques de musoir) | Côtes : unité 1. Plages : unité 3. Pictogrammes : issue à part |
+| 2 | Initiation au balisage région B | Unité 3 |
 | 3 | Règles de barre et de route | #3 |
 | 4 | Signaux phoniques (manœuvre, avertissement, visibilité réduite), de détresse, de trafic portuaire, météorologiques | #4 |
 | 5 | Feux et marques des navires | Unité 2 (#2) |
@@ -48,6 +48,18 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Marque spéciale jaune, voyant X jaune, feu jaune | ✅ |
 | Voyants des cardinales, du danger isolé (2 sphères noires) et des eaux saines (sphère rouge) | ⚠️ standard AISM, non relu dans l'extrait SHOM consulté |
 | Bouée d'épave d'urgence (bleu et jaune) | ❌ absente de l'appli → issue balisage |
+
+## Unité 3 · Balisage : plages, région B, épaves
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Bande des 300 m : sphères jaunes, vitesse limitée à 5 nœuds, règle valable même sans bouées | Direction de la Mer (plaquette 300 m) ; arrêté du 27/03/1991 (cité) | ✅ |
+| Chenal traversier : cylindre jaune à bâbord, cône jaune à tribord en venant du large ; interdit aux baigneurs | Direction de la Mer | ✅ |
+| Zone de baignade : sphères jaunes rapprochées, interdite aux engins à moteur | Préfectures / communes (arrêtés locaux) | ⚠️ dépend de l'arrêté local |
+| Région B : couleurs des latérales inversées, formes identiques ; Antilles, Guyane, Saint-Pierre-et-Miquelon en région B | Ministère de la Mer, plaquette « Signalisation maritime » | ✅ |
+| Bouée d'épave d'urgence : bandes verticales bleues et jaunes, croix jaune, feu alternatif bleu et jaune | SHOM ouvrage 3C | ✅ |
+| Danger nouveau : cardinales ou latérales à feux scintillants, marque doublée si grave, Morse « D » | SHOM ouvrage 3C | ✅ |
+| Pictogrammes des plages | — | ❌ non couverts (issue dédiée) |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 

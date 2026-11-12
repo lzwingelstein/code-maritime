@@ -5,12 +5,12 @@
 import type { LessonPlan } from '~/engine/builder'
 import type { Random } from '~/engine/random'
 import type { BaseExercise } from '~/engine/types'
-import type { MarkId } from './balisage/marks'
+import type { ExtraMarkId, MarkId } from './balisage/marks'
 import type { Aspect, VesselId } from './navires/vessels'
 
 /** Something to draw: the question picture, a picture choice, a card, a path icon. */
 export type Visual =
-  | { type: 'mark', markId: MarkId, topOnly: boolean }
+  | { type: 'mark', markId: MarkId | ExtraMarkId, topOnly: boolean }
   | { type: 'light', markId: MarkId }
   | { type: 'ship', vesselId: VesselId, aspect: Aspect, mode: 'night' | 'day', silhouette?: boolean }
   | { type: 'emoji', char: string }
