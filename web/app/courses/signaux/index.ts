@@ -41,6 +41,7 @@ export const signaux = quizCourse({
   unit: 'Permis côtier',
   title: 'Signaux sonores, de détresse et portuaires',
   badge: 'Nouveau signal',
+  heading: 'Signaux',
   cards: [
     {
       id: 'sound-starboard', name: '1 son bref', visual: horn(undefined, S),

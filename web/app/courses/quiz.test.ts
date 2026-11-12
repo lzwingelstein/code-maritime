@@ -14,7 +14,7 @@ const card = (id: string): QuizCard => ({
 })
 
 const demo = quizCourse({
-  id: 'demo', unit: 'U', title: 'Demo', badge: 'Nouveau',
+  id: 'demo', unit: 'U', title: 'Demo', badge: 'Nouveau', heading: 'Demo',
   cards: [card('a'), card('b')],
   lessons: [{ id: 'demo-1', title: 'L1', icon: { type: 'emoji', char: '⚓' }, cards: ['a', 'b'], count: 6 }],
 })
@@ -70,7 +70,17 @@ describe('authored content of every quiz course', () => {
           expect(new Set(c.statements.map(s => s[1])).size).toBe(2)
         })
       }
-      it('every lesson card exists', () => {
+      it('the heading above a question never gives the answer away', () => {
+        const lesson = course.lessons.at(-1)!
+        const generate = course.generator(lesson)
+        for (const c of course.cards) {
+          c.questions.forEach((_, i) => {
+            const e = generate(c.id, 'qcm', seeded(i), i)!
+            expect(e.heading).not.toBe(c.name)
+          })
+        }
+      })
+            it('every lesson card exists', () => {
         const ids = new Set(course.cards.map(c => c.id))
         for (const l of course.lessons) for (const id of l.plan.cards) expect(ids.has(id)).toBe(true)
       })

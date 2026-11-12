@@ -17,6 +17,7 @@ export const barre = quizCourse({
   unit: 'Permis côtier',
   title: 'Règles de barre et de route',
   badge: 'Nouvelle règle',
+  heading: 'Règles de route',
   cards: [
     {
       id: 'crossing-starboard', name: 'Il arrive sur ma droite', visual: scene('power', 'power', 60, 270),

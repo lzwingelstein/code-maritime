@@ -62,6 +62,7 @@ export const meteo = quizCourse({
   unit: 'Permis côtier',
   title: 'Météo marine',
   badge: 'À retenir',
+  heading: 'Météo',
   cards: [
     {
       id: 'beaufort', name: 'L’échelle de Beaufort', visual: e('🌬️'),

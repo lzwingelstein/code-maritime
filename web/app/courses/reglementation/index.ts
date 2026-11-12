@@ -11,6 +11,7 @@ export const reglementation = quizCourse({
   unit: 'Permis côtier',
   title: 'Réglementation',
   badge: 'À retenir',
+  heading: 'Réglementation',
   cards: [
     {
       id: 'licence', name: 'Le permis plaisance', visual: e('🪪'),

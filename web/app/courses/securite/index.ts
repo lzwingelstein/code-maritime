@@ -11,6 +11,7 @@ export const securite = quizCourse({
   unit: 'Permis côtier',
   title: 'Sécurité et matériel d’armement',
   badge: 'À retenir',
+  heading: 'Sécurité',
   cards: [
     {
       id: 'zones', name: 'Les zones de navigation', visual: e('📏'),
