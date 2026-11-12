@@ -15,6 +15,7 @@ defineProps<{ visual: Visual }>()
     :mode="visual.mode"
     :silhouette="visual.silhouette"
   />
+  <EncounterScene v-else-if="visual.type === 'encounter'" v-bind="visual" />
   <span v-else class="emoji" aria-hidden="true">{{ visual.char }}</span>
 </template>
 
