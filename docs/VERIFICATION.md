@@ -100,6 +100,20 @@ reste à faire (formulations de l'examen, pièges classiques).
 | 196 et VHF canal 16 pour joindre le CROSS, VHF prioritaire en mer | Ministère de la Mer | ✅ |
 | Réflexes homme à la mer (crier, bouée, garder le contact visuel, débrayer, position, alerte) | Formation pratique (arrêté 2007, art. 3) | ⚠️ bonnes pratiques, pas de texte détaillé |
 
+## Unité 7 · Réglementation
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Permis obligatoire au-delà de 4,5 kW (6 ch), dès 16 ans ; côtier jusqu'à 6 milles d'un abri, jour et nuit ; extension hauturière au-delà | Service-public.fr ; préfectures ; Codes Rousseau | ✅ |
+| Certificat d'enregistrement depuis le 1er janvier 2022 (remplace acte de francisation et carte de circulation, anciens titres valables) | Préfecture du Var | ✅ |
+| Catégories CE : A > F8 / > 4 m ; B ≤ F8 / ≤ 4 m ; C ≤ F6 / ≤ 2 m ; D ≤ F4 / ≤ 0,3 m | Ministère de la Mer ; JO 2015 | ✅ (la division 245 indique 0,5 m pour D : seuil de vagues occasionnelles) |
+| Partir avec le plein et une marge de sécurité | Ministère de la Mer | ✅ ; « règle du tiers » = règle pratique, pas un texte |
+| Ivresse manifeste et défaut de maîtrise : contraventions depuis le 5 juin 2026, sans taux chiffré | Décret n° 2026-434 (via ActuNautique) | ✅ — sujet en évolution (loi en discussion) |
+| Ski nautique / engins tractés : 2 personnes d'au moins 16 ans (pilote + observateur), gilets de couleur vive, capacité d'embarquer les tractés | Préfecture de la Gironde | ✅ |
+| Pavillon Alpha = plongeurs ; ralentir, rester à distance (100 m enseigné couramment) | Préfecture de la Gironde ; ENTENTE | ⚠️ la distance dépend des arrêtés préfectoraux |
+| Écluses : rouge interdit, rouge + vert en préparation, vert autorisé ; dans le sas amarré, défenses, moteur arrêté | RGPNI (A. 4241-53-30 et 31) | ✅ (règles fluviales) |
+| Zones de conchyliculture | — | ❌ non couvert |
+
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
 | Affirmation de l'appli | Règle | Statut |
