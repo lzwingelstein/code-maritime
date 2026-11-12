@@ -2,6 +2,8 @@
 services:
   web:
     image: ghcr.io/lzwingelstein/code-maritime/web:latest
+    # Always fetch the newest :latest on Deploy (compose otherwise keeps the cached image).
+    pull_policy: always
     restart: unless-stopped
     expose:
       - "80"
