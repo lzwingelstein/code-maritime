@@ -31,7 +31,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 | 10 | Autonomie en carburant | #6 |
 | 11 | Environnement : rejets, équipements sanitaires, peintures antisalissures | #9 |
 | 12 | Ressource halieutique : pêche de loisir, pêche sous-marine, faune et flore | #9 |
-| 13 | Météo : prévisions, Beaufort, état de la mer | #8 |
+| 13 | Météo : prévisions, Beaufort, état de la mer | Unité 9 |
 | 14 | Carte marine : symboles, marée | #9 |
 | 15 | Écluses gardées ou automatiques | #6 |
 
@@ -125,6 +125,16 @@ reste à faire (formulations de l'examen, pièges classiques).
 | CROSS, VHF 16 prioritaire en mer, 196, SNSM | Ministère de la Mer | ✅ |
 | MAYDAY / PAN PAN / SÉCURITÉ, ordre de priorité, structure du message | Fiches CROSS et formation CRR | ✅ |
 | Alphabet phonétique international, mots d'anglais de base | Standard international | ✅ |
+
+## Unité 9 · Météo marine
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Échelle de Beaufort 0 à 12, termes et vitesses en nœuds | OMM / MétéoSuisse / Météo-France (Guide marine) | ✅ |
+| BMS côte dès force 7 (avis de grand frais), BMS large dès force 8 ; vocabulaire des avis | Météo-France (data.gouv.fr) | ✅ |
+| Bulletin côte jusqu'à 20 milles, diffusé par les CROSS en VHF, annoncé sur le 16 puis canal de travail, affiché en capitainerie, site et appli | Météo-France (Guide marine), SHOM | ✅ |
+| État de la mer : calme, ridée, belle, peu agitée, agitée, forte, très forte, grosse, très grosse, énorme (hauteurs) | Échelle de Météo-France (Guide marine) | ✅ |
+| Brise thermique, vent contre courant, rafales | Bonnes pratiques (MAIF, Météo-France) | ⚠️ notions générales |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
