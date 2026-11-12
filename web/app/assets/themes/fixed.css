@@ -1,0 +1,43 @@
+/* The one palette, as CSS variables. Never hard-code a UI colour in a component.
+   Signal colours of the marks themselves live in components/BuoyMark.vue: they are content, not UI. */
+:root {
+  --ink: #2B3440;
+  --ink-mute: #5D6878;         /* 5.6:1 on white */
+  --surface: #FFFFFF;
+  --line: #E3E6EA;
+
+  --primary: #1268BD;          /* 5.4:1 on white */
+  --primary-shadow: #0B4F92;
+  --primary-soft: #DDEEFC;
+  --primary-soft-line: #84BFF0;
+
+  --ok: #2F8A00;               /* 4.6:1 on white */
+  --ok-fill: #58CC02;
+  --ok-shadow: #46A302;
+  --ok-soft: #D7FFB8;
+  --ok-text: #2A6B00;          /* 5.9:1 on --ok-soft */
+
+  --ko: #C42B2B;
+  --ko-fill: #E03A3A;
+  --ko-shadow: #B32727;
+  --ko-soft: #FFDFE0;
+  --ko-text: #A32121;          /* 5.7:1 on --ko-soft */
+
+  --gold: #FFC800;
+  --gold-shadow: #D9A900;
+  --gold-text: #7A5A00;        /* 6.1:1 on white */
+
+  --accent: #8E3FD1;           /* question headings, 5.6:1 on white */
+  --disabled: #E5E5E5;
+  --disabled-text: #737373;
+  --disabled-shadow: #CDCDCD;
+
+  --tip-soft: #E8F3FC;
+  --tip-line: #B9DCF7;
+
+  --night-top: #030B18;
+  --night-mid: #0B1E36;
+  --night-sea: #0D2B4A;
+  --night-deep: #061629;
+  --night-text: #E6EDF5;
+}

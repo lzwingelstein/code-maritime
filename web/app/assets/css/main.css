@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@import "../themes/fixed.css";
+
+@layer base {
+  html, body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: Nunito, system-ui, sans-serif;
+    font-weight: 700;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+}
+
+@layer components {
+  .shell {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Chunky 3D button. */
+  .btn {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--primary);
+    box-shadow: 0 4px 0 var(--primary-shadow);
+  }
+  .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--primary-shadow); }
+  .btn.ok { background: var(--ok); box-shadow: 0 4px 0 var(--ok-shadow); }
+  .btn.ko { background: var(--ko); box-shadow: 0 4px 0 var(--ko-shadow); }
+  .btn.ghost { background: var(--surface); color: var(--primary); border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+  .btn:disabled { background: var(--disabled); color: var(--disabled-text); box-shadow: 0 4px 0 var(--disabled-shadow); cursor: default; }
+
+  .bar { height: 14px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .bar > i { display: block; height: 100%; border-radius: 99px; transition: width .4s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

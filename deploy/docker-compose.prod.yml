@@ -1,0 +1,7 @@
+# Dokploy: pulls the image published by CI on main. Traefik (Dokploy) routes the domain to port 80.
+services:
+  web:
+    image: ghcr.io/lzwingelstein/code-maritime/web:latest
+    restart: unless-stopped
+    expose:
+      - "80"
