@@ -4,15 +4,16 @@ import { balisage } from './balisage'
 import { barre } from './barre'
 import { navires } from './navires'
 import { plages } from './plages'
+import { reglementation } from './reglementation'
 import { securite } from './securite'
 import { signaux } from './signaux'
 import type { QuizCourse } from './quiz'
 import type { Course, CourseExercise, Generator, Lesson } from './types'
 
-export const COURSES: Course[] = [balisage, navires, plages, barre, signaux, securite]
+export const COURSES: Course[] = [balisage, navires, plages, barre, signaux, securite, reglementation]
 
 /** Courses written as authored quizzes: their content is checked by quiz.test.ts. */
-export const QUIZ_COURSES: QuizCourse[] = [plages, barre, signaux, securite]
+export const QUIZ_COURSES: QuizCourse[] = [plages, barre, signaux, securite, reglementation]
 
 export const LESSON_IDS = COURSES.flatMap(c => c.lessons.map(l => l.id))
 
