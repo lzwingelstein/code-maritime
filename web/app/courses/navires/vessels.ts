@@ -24,6 +24,8 @@ export interface Vessel {
   lights: ShipLight[]
   /** Day shapes from top to bottom; null when the exam asks none. */
   shapes: DayShape[] | null
+  /** Day shapes hoisted forward (anchor ball, motor-sailing cone) rather than on the mast. */
+  shapesForward?: boolean
   /** Shown at night in the exam: false for a vessel only asked by day. */
   night: boolean
   intro: string
@@ -52,36 +54,36 @@ export const VESSELS: Record<VesselId, Vessel> = {
   power: {
     id: 'power', name: 'Navire à moteur', hull: 'power', night: true,
     lights: [masthead(0.3, 3), ...sides(0.1, 1.4), stern()], shapes: null,
-    intro: 'Un **feu blanc de tête de mât** vers l’avant, un **feu rouge à bâbord**, un **feu vert à tribord**, et un **feu blanc de poupe** vers l’arrière.',
+    intro: 'Un **feu blanc de tête de mât** vers l’avant (225°), un **feu rouge à bâbord** et un **feu vert à tribord** (112,5° chacun), et un **feu blanc de poupe** vers l’arrière (135°).',
     statements: [
-      ['Un navire à moteur de moins de 50 m porte un seul feu de tête de mât.', true],
+      ['En route, un navire à moteur montre un feu de tête de mât, ses feux de côté et son feu de poupe.', true],
       ['Le feu de poupe est rouge.', false],
       ['Si je vois son feu vert, je le vois par son tribord.', true],
     ],
   },
   power50: {
-    id: 'power50', name: 'Navire à moteur de plus de 50 m', hull: 'power', night: true,
+    id: 'power50', name: 'Navire à moteur de 50 m ou plus', hull: 'power', night: true,
     lights: [masthead(0.55, 2.6), masthead(-0.25, 3.6), ...sides(0.1, 1.4), stern()], shapes: null,
-    intro: 'Comme un navire à moteur, mais avec **deux feux de tête de mât** : celui de l’arrière est **plus haut**. Vu de côté, ils montrent où va le navire.',
+    intro: 'À partir de 50 m, **deux feux de tête de mât** sont obligatoires : celui de l’arrière est **plus haut**. Vu de côté, ils montrent où va le navire. (En dessous de 50 m, le second est facultatif.)',
     statements: [
-      ['Au-delà de 50 m, un navire à moteur porte deux feux de tête de mât.', true],
+      ['À partir de 50 m, un navire à moteur doit porter deux feux de tête de mât.', true],
       ['Le feu de tête de mât arrière est plus bas que celui de l’avant.', false],
     ],
   },
   sail: {
     id: 'sail', name: 'Voilier sous voiles', hull: 'sail', night: true,
     lights: [...sides(0.8, 0.9), stern(0.9)], shapes: null,
-    intro: 'Seulement ses **feux de côté** (rouge, vert) et son **feu de poupe**. **Pas de feu de tête de mât** : c’est ce qui le distingue d’un navire à moteur.',
+    intro: 'Seulement ses **feux de côté** (rouge, vert) et son **feu de poupe**. **Pas de feu de tête de mât** : c’est ce qui le distingue d’un navire à moteur. Sous 20 m, ces trois feux peuvent être réunis en un fanal en haut du mât.',
     statements: [
       ['Un voilier sous voiles ne porte pas de feu de tête de mât.', true],
-      ['Un voilier sous voiles montre un feu blanc au-dessus de ses feux de côté.', false],
+      ['Un voilier sous voiles porte un feu blanc de tête de mât.', false],
       ['Un voilier qui avance au moteur porte les feux d’un navire à moteur.', true],
     ],
   },
   anchor: {
     id: 'anchor', name: 'Navire au mouillage', hull: 'power', night: true,
-    lights: allRound(0.8, 2.4, 'white'), shapes: ['ball'],
-    intro: 'Moins de 50 m : **un feu blanc visible sur tout l’horizon**, et rien d’autre. De jour : **une boule noire** à l’avant.',
+    lights: allRound(0.8, 2.4, 'white'), shapes: ['ball'], shapesForward: true,
+    intro: '**Un feu blanc visible sur tout l’horizon** à l’avant, et plus de feux de route. À partir de 50 m, un second feu blanc, plus bas, à l’arrière. De jour : **une boule noire** à l’avant.',
     statements: [
       ['Au mouillage, un navire de moins de 50 m montre un feu blanc visible sur tout l’horizon.', true],
       ['Au mouillage, on garde ses feux de côté allumés.', false],
@@ -119,7 +121,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   nuc: {
     id: 'nuc', name: 'Navire non maître de sa manœuvre', hull: 'power', night: true,
     lights: [...allRound(0.15, 3.8, 'red', 'red'), ...sides(0.1, 1.4), stern()], shapes: ['ball', 'ball'],
-    intro: '**Deux feux rouges** l’un au-dessus de l’autre : avarie, il ne peut pas manœuvrer. **Pas de feu de tête de mât**. De jour : **deux boules noires**.',
+    intro: '**Deux feux rouges** l’un au-dessus de l’autre : avarie, il ne peut pas manœuvrer. **Pas de feu de tête de mât** ; en route, il ajoute ses feux de côté et de poupe. De jour : **deux boules noires**.',
     statements: [
       ['Deux feux rouges superposés : navire non maître de sa manœuvre.', true],
       ['Il montre un feu de tête de mât quand il fait route.', false],
@@ -130,18 +132,18 @@ export const VESSELS: Record<VesselId, Vessel> = {
     id: 'ram', name: 'Navire à capacité de manœuvre restreinte', hull: 'power', night: true,
     lights: [...allRound(0, 5, 'red', 'white', 'red'), masthead(0.55, 2.2), ...sides(0.1, 1.4), stern()],
     shapes: ['ball', 'diamond', 'ball'],
-    intro: '**Rouge, blanc, rouge** superposés : un navire gêné par son travail (dragage, câble, ravitaillement…). En route, il garde ses feux de navire à moteur. De jour : **boule, losange, boule**.',
+    intro: '**Rouge, blanc, rouge** superposés : un navire gêné par son travail (dragage, câble, ravitaillement…). En route, il ajoute ses feux de tête de mât, de côté et de poupe. De jour : **boule, bicône (un losange), boule**.',
     statements: [
       ['Rouge, blanc, rouge superposés : navire à capacité de manœuvre restreinte.', true],
       ['De jour, il montre trois boules noires.', false],
-      ['De jour, il montre une boule, un losange et une boule.', true],
+      ['De jour, il montre une boule, un bicône et une boule.', true],
     ],
   },
   cbd: {
     id: 'cbd', name: 'Navire handicapé par son tirant d’eau', hull: 'power', night: true,
     lights: [...allRound(0, 5, 'red', 'red', 'red'), masthead(0.55, 2.2), ...sides(0.1, 1.4), stern()],
     shapes: ['cylinder'],
-    intro: '**Trois feux rouges** superposés, en plus de ses feux de navire à moteur : trop profond pour s’écarter du chenal. De jour : **un cylindre noir**.',
+    intro: 'Il **peut** montrer **trois feux rouges** superposés, en plus de ses feux de navire à moteur : trop profond pour s’écarter du chenal. De jour : **un cylindre noir**.',
     statements: [
       ['Trois feux rouges superposés : navire handicapé par son tirant d’eau.', true],
       ['De jour, il hisse un cylindre noir.', true],
@@ -150,8 +152,8 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   motorsail: {
     id: 'motorsail', name: 'Voilier faisant route au moteur', hull: 'sail', night: false,
-    lights: [masthead(0.2, 3.2), ...sides(0.8, 0.9), stern(0.9)], shapes: ['cone-down'],
-    intro: 'Un voilier qui avance au moteur, même voiles hissées, est un navire à moteur. De jour il le signale par **un cône noir pointe en bas**.',
+    lights: [masthead(0.2, 3.2), ...sides(0.8, 0.9), stern(0.9)], shapes: ['cone-down'], shapesForward: true,
+    intro: 'Un voilier qui avance au moteur, même voiles hissées, est un navire à moteur. De jour il le signale par **un cône noir pointe en bas**, à l’avant.',
     statements: [
       ['Un voilier qui avance au moteur montre de jour un cône pointe en bas.', true],
       ['Ce cône a la pointe en haut.', false],

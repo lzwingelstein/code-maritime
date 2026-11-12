@@ -76,7 +76,11 @@ function shape(s: DayShape, cx: number, top: number): Shape {
 const shapes = computed<Shape[]>(() => {
   if (props.mode !== 'day') return []
   const list = vessel.value.shapes ?? []
-  // Hoisted on a halyard just ahead of the mast, top to bottom.
+  // Hoisted on a halyard just ahead of the mast, top to bottom; or forward, on the forestay.
+  if (vessel.value.shapesForward) {
+    const x = CX + dir.value * 0.75 * HALF
+    return list.map((s, i) => shape(s, x, y(2.6) + i * 21))
+  }
   const x = mastX.value + 14 * dir.value
   return list.map((s, i) => shape(s, x, y(mastTop.value) + 4 + i * 21))
 })
@@ -95,6 +99,7 @@ const label = computed(() => (props.mode === 'day' ? 'Navire de jour avec ses ma
     <rect class="sea" x="0" :y="WATER" width="300" :height="160 - WATER" />
     <g v-if="showHull" class="hull">
       <line :x1="mastX" :y1="y(0.8)" :x2="mastX" :y2="y(mastTop)" stroke-width="2.5" />
+      <line v-if="mode === 'day' && vessel.shapesForward && side" :x1="mastX" :y1="y(mastTop - 0.6)" :x2="CX + dir * 1.02 * HALF" :y2="y(1)" stroke-width="1.2" />
       <polygon v-if="sail" :points="sail" class="sail" />
       <rect v-if="cabin" :x="cabin.x" :y="cabin.y" :width="cabin.w" :height="cabin.h" rx="2" />
       <polygon :points="hull" />
