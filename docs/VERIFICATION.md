@@ -26,7 +26,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 | 5 | Feux et marques des navires | Unité 2 (#2) |
 | 6 | Navigation et sécurité (plaisance / professionnels, catégories CE, personnes embarquées, zones interdites, vitesse, plongeurs, conchyliculture, visibilité restreinte, matériel côtier, papiers du bord) | #5, #6 |
 | 7 | Réglementation du titre de conduite | #6 |
-| 8 | Service mobile maritime, SMDSM, VHF (voies, alphabet phonétique, anglais de base, MMSI, ASN, détresse, sauvetage) | #7 |
+| 8 | Service mobile maritime, SMDSM, VHF (voies, alphabet phonétique, anglais de base, MMSI, ASN, détresse, sauvetage) | Unité 8 |
 | 9 | Ski nautique et engins tractés, responsabilité du chef de bord, réactions en cas de danger grave ou de détresse | #6 |
 | 10 | Autonomie en carburant | #6 |
 | 11 | Environnement : rejets, équipements sanitaires, peintures antisalissures | #9 |
@@ -113,6 +113,18 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Pavillon Alpha = plongeurs ; ralentir, rester à distance (100 m enseigné couramment) | Préfecture de la Gironde ; ENTENTE | ⚠️ la distance dépend des arrêtés préfectoraux |
 | Écluses : rouge interdit, rouge + vert en préparation, vert autorisé ; dans le sas amarré, défenses, moteur arrêté | RGPNI (A. 4241-53-30 et 31) | ✅ (règles fluviales) |
 | Zones de conchyliculture | — | ❌ non couvert |
+
+## Unité 8 · VHF et sauvetage
+
+| Affirmation de l'appli | Source | Statut |
+|------------------------|--------|--------|
+| Canal 16 : appel, détresse, urgence, sécurité ; ne pas l'encombrer | CROSS Gris-Nez ; ANFR / ministère de la Mer | ✅ |
+| Canaux 6, 8, 72, 77 navire à navire ; 9 capitaineries | CROSS Gris-Nez ; ANFR (6-8-72-77) ; usage courant (9) | ✅ |
+| Permis plaisance = toute VHF dans les eaux françaises ; portable sans ASN ≤ 6 W sans qualification ; CRR hors eaux françaises | ANFR / ministère de la Mer (2021) | ✅ |
+| ASN canal 70, MMSI 9 chiffres (MID France 226-228), confirmation en phonie sur le 16 | Formation CRR ; ANFR | ✅ |
+| CROSS, VHF 16 prioritaire en mer, 196, SNSM | Ministère de la Mer | ✅ |
+| MAYDAY / PAN PAN / SÉCURITÉ, ordre de priorité, structure du message | Fiches CROSS et formation CRR | ✅ |
+| Alphabet phonétique international, mots d'anglais de base | Standard international | ✅ |
 
 ## Unité 2 · Feux et marques des navires — points vérifiés (RIPAM)
 
