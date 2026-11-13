@@ -2,7 +2,7 @@
 /** A sound signal: played on show and on demand, and drawn as bars (short • / long ▬ / bell 🔔) for those who can't hear it. */
 import type { HornNote } from '~/courses/types'
 
-const props = defineProps<{ pattern: HornNote[], caption?: string }>()
+const props = withDefaults(defineProps<{ pattern: HornNote[], caption?: string, autoplay?: boolean }>(), { caption: undefined, autoplay: true })
 const playing = ref(false)
 let timer: ReturnType<typeof setTimeout> | undefined
 
@@ -16,7 +16,7 @@ function play() {
 const LABEL: Record<HornNote, string> = { short: 'bref', long: 'prolongé', bell: 'cloche' }
 const spoken = computed(() => props.pattern.map(n => LABEL[n]).join(', '))
 
-onMounted(play)
+onMounted(() => { if (props.autoplay) play() })
 onBeforeUnmount(() => clearTimeout(timer))
 </script>
 

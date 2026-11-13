@@ -210,6 +210,12 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <div class="big" aria-hidden="true">{{ tip.emoji }}</div>
           <h2>{{ tip.title }}</h2>
           <p><RichText :text="tip.text" /></p>
+          <ul v-if="tip.rows" class="tiprows">
+            <li v-for="(r, i) in tip.rows" :key="i">
+              <div class="tippic"><CardVisual :visual="r.visual" /></div>
+              <span><RichText :text="r.label" /></span>
+            </li>
+          </ul>
         </div>
 
         <!-- New card -->
@@ -219,7 +225,9 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <div class="intro-visual">
             <CardVisual :visual="card.visual" />
           </div>
-          <p><RichText :text="card.intro" /></p>
+          <ul class="points">
+            <li v-for="(line, i) in sentences(card.intro)" :key="i"><RichText :text="line" /></li>
+          </ul>
           <p v-if="card.note" class="lightinfo">{{ card.note }}</p>
         </div>
 
@@ -309,6 +317,20 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .card h2 { margin: 10px 0 6px; font-size: 23px; font-weight: 900; }
 .card p { margin: 8px 0 0; font-size: 16px; font-weight: 600; line-height: 1.45; }
 .card.tip { background: var(--tip-soft); border-color: var(--tip-line); }
+.tiprows { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+.tiprows li { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; border-radius: 14px; background: var(--surface); font-size: 14px; line-height: 1.3; }
+.tippic { display: flex; align-items: center; justify-content: center; width: 100%; height: 110px; overflow: hidden; }
+.tippic :deep(svg) { max-height: 110px; width: auto; max-width: 100%; }
+/* Top-down scenes need the full width to stay readable. */
+.tiprows li:has(.encounter) { grid-column: 1 / -1; }
+.tippic:has(.encounter) { height: 230px; }
+.tippic :deep(svg.encounter) { max-height: 230px; }
+.tippic :deep(.horn) { padding: 8px 4px; }
+.tippic :deep(.horn .legend), .tippic :deep(.horn .replay) { display: none; }
+.points { margin: 12px 0 0; padding: 0; list-style: none; text-align: left; }
+.points li { position: relative; padding: 6px 0 6px 22px; font-size: 16px; font-weight: 600; line-height: 1.4; border-top: 1px solid var(--line); }
+.points li:first-child { border-top: 0; }
+.points li::before { content: "•"; position: absolute; left: 6px; color: var(--primary); font-weight: 900; }
 .card .big { font-size: 44px; }
 .new { display: inline-block; padding: 2px 10px; border-radius: 8px; background: var(--accent); color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
 .intro-visual { display: flex; justify-content: center; margin: 8px 0 0; }

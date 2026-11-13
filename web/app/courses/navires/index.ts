@@ -1,8 +1,9 @@
-import type { Course, Lesson } from '../types'
+import type { Course, Lesson, StackColour, Visual } from '../types'
 import { day, exerciseGenerator, night } from './exercises'
 import { VESSEL_IDS, VESSELS, type VesselId } from './vessels'
 
 const icon = (char: string) => ({ type: 'emoji' as const, char })
+const stack = (...colours: StackColour[]): Visual => ({ type: 'stack', colours })
 
 export const LESSONS: Lesson[] = [
   {
@@ -10,7 +11,13 @@ export const LESSONS: Lesson[] = [
     plan: { cards: ['power', 'power50'], count: 8, kinds: ['aspect', 'aspect', 'identify', 'truefalse'], tip: true },
     tip: {
       emoji: '🔦', title: 'Chaque feu a son secteur',
-      text: 'Le **feu de tête de mât** (blanc) éclaire vers l’avant. Les **feux de côté** : **rouge à bâbord**, **vert à tribord**. Le **feu de poupe** (blanc) éclaire vers l’arrière. Les feux que tu vois disent donc **sous quel angle** tu vois le navire.',
+      text: 'Chaque feu n’éclaire que d’un côté : ce que tu vois dit **sous quel angle** tu vois le navire.',
+        rows: [
+          { visual: night('power', 'ahead'), label: '**De face** : blanc, rouge et vert' },
+          { visual: night('power', 'starboard'), label: '**Par tribord** : blanc et vert' },
+          { visual: night('power', 'port'), label: '**Par bâbord** : blanc et rouge' },
+          { visual: night('power', 'astern'), label: '**Par l’arrière** : un seul blanc (poupe)' },
+        ],
     },
   },
   {
@@ -18,7 +25,11 @@ export const LESSONS: Lesson[] = [
     plan: { cards: ['power', 'sail'], count: 8, kinds: ['aspect', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '⛵', title: 'Pas de blanc en haut',
-      text: 'Un voilier sous voiles n’a **pas de feu de tête de mât**. Rouge et vert sans blanc au-dessus : c’est un voilier.',
+      text: 'Le voilier n’a **pas de feu blanc en haut**.',
+        rows: [
+          { visual: night('power', 'ahead'), label: '**Navire à moteur** : blanc au-dessus' },
+          { visual: night('sail', 'ahead'), label: '**Voilier** : rouge et vert seuls' },
+        ],
     },
   },
   {
@@ -26,7 +37,12 @@ export const LESSONS: Lesson[] = [
     plan: { cards: ['trawler', 'fishing', 'pilot'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🧠', title: 'Lis de haut en bas',
-      text: '**Vert sur blanc** : chalutier en pêche. **Rouge sur blanc** : autre pêcheur. **Blanc sur rouge** : pilote en service. Ces feux sont visibles **sur tout l’horizon**.',
+      text: 'Feux visibles **sur tout l’horizon**, lus **de haut en bas** :',
+        rows: [
+          { visual: stack('green', 'white'), label: '**Vert sur blanc** : chalutier' },
+          { visual: stack('red', 'white'), label: '**Rouge sur blanc** : autre pêcheur' },
+          { visual: stack('white', 'red'), label: '**Blanc sur rouge** : pilote' },
+        ],
     },
   },
   {
@@ -34,7 +50,13 @@ export const LESSONS: Lesson[] = [
     plan: { cards: ['anchor', 'nuc', 'ram', 'cbd'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🚨', title: 'Compte les rouges',
-      text: '**Un blanc seul** : au mouillage. **Deux rouges** : non maître de sa manœuvre. **Rouge, blanc, rouge** : capacité de manœuvre restreinte. **Trois rouges** : handicapé par son tirant d’eau.',
+      text: 'Feux superposés, visibles sur tout l’horizon :',
+        rows: [
+          { visual: stack('white'), label: '**Un blanc** : au mouillage' },
+          { visual: stack('red', 'red'), label: '**Deux rouges** : non maître de sa manœuvre' },
+          { visual: stack('red', 'white', 'red'), label: '**Rouge, blanc, rouge** : capacité restreinte' },
+          { visual: stack('red', 'red', 'red'), label: '**Trois rouges** : tirant d’eau' },
+        ],
     },
   },
   {
@@ -42,7 +64,15 @@ export const LESSONS: Lesson[] = [
     plan: { cards: ['anchor', 'trawler', 'nuc', 'ram', 'cbd', 'motorsail'], count: 10, kinds: ['dayshape', 'dayfind'], tip: true },
     tip: {
       emoji: '☀️', title: 'Les mêmes idées, en formes noires',
-      text: 'Mouillage : **une boule**. Non maître de sa manœuvre : **deux boules**. Capacité restreinte : **boule, losange, boule**. Tirant d’eau : **cylindre**. Pêche : **deux cônes pointe contre pointe**. Voilier au moteur : **cône pointe en bas**.',
+      text: 'De jour, des formes noires disent la même chose :',
+        rows: [
+          { visual: day('anchor'), label: '**Une boule** : mouillage' },
+          { visual: day('nuc'), label: '**Deux boules** : non maître' },
+          { visual: day('ram'), label: '**Boule, bicône, boule** : capacité restreinte' },
+          { visual: day('cbd'), label: '**Cylindre** : tirant d’eau' },
+          { visual: day('trawler'), label: '**Deux cônes pointe à pointe** : pêche' },
+          { visual: day('motorsail'), label: '**Cône pointe en bas** : voilier au moteur' },
+        ],
     },
   },
   {

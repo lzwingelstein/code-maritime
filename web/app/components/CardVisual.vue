@@ -16,7 +16,8 @@ defineProps<{ visual: Visual }>()
     :silhouette="visual.silhouette"
   />
   <EncounterScene v-else-if="visual.type === 'encounter'" v-bind="visual" />
-  <HornSignal v-else-if="visual.type === 'horn'" :pattern="visual.pattern" :caption="visual.caption" />
+  <HornSignal v-else-if="visual.type === 'horn'" :pattern="visual.pattern" :caption="visual.caption" :autoplay="visual.autoplay" />
+  <LightStack v-else-if="visual.type === 'stack'" :colours="visual.colours" />
   <PortSignal v-else-if="visual.type === 'port'" :lights="visual.lights" :flashing="visual.flashing" :exemption="visual.exemption" />
   <span v-else class="emoji" aria-hidden="true">{{ visual.char }}</span>
 </template>

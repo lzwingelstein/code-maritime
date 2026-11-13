@@ -7,6 +7,7 @@ import { quizCourse } from '../quiz'
 import type { HornNote, PortLight, Visual } from '../types'
 
 const horn = (caption: string | undefined, ...pattern: HornNote[]): Visual => ({ type: 'horn', pattern, caption })
+const quiet = (...pattern: HornNote[]): Visual => ({ type: 'horn', pattern, autoplay: false })
 const port = (lights: PortLight[], extra: { flashing?: boolean, exemption?: boolean } = {}): Visual => ({ type: 'port', lights, ...extra })
 const S = 'short' as const
 const L = 'long' as const
@@ -199,7 +200,13 @@ export const signaux = quizCourse({
     {
       id: 'sons-manoeuvre', title: 'Signaux de manœuvre', icon: { type: 'emoji', char: '📯' },
       cards: ['sound-starboard', 'sound-port', 'sound-astern', 'sound-doubt'], count: 10,
-      tip: { emoji: '📯', title: 'Compte les sons brefs', text: '**1 bref** : tribord. **2 brefs** : bâbord. **3 brefs** : je bats en arrière. **5 brefs ou plus** : je doute de vos intentions.' },
+      tip: { emoji: '📯', title: 'Compte les sons brefs', text: '● = son bref (1 s environ)',
+        rows: [
+          { visual: quiet(S), label: '**1 bref** : je viens sur tribord' },
+          { visual: quiet(S, S), label: '**2 brefs** : je viens sur bâbord' },
+          { visual: quiet(S, S, S), label: '**3 brefs** : je bats en arrière' },
+          { visual: quiet(S, S, S, S, S), label: '**5 brefs ou plus** : je doute' },
+        ] },
     },
     {
       id: 'sons-chenal', title: 'Coudes et dépassements', icon: { type: 'emoji', char: '↪️' }, cards: ['sound-bend', 'sound-overtake'], count: 6,
@@ -207,7 +214,13 @@ export const signaux = quizCourse({
     {
       id: 'brume', title: 'Signaux de brume', icon: { type: 'emoji', char: '🌫️' },
       cards: ['fog-power', 'fog-stopped', 'fog-restricted', 'fog-anchor'], count: 10,
-      tip: { emoji: '🌫️', title: 'Toutes les 2 minutes', text: 'Moteur qui avance : **1 prolongé**. Moteur stoppé : **2 prolongés**. Voilier, pêcheur, navire gêné : **1 prolongé + 2 brefs**. Au mouillage : **cloche chaque minute**.' },
+      tip: { emoji: '🌫️', title: 'Toutes les 2 minutes', text: '▬ = son prolongé (4 à 6 s)',
+        rows: [
+          { visual: quiet(L), label: '**Moteur qui avance**' },
+          { visual: quiet(L, L), label: '**Moteur stoppé**' },
+          { visual: quiet(L, S, S), label: '**Voilier, pêcheur, navire gêné**' },
+          { visual: quiet('bell'), label: '**Mouillage** : cloche chaque minute' },
+        ] },
     },
     {
       id: 'detresse', title: 'Signaux de détresse', icon: { type: 'emoji', char: '🆘' }, cards: ['distress-visual', 'distress-sound-radio'], count: 8,
@@ -215,7 +228,14 @@ export const signaux = quizCourse({
     {
       id: 'port-meteo', title: 'Entrée de port et vent fort', icon: { type: 'emoji', char: '🚦' },
       cards: ['port-emergency', 'port-closed', 'port-green', 'port-orders', 'wind-warning'], count: 10,
-      tip: { emoji: '🚦', title: 'Rouge : on attend, vert : on passe', text: '**Rouges à éclats** : danger grave. **Rouges** : interdit. **Verts** : sens unique. **Vert, vert, blanc** : double sens. **Vert, blanc, vert** : sur instruction. **Feu jaune** à gauche : exception pour ceux qui naviguent hors du chenal.' },
+      tip: { emoji: '🚦', title: 'Rouge : on attend, vert : on passe', text: 'Un **feu jaune** à gauche : exception pour ceux qui naviguent hors du chenal.',
+        rows: [
+          { visual: port(['red', 'red', 'red'], { flashing: true }), label: '**À éclats** : danger grave' },
+          { visual: port(['red', 'red', 'red']), label: '**Rouges** : interdit' },
+          { visual: port(['green', 'green', 'green']), label: '**Verts** : sens unique' },
+          { visual: port(['green', 'green', 'white']), label: '**Vert, vert, blanc** : double sens' },
+          { visual: port(['green', 'white', 'green']), label: '**Vert, blanc, vert** : sur instruction' },
+        ] },
     },
     {
       id: 'revision-signaux', title: 'Révision', icon: { type: 'emoji', char: '🧭' }, count: 12, review: true,

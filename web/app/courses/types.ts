@@ -32,6 +32,8 @@ export type Visual =
     /** A sound signal, played and drawn (bars) so it can also be read. */
     type: 'horn'
     pattern: HornNote[]
+    /** Play on show (default). Off in tips, where several signals sit side by side. */
+    autoplay?: boolean
     /** Text under the bars, e.g. « toutes les 2 minutes ». */
     caption?: string
   }
@@ -43,6 +45,13 @@ export type Visual =
     exemption?: boolean
   }
 
+  | {
+    /** All-round lights in a vertical line, top to bottom (working lights read from top to bottom). */
+    type: 'stack'
+    colours: StackColour[]
+  }
+
+export type StackColour = 'white' | 'red' | 'green'
 export type EncounterVessel = 'power' | 'sail' | 'fishing' | 'nuc' | 'big'
 export type HornNote = 'short' | 'long' | 'bell'
 export type PortLight = 'red' | 'green' | 'white'
@@ -73,8 +82,10 @@ export interface CourseExercise extends BaseExercise {
 export interface Tip {
   emoji: string
   title: string
-  /** **bold** is rendered. */
+  /** **bold** is rendered. Keep it short when rows say the rest. */
   text: string
+  /** Picture grid: each thing to remember, drawn, with a short caption. */
+  rows?: { visual: Visual, label: string }[]
 }
 
 export interface Lesson {

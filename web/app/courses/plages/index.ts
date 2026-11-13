@@ -124,11 +124,20 @@ export const plages = quizCourse({
     {
       id: 'plages', title: 'Plages et bande des 300 m', icon: mark('beach-limit'),
       cards: ['beach-limit', 'swim-zone', 'beach-port', 'beach-starboard'], count: 10,
-      tip: { emoji: '🏖️', title: 'Jaune à la plage', text: 'Près des plages, tout est **jaune** : **sphères** pour la limite des 300 m (5 nœuds) et les zones de baignade, **cylindre** à bâbord et **cône** à tribord pour les chenaux traversiers, en venant du large.' },
+      tip: { emoji: '🏖️', title: 'Jaune à la plage', text: 'Près des plages, tout est **jaune**. En venant du large :',
+        rows: [
+          { visual: mark('beach-limit'), label: '**Sphère** : limite des 300 m (5 nœuds), baignade' },
+          { visual: mark('beach-port'), label: '**Cylindre** : bâbord du chenal' },
+          { visual: mark('beach-starboard'), label: '**Cône** : tribord du chenal' },
+        ] },
     },
     {
       id: 'region-b', title: 'Région B', icon: mark('port-b'), cards: ['port-b', 'starboard-b'], count: 8,
-      tip: { emoji: '🌎', title: 'Les couleurs s’inversent, pas les formes', text: 'En région B (Amériques, Antilles, Guyane…), on rentre au port avec le **vert à bâbord** et le **rouge à tribord**. Le **cylindre** reste à bâbord, le **cône** à tribord.' },
+      tip: { emoji: '🌎', title: 'Les couleurs s’inversent, pas les formes', text: 'En région B (Amériques, Antilles, Guyane…), en rentrant au port :',
+        rows: [
+          { visual: mark('port-b'), label: '**À gauche** : vert, cylindre' },
+          { visual: mark('starboard-b'), label: '**À droite** : rouge, cône' },
+        ] },
     },
     {
       id: 'epaves', title: 'Épaves et dangers nouveaux', icon: mark('wreck'), cards: ['wreck', 'new-danger'], count: 6,

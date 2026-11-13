@@ -163,12 +163,20 @@ export const barre = quizCourse({
     {
       id: 'croisements', title: 'Routes qui se croisent', icon: { type: 'emoji', char: '✖️' },
       cards: ['crossing-starboard', 'crossing-port', 'give-way-manner'], count: 8,
-      tip: { emoji: '🚗', title: 'Comme la priorité à droite', text: 'Entre deux navires à moteur, **celui qui voit l’autre à sa droite (tribord) s’écarte**, comme la priorité à droite sur la route. L’autre **garde cap et vitesse**.' },
+      tip: { emoji: '🚗', title: 'Comme la priorité à droite', text: 'Entre deux navires à moteur :',
+        rows: [
+          { visual: scene('power', 'power', 60, 270), label: 'Il vient de **ma droite** : **je m’écarte**' },
+          { visual: scene('power', 'power', 300, 90), label: 'Il vient de **ma gauche** : je **garde ma route**' },
+        ] },
     },
     {
       id: 'face-rattrapage', title: 'Face à face et rattrapage', icon: { type: 'emoji', char: '⏩' },
       cards: ['head-on', 'overtaking'], count: 8,
-      tip: { emoji: '↗️', title: 'Tous sur tribord', text: 'Face à face : **chacun vient sur tribord**. Rattrapage : **celui qui rattrape s’écarte**, même un voilier.' },
+      tip: { emoji: '↗️', title: 'Tous sur tribord', text: 'Deux règles simples :',
+        rows: [
+          { visual: scene('power', 'power', 0, 180), label: '**Face à face** : chacun vient sur tribord' },
+          { visual: scene('power', 'power', 0, 0), label: '**Je le rattrape** : je m’écarte, même à la voile' },
+        ] },
     },
     {
       id: 'hierarchie', title: 'Qui est prioritaire ?', icon: { type: 'emoji', char: '🎣' },
@@ -178,7 +186,11 @@ export const barre = quizCourse({
     {
       id: 'voiliers', title: 'Entre voiliers', icon: { type: 'emoji', char: '⛵' },
       cards: ['sail-tack', 'sail-windward'], count: 8,
-      tip: { emoji: '🌬️', title: 'Bâbord s’écarte, puis le plus au vent', text: 'Vents de bords différents : celui qui reçoit le vent de **bâbord** s’écarte. Même bord : celui qui est **au vent** s’écarte.' },
+      tip: { emoji: '🌬️', title: 'Bâbord s’écarte, puis le plus au vent', text: 'Entre deux voiliers :',
+        rows: [
+          { visual: scene('sail', 'sail', 50, 240, { wind: 300 }), label: 'Vent reçu de **bâbord** : je m’écarte' },
+          { visual: scene('sail', 'sail', 70, 340, { wind: 270 }), label: 'Même bord, je suis **au vent** : je m’écarte' },
+        ] },
     },
     {
       id: 'chenaux', title: 'Chenaux et rails', icon: { type: 'emoji', char: '🛳️' }, cards: ['narrow-channel', 'tss'], count: 6,
