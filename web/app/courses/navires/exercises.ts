@@ -85,7 +85,7 @@ export function exerciseGenerator(lesson: Lesson): Generator {
           choices: options(id, dayPool(id), rng).map(x => ({ id: x, name: VESSELS[x].name, visual: day(x) })),
         }
       case 'truefalse':
-        return trueFalse(id, v.statements, rng, statement, v.night ? night(id, 'ahead') : day(id), plain(v.intro))
+        return trueFalse(id, v.statements, rng, statement, plain(v.intro))
       default:
         return null
     }

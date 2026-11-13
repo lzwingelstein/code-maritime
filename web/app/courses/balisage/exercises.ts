@@ -75,7 +75,7 @@ export function exerciseGenerator(lesson: BalisageLesson): Generator {
           prompt: `Quelle marque signifie : « ${mark.meaning} » ?`, visual: null,
         }
       case 'truefalse':
-        return trueFalse(id, mark.statements, rng, statement, markVisual(id), plain(mark.intro))
+        return trueFalse(id, mark.statements, rng, statement, plain(mark.intro))
       default:
         return null
     }

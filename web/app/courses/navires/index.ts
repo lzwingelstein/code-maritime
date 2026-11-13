@@ -56,9 +56,10 @@ export const navires: Course = {
   unit: 'Permis côtier',
   title: 'Feux et marques des navires',
   lessons: LESSONS,
+  // Intro seen from ahead (both sidelights, as the text says); over 50 m from the side, to show the two masthead lights.
   card: (id) => {
     const v = VESSELS[id as VesselId]
-    return { name: v.name, intro: v.intro, badge: 'Nouveau navire', visual: v.night ? night(v.id, 'starboard', true) : day(v.id) }
+    return { name: v.name, intro: v.intro, badge: 'Nouveau navire', visual: v.night ? night(v.id, v.id === 'power50' ? 'starboard' : 'ahead', true) : day(v.id) }
   },
   generator: exerciseGenerator,
 }
