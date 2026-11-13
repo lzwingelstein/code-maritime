@@ -66,7 +66,7 @@ export function quizCourse(def: {
   const generate = (cardId: string, kind: string, rng: Random, index?: number): CourseExercise | null => {
     const card = byId.get(cardId)
     if (!card) return null
-    if (kind === 'truefalse') return trueFalse(card.id, card.statements, rng, index, card.visual, plain(card.intro))
+    if (kind === 'truefalse') return trueFalse(card.id, card.statements, rng, index, plain(card.intro))
     if (kind !== 'qcm') return null
     const i = index ?? Math.floor(rng() * card.questions.length)
     const q = card.questions[i]!

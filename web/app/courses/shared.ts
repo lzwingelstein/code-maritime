@@ -1,6 +1,6 @@
 /** Helpers shared by course exercise generators. */
 import { shuffle, type Random } from '~/engine/random'
-import type { CourseExercise, Visual } from './types'
+import type { CourseExercise } from './types'
 
 /** The answer and up to n-1 other ids from the pool, shuffled. */
 export function options<T extends string>(answer: T, pool: readonly T[], rng: Random, n = 4): T[] {
@@ -14,20 +14,22 @@ export function familyPool<T extends string>(all: readonly T[], family: (id: T) 
   return same.length >= 4 ? same : [...same, ...all.filter(x => !same.includes(x))]
 }
 
-/** A true/false question on one of the card's statements (kept by index when the question comes back). */
+/**
+ * A true/false question on one of the card's statements (kept by index when the question comes back).
+ * No picture: the statement stands on its own, and a picture could mislead or give the answer away.
+ */
 export function trueFalse(
   cardId: string,
   statements: [string, boolean][],
   rng: Random,
   statement: number | undefined,
-  visual: Visual | null,
   explanation: string,
 ): CourseExercise {
   const index = statement ?? Math.floor(rng() * statements.length)
   const [text, truth] = statements[index]!
   return {
     cardId, kind: 'truefalse', heading: 'Vrai ou faux ?', prompt: text, answer: String(truth), layout: 'pair',
-    statement: index, visual, explanation,
+    statement: index, visual: null, explanation,
     choices: [{ id: 'true', name: 'Vrai' }, { id: 'false', name: 'Faux' }],
   }
 }
