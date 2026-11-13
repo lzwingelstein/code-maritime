@@ -3,6 +3,7 @@ import type { BalisageLesson } from './exercises'
 import { MARK_IDS, type MarkId } from './marks'
 
 const icon = (markId: MarkId): Visual => ({ type: 'mark', markId, topOnly: true })
+const full = (markId: MarkId): Visual => ({ type: 'mark', markId, topOnly: false })
 
 export const COURSE = {
   id: 'balisage',
@@ -16,7 +17,11 @@ export const LESSONS: BalisageLesson[] = [
     plan: { cards: ['port', 'starboard'], count: 8, kinds: ['identify', 'side', 'truefalse', 'find', 'light'], tip: true },
     tip: {
       emoji: '⚓', title: 'Rouge à gauche en rentrant',
-      text: 'En Europe (région A), quand on rentre au port : **rouge à bâbord** (gauche), **vert à tribord** (droite). Astuce : « BATTERIE » se lit de gauche à droite, BA(bord) puis T(ribord).',
+      text: 'En Europe (région A), **en rentrant au port** :',
+        rows: [
+          { visual: full('port'), label: '**À gauche** (bâbord) : rouge, cylindre' },
+          { visual: full('starboard'), label: '**À droite** (tribord) : vert, cône' },
+        ],
     },
   },
   {
@@ -24,7 +29,13 @@ export const LESSONS: BalisageLesson[] = [
     plan: { cards: ['north', 'east', 'south', 'west'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🧭', title: 'Lis les cônes',
-      text: 'Une cardinale se reconnaît d’abord à son **voyant** : deux cônes noirs. Vers le haut ▲▲ : **nord**. Vers le bas ▼▼ : **sud**. Base contre base ▲▼ : **est**. Pointe contre pointe ▼▲ : **ouest**.',
+      text: 'Deux cônes noirs, et ce qu’ils dessinent :',
+        rows: [
+          { visual: icon('north'), label: '**Nord** : pointes en haut' },
+          { visual: icon('south'), label: '**Sud** : pointes en bas' },
+          { visual: icon('east'), label: '**Est** : base contre base' },
+          { visual: icon('west'), label: '**Ouest** : pointe contre pointe' },
+        ],
     },
   },
   {
@@ -32,7 +43,13 @@ export const LESSONS: BalisageLesson[] = [
     plan: { cards: ['north', 'east', 'south', 'west'], count: 10, kinds: ['identify', 'find', 'side', 'side', 'truefalse'], tip: true },
     tip: {
       emoji: '💡', title: 'L’astuce des pointes',
-      text: 'Les pointes des cônes montrent **où est le noir** sur la bouée. Nord ▲▲ : noir en haut. Sud ▼▼ : noir en bas. Est ▲▼ : noir en haut et en bas. Ouest ▼▲ : noir au milieu.',
+      text: 'Les pointes des cônes montrent **où est le noir**. On passe du côté du nom.',
+        rows: [
+          { visual: full('north'), label: '**Nord** : noir en haut' },
+          { visual: full('south'), label: '**Sud** : noir en bas' },
+          { visual: full('east'), label: '**Est** : noir en haut et en bas' },
+          { visual: full('west'), label: '**Ouest** : noir au milieu' },
+        ],
     },
   },
   {
@@ -40,7 +57,13 @@ export const LESSONS: BalisageLesson[] = [
     plan: { cards: ['north', 'east', 'south', 'west'], count: 8, kinds: ['light', 'light', 'truefalse'], tip: true },
     tip: {
       emoji: '🕒', title: 'Pense à une horloge',
-      text: 'Est = **3 h** : 3 scintillements. Sud = **6 h** : 6 scintillements et 1 éclat long. Ouest = **9 h** : 9 scintillements. Nord = **midi** : scintillement continu. Tous les feux cardinaux sont **blancs**.',
+      text: 'Feux **blancs**, comptés comme les heures :',
+        rows: [
+          { visual: icon('north'), label: '**Nord** = midi : scintille sans arrêt' },
+          { visual: icon('east'), label: '**Est** = 3 h : 3 scintillements' },
+          { visual: icon('south'), label: '**Sud** = 6 h : 6 + 1 éclat long' },
+          { visual: icon('west'), label: '**Ouest** = 9 h : 9 scintillements' },
+        ],
     },
   },
   {
