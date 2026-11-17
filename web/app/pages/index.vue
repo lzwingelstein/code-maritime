@@ -41,7 +41,7 @@ function onReset() {
   <div class="shell">
     <header class="top">
       <span class="stat" :aria-label="`Série : ${streak} jours`">🔥 {{ streak }}</span>
-      <span class="stat course">⛵ Permis côtier</span>
+      <NuxtLink to="/stats" class="stat course" aria-label="Statistiques">📊 Mes stats</NuxtLink>
       <span class="stat xp" :aria-label="`${progress.xp} points d’expérience`">⚡ {{ progress.xp }} XP</span>
     </header>
 
@@ -117,7 +117,7 @@ function onReset() {
   padding: 14px 18px; border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .stat { font-size: 17px; }
-.course { color: var(--primary); }
+.course { display: inline-flex; align-items: center; min-height: 44px; color: var(--primary); text-decoration: none; }
 .xp { color: var(--gold-text); }
 .goal { padding: 14px 18px 4px; }
 .lab { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-mute); margin-bottom: 6px; }

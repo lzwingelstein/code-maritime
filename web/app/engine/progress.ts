@@ -12,7 +12,22 @@ export interface Progress {
   mastery: Record<string, CardMastery>
   /** Mock exam attempts, newest first (ten at most). */
   exams?: ExamResult[]
+  /** Answers per card, all time. */
+  cards?: Record<string, AnswerCount>
+  /** Answers and XP per day, for the last HISTORY_DAYS days with activity. */
+  history?: Record<string, DayStats>
 }
+
+export interface AnswerCount {
+  right: number
+  wrong: number
+}
+
+export interface DayStats extends AnswerCount {
+  xp: number
+}
+
+export const HISTORY_DAYS = 60
 
 export interface ExamResult {
   day: string
@@ -53,12 +68,26 @@ export function recordLesson(
   now: number,
 ): Progress {
   const mastery = { ...p.mastery }
-  for (const a of r.answers) mastery[a.cardId] = applyAnswer(mastery[a.cardId], a.correct, now)
-  if (!r.won) return { ...p, mastery }
-
+  const cards = { ...p.cards }
   const today = dayKey(new Date(now))
+  const day: DayStats = { ...(p.history?.[today] ?? { right: 0, wrong: 0, xp: 0 }) }
+  for (const a of r.answers) {
+    mastery[a.cardId] = applyAnswer(mastery[a.cardId], a.correct, now)
+    const c = { ...(cards[a.cardId] ?? { right: 0, wrong: 0 }) }
+    if (a.correct) { c.right++; day.right++ }
+    else { c.wrong++; day.wrong++ }
+    cards[a.cardId] = c
+  }
+  if (r.won) day.xp += r.xp
+  const history = Object.fromEntries(
+    Object.entries({ ...p.history, [today]: day }).sort(([a], [b]) => a.localeCompare(b)).slice(-HISTORY_DAYS),
+  )
+  if (!r.won) return { ...p, mastery, cards, history }
+
   return {
     ...p,
+    cards,
+    history,
     xp: p.xp + r.xp,
     daily: { [today]: todayXp(p, today) + r.xp },
     streak: recordPlay(p.streak, today),
