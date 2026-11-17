@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { COURSES, LESSON_IDS } from '~/courses'
+import { COURSES, findLesson, LESSON_IDS } from '~/courses'
 import { EXAM, EXAM_ID } from '~/courses/exam'
 import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
+import { nextStep } from '~/engine/next'
 import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
 
@@ -23,6 +24,23 @@ const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progre
 
 const seen = computed(() => Object.keys(progress.value.mastery).length)
 const weak = computed(() => weakCards(COURSES, progress.value.mastery, Date.now()).length)
+const next = computed(() => nextStep({ weak: weak.value, seen: seen.value, minCards: PRACTICE.minCards, current: current.value }))
+const nextLesson = computed(() => (current.value >= 0 ? findLesson(LESSON_IDS[current.value]!) : null))
+const points = (n: number) => `${n} point${n > 1 ? 's' : ''} faible${n > 1 ? 's' : ''}`
+const reason = computed(() => {
+  if (next.value.main === 'lesson') {
+    return weak.value
+      ? `Seulement ${points(weak.value)} pour l’instant : tu peux découvrir la suite.`
+      : 'Aucun point faible pour l’instant : tu peux découvrir la suite.'
+  }
+  if (current.value < 0) return `Tu as fini le parcours ! Entraîne-toi sur tout le programme${weak.value ? `, surtout tes ${points(weak.value)}` : ''}.`
+  return `Tu as ${points(weak.value)} : on les consolide avant d’avancer.`
+})
+const link = (k: 'lesson' | 'practice') => `/lecon/${k === 'practice' ? PRACTICE_ID : LESSON_IDS[current.value]}`
+const label = (k: 'lesson' | 'practice') => (k === 'practice'
+  ? (weak.value ? `Retravailler mes ${points(weak.value)}` : `S’entraîner (${PRACTICE.questions} questions)`)
+  : `Continuer : ${nextLesson.value?.lesson.title ?? ''}`)
+const altLabel = (k: 'lesson' | 'practice') => (k === 'practice' ? 'Plutôt m’entraîner' : 'Plutôt avancer dans le parcours')
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
 
@@ -55,14 +73,11 @@ function onReset() {
       </div>
     </section>
 
-    <section class="exam practice" aria-labelledby="practice-title">
-      <h2 id="practice-title">🎯 Entraînement</h2>
-      <template v-if="seen >= PRACTICE.minCards">
-        <p>{{ PRACTICE.questions }} questions qui mélangent tous les thèmes déjà vus, surtout ceux où tu as du mal.</p>
-        <p class="score">{{ weak ? `${weak} point${weak > 1 ? 's' : ''} à retravailler` : 'Rien à retravailler pour l’instant ✓' }}</p>
-        <NuxtLink :to="`/lecon/${PRACTICE_ID}`" class="btn">S’entraîner</NuxtLink>
-      </template>
-      <p v-else>Termine ta première leçon pour débloquer l’entraînement : il mélange tout ce que tu as déjà vu.</p>
+    <section class="exam practice" aria-labelledby="next-title">
+      <h2 id="next-title">{{ next.main === 'practice' ? '🎯 On consolide' : '⛵ On avance' }}</h2>
+      <p>{{ reason }}</p>
+      <NuxtLink :to="link(next.main)" class="btn">{{ label(next.main) }}</NuxtLink>
+      <NuxtLink v-if="next.other" :to="link(next.other)" class="alt">{{ altLabel(next.other) }}</NuxtLink>
     </section>
 
     <template v-for="u in units" :key="u.course.id">
@@ -160,6 +175,7 @@ function onReset() {
 .exam p { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-mute); line-height: 1.4; }
 .exam .score { color: var(--ink); font-weight: 800; }
 .exam.practice { margin: 14px 16px 0; }
+.exam .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .exam .btn { display: block; text-decoration: none; line-height: 28px; }
 .foot { padding: 0 0 30px; text-align: center; }
 .foot button { min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }

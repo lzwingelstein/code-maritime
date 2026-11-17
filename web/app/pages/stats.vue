@@ -95,6 +95,11 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
           </li>
         </ul>
         <p class="legend"><span class="sw known" /> sues <span class="sw learning" /> en cours <span class="sw weak" /> à retravailler</p>
+        <p class="explain">
+          Chaque bonne réponse fait monter une fiche d’un niveau et la fait revenir plus tard (1 jour, 3 jours, 1 semaine, 3 semaines).
+          Chaque erreur la fait redescendre d’un niveau et la fait revenir tout de suite.
+          Une fiche est <b>à retravailler</b> quand elle est à un niveau bas et qu’il est temps de la revoir ; elle est <b>sue</b> à partir du niveau 3.
+        </p>
       </section>
 
       <!-- Most missed -->
@@ -166,6 +171,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .uhead small { color: var(--ink-mute); font-size: 12px; text-transform: uppercase; }
 .mbar { display: flex; height: 12px; margin: 6px 0 4px; border-radius: 99px; overflow: hidden; background: var(--line); }
 .mbar .known { background: var(--ok-fill); } .mbar .learning { background: var(--gold); } .mbar .weak { background: var(--ko-fill); }
+.explain { margin: 10px 0 0; font-size: 14px; line-height: 1.45; color: var(--ink-mute); }
 .umeta { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink-mute); }
 
 .missed { margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 8px; }
