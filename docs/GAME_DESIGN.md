@@ -49,6 +49,14 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
   1 jour, 3 jours, 1 semaine puis 3 semaines ; erreur → elle redescend et redevient à revoir. Sert aux révisions.
 - Tout est gardé dans le navigateur (pas de compte dans le prototype).
 
+## Entraînement
+- Série de **15 questions** qui **mélange toutes les unités**, uniquement sur les fiches **déjà vues**.
+- Tirage pondéré par la maîtrise (répétition espacée), **au carré** : les fiches ratées récemment ou à revoir
+  reviennent bien plus souvent que les fiches sues. Jamais deux fois la même fiche d'affilée.
+- 5 cœurs, les erreurs reviennent en fin de série (comme une leçon), XP et série du jour comptés.
+- Ouvert dès 4 fiches vues ; l'accueil affiche le nombre de « points à retravailler »
+  (fiches au niveau 0 ou 1 et à revoir).
+
 ## Examen blanc
 - Au format officiel : **40 questions**, **5 erreurs au plus**, environ **30 minutes** (chrono affiché, pas bloquant).
 - Questions tirées **à parts égales de toutes les unités** (leur leçon de révision), jamais deux fois la même.
