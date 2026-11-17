@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { choiceName, COURSES, findLesson, regenerator } from '~/courses'
 import { buildExam, EXAM, EXAM_ID } from '~/courses/exam'
+import { buildPractice, PRACTICE_ID, practiceGenerator } from '~/courses/practice'
 import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
@@ -11,7 +12,8 @@ import { currentStreak, dayKey } from '~/engine/streak'
 
 const route = useRoute()
 const isExam = String(route.params.id) === EXAM_ID
-const found = isExam ? undefined : findLesson(String(route.params.id))
+const isPractice = String(route.params.id) === PRACTICE_ID
+const found = isExam || isPractice ? undefined : findLesson(String(route.params.id))
 const lesson = found?.lesson
 const course = found?.course
 const { progress, save } = useProgress()
@@ -20,10 +22,13 @@ const sound = useSound()
 const rng = seeded(Date.now())
 const generate = found ? found.course.generator(found.lesson) : null
 // The exam never brings a question back, so it never regenerates one.
-const regenerate = generate ? regenerator(generate, rng) : (e: CourseExercise) => e
+const regenerate = generate
+  ? regenerator(generate, rng)
+  : isPractice ? regenerator(practiceGenerator(COURSES), rng) : (e: CourseExercise) => e
 
 function newSession(): Session<CourseExercise> {
   const now = Date.now()
+  if (isPractice) return reactive(startSession(buildPractice(COURSES, progress.value.mastery, now, rng))) as Session<CourseExercise>
   if (isExam) return reactive(startSession(buildExam(COURSES, rng), { hearts: null, retryWrong: false })) as Session<CourseExercise>
   const steps = lesson && generate
     ? buildLesson(lesson.plan, {
@@ -88,7 +93,7 @@ function finish(won: boolean) {
     return
   }
   const xp = won ? lessonXp(session) : 0
-  save(recordLesson(progress.value, { lessonId: lesson!.id, won, xp, answers: session.answers }, now))
+  save(recordLesson(progress.value, { lessonId: isPractice ? PRACTICE_ID : lesson!.id, won, xp, answers: session.answers }, now))
   result.value = { xp, seconds, accuracy: Math.round(session.firstTry / Math.max(1, session.questions) * 100) }
   if (won) sound.win()
 }
@@ -137,7 +142,12 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 <template>
   <div class="shell">
     <!-- Unknown lesson -->
-    <div v-if="!lesson && !isExam" class="end">
+    <div v-if="isPractice && !s.steps.length" class="end">
+      <p>Termine d’abord quelques leçons : l’entraînement mélange les thèmes que tu as déjà vus.</p>
+      <NuxtLink to="/" class="btn">Retour au parcours</NuxtLink>
+    </div>
+
+    <div v-else-if="!lesson && !isExam && !isPractice" class="end">
       <p>Cette leçon n’existe pas.</p>
       <NuxtLink to="/" class="btn">Retour au parcours</NuxtLink>
     </div>
@@ -167,7 +177,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
       <template v-else-if="s.phase === 'won'">
         <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
         <div class="big" aria-hidden="true">🏆</div>
-        <h1>Leçon terminée !</h1>
+        <h1>{{ isPractice ? 'Entraînement terminé !' : 'Leçon terminée !' }}</h1>
         <div class="tiles">
           <div class="tile gold"><b>XP gagnés</b><span>⚡ {{ result.xp }}</span></div>
           <div class="tile ok"><b>Précision</b><span>🎯 {{ result.accuracy }} %</span></div>
@@ -182,7 +192,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
       <template v-else>
         <div class="big" aria-hidden="true">🌊</div>
         <h1 class="fail">Plus de cœurs…</h1>
-        <p class="sub">Tu as fait 5 erreurs. Les marques ratées reviendront plus souvent : retente la leçon !</p>
+        <p class="sub">Tu as fait 5 erreurs. Ce que tu as raté reviendra plus souvent : réessaie !</p>
         <div class="endbtns">
           <button type="button" class="btn" @click="retry">Réessayer</button>
           <NuxtLink to="/" class="btn ghost">Retour au parcours</NuxtLink>

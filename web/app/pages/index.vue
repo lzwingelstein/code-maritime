@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { COURSES, LESSON_IDS } from '~/courses'
 import { EXAM, EXAM_ID } from '~/courses/exam'
+import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
 import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
 
@@ -20,6 +21,8 @@ const units = computed(() => COURSES.map((course, u) => ({
 })))
 const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
 
+const seen = computed(() => Object.keys(progress.value.mastery).length)
+const weak = computed(() => weakCards(COURSES, progress.value.mastery, Date.now()).length)
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
 
@@ -50,6 +53,16 @@ function onReset() {
       <div class="bar" role="progressbar" :aria-valuenow="Math.min(dayXp, DAILY_GOAL)" :aria-valuemax="DAILY_GOAL">
         <i :style="{ width: Math.min(100, dayXp / DAILY_GOAL * 100) + '%', background: 'var(--gold)' }" />
       </div>
+    </section>
+
+    <section class="exam practice" aria-labelledby="practice-title">
+      <h2 id="practice-title">🎯 Entraînement</h2>
+      <template v-if="seen >= PRACTICE.minCards">
+        <p>{{ PRACTICE.questions }} questions qui mélangent tous les thèmes déjà vus, surtout ceux où tu as du mal.</p>
+        <p class="score">{{ weak ? `${weak} point${weak > 1 ? 's' : ''} à retravailler` : 'Rien à retravailler pour l’instant ✓' }}</p>
+        <NuxtLink :to="`/lecon/${PRACTICE_ID}`" class="btn">S’entraîner</NuxtLink>
+      </template>
+      <p v-else>Termine ta première leçon pour débloquer l’entraînement : il mélange tout ce que tu as déjà vu.</p>
     </section>
 
     <template v-for="u in units" :key="u.course.id">
@@ -146,6 +159,7 @@ function onReset() {
 .exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 900; }
 .exam p { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-mute); line-height: 1.4; }
 .exam .score { color: var(--ink); font-weight: 800; }
+.exam.practice { margin: 14px 16px 0; }
 .exam .btn { display: block; text-decoration: none; line-height: 28px; }
 .foot { padding: 0 0 30px; text-align: center; }
 .foot button { min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }
