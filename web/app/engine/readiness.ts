@@ -36,3 +36,37 @@ export function pace(history: Record<string, { lessons?: number }>, today: strin
   const total = days.reduce((n, [, v]) => n + (v.lessons ?? 0), 0)
   return total / Math.max(minDays, daysBetween(first, today) + 1)
 }
+
+/** When the player plans to sit the exam, as asked on first launch. */
+export interface ExamPlan {
+  choice: 'date' | 'month' | 'unknown'
+  /** Day key (YYYY-MM-DD) when `choice` is 'date'. */
+  day?: string
+}
+
+/** Days kept at the end for reviews only, once the path is done. */
+export const REVIEW_DAYS = 10
+
+const DAY_KEY = /^\d{4}-\d{2}-\d{2}$/
+
+/** The exam day to aim at: the chosen day, a month from today, or null when unknown. */
+export function examTarget(plan: ExamPlan | undefined, today: string): string | null {
+  if (plan?.choice === 'date') return plan.day && DAY_KEY.test(plan.day) ? plan.day : null
+  if (plan?.choice === 'month') {
+    const [y, m, d] = today.split('-').map(Number) as [number, number, number]
+    return dayKey(new Date(y, m, d))
+  }
+  return null
+}
+
+/**
+ * New lessons a day to finish the path before the exam with REVIEW_DAYS left for reviews.
+ * Tight when the exam is too close for that: the lessons left are then spread over the days that remain.
+ */
+export function examPace(r: { lessonsLeft: number, today: string, target: string, reviewDays?: number }) {
+  const daysUntil = daysBetween(r.today, r.target)
+  const reviewDays = r.reviewDays ?? REVIEW_DAYS
+  const tight = daysUntil <= reviewDays
+  const studyDays = Math.max(1, tight ? daysUntil : daysUntil - reviewDays)
+  return { daysUntil, perDay: Math.ceil(r.lessonsLeft / studyDays), tight }
+}

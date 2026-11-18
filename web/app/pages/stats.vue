@@ -21,6 +21,12 @@ const today = dayKey(new Date(now))
 const all = computed(() => totals(progress.value))
 const acc = computed(() => accuracy(progress.value))
 const ready = useReadiness()
+const examLine = computed(() => {
+  const e = ready.value.exam
+  if (!e) return 'pas de date'
+  if (e.approx) return 'dans le mois'
+  return e.daysUntil >= 0 ? `le ${e.dateText} (${e.inText})` : `le ${e.dateText} (passé)`
+})
 const best = computed(() => bestExam(progress.value))
 const lessonsDone = computed(() => COURSES.flatMap(c => c.lessons).filter(l => progress.value.completions[l.id]).length)
 const lessonsTotal = COURSES.reduce((n, c) => n + c.lessons.length, 0)
@@ -73,6 +79,9 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
             <small>Compte ensuite une dizaine de jours de révisions pour bien retenir les dernières fiches.</small>
           </li>
           <li v-else><UiIcon name="check" /> Toutes les leçons sont faites : continue l’entraînement pour ancrer les fiches.</li>
+          <li class="examday">
+            <UiIcon name="clock" /> <b>Examen</b> : {{ examLine }} · <NuxtLink to="/bienvenue?retour=stats" class="edit">Modifier</NuxtLink>
+          </li>
           <li><UiIcon name="cap" /> <b>Le dernier pas</b> : réussir un examen blanc ({{ EXAM.maxErrors }} fautes au plus).<template v-if="best"> Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}</template></li>
         </ul>
       </section>
@@ -212,4 +221,6 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .exams li { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 10px; font-size: 14px; }
 .ebar { height: 10px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .ebar i { display: block; height: 100%; background: var(--primary); }
+/* Inline link with a 44 px touch area that does not push the line apart. */
+.edit { display: inline-block; margin: -12px 0; padding: 12px 4px; color: var(--primary); font-weight: 600; }
 </style>
