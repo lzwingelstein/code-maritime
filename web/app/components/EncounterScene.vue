@@ -105,13 +105,13 @@ class="encounter" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role=
 .channel line { stroke: #6E8597; stroke-width: 2; stroke-dasharray: 6 5; }
 .channel text { font-size: 12px; fill: #2B3440; font-weight: 500; }
 .route { stroke: #4A5059; stroke-width: 2; stroke-dasharray: 5 5; }
-.route.mine { stroke: #1268BD; }
+.route.mine { stroke: #1F5FAE; }
 .boat { fill: #3A4250; }
-.boat.mine { fill: #1268BD; }
+.boat.mine { fill: #1F5FAE; }
 .sail { fill: #FFFFFF; stroke: #4A5059; stroke-width: 1; }
 .net { stroke: #3A4250; stroke-width: 1.5; fill: none; }
 .label { font-size: 13px; font-weight: 600; fill: #2B3440; text-anchor: middle; }
-.label.mine { fill: #0B4F92; }
+.label.mine { fill: #174A88; }
 .wind line { stroke: #2B3440; stroke-width: 3; }
 .wind text { font-size: 12px; font-weight: 600; fill: #2B3440; text-anchor: middle; }
 .arrow { fill: #2B3440; }
