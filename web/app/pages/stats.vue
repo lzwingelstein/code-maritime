@@ -2,7 +2,7 @@
 import { COURSES } from '~/courses'
 import { PRACTICE_ID } from '~/courses/practice'
 import { currentStreak, dayKey } from '~/engine/streak'
-import { accuracy, activity, masteryBreakdown, mostMissed, totals } from '~/engine/stats'
+import { accuracy, activity, fragileUnits, mostMissed, totals } from '~/engine/stats'
 
 const { progress } = useProgress()
 const now = Date.now()
@@ -19,18 +19,13 @@ const peak = computed(() => Math.max(1, ...days.value.map(d => d.right + d.wrong
 const WEEKDAY = ['D', 'L', 'M', 'M', 'J', 'V', 'S']
 const weekday = (day: string) => { const [y, m, d] = day.split('-').map(Number) as [number, number, number]; return WEEKDAY[new Date(y, m - 1, d).getDay()] }
 
-const units = computed(() => COURSES.map((course, i) => {
-  const cards = [...new Set(course.lessons.flatMap(l => l.plan.cards))]
-  return {
-    id: course.id,
-    label: `Unité ${i + 1}`,
-    title: course.title,
-    done: course.lessons.filter(l => progress.value.completions[l.id]).length,
-    lessons: course.lessons.length,
-    accuracy: accuracy(progress.value, cards),
-    mastery: masteryBreakdown(progress.value.mastery, cards, now),
-  }
-}))
+const fragile = computed(() => {
+  const list = COURSES.map(c => ({ id: c.id, cards: [...new Set(c.lessons.flatMap(l => l.plan.cards))] }))
+  return fragileUnits(progress.value, list, now).map((u) => {
+    const i = COURSES.findIndex(c => c.id === u.id)
+    return { ...u, label: `Unité ${i + 1}`, title: COURSES[i]!.title }
+  })
+})
 
 /** Card name and unit, for the most missed list. */
 function cardInfo(id: string) {
@@ -75,30 +70,26 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
         <p class="legend"><span class="sw right" /> justes <span class="sw wrong" /> fausses</p>
       </section>
 
-      <!-- By unit -->
+      <!-- Fragile units -->
       <section class="card">
-        <h2>Par unité</h2>
-        <ul class="units">
-          <li v-for="u in units" :key="u.id">
+        <h2>Tes thèmes les plus fragiles</h2>
+        <p v-if="!fragile.length" class="empty">Réponds à quelques questions pour voir où tu perds des points.</p>
+        <ol v-else class="units">
+          <li v-for="u in fragile" :key="u.id">
             <div class="uhead">
               <span><small>{{ u.label }}</small> {{ u.title }}</span>
-              <b>{{ u.accuracy === null ? '–' : `${u.accuracy} %` }}</b>
-            </div>
-            <div class="mbar" role="img" :aria-label="`${u.mastery.known} sues, ${u.mastery.learning} en cours, ${u.mastery.weak} à retravailler, ${u.mastery.unseen} pas vues`">
-              <i class="known" :style="{ width: pct(u.mastery.known, u.mastery.total) + '%' }" />
-              <i class="learning" :style="{ width: pct(u.mastery.learning, u.mastery.total) + '%' }" />
-              <i class="weak" :style="{ width: pct(u.mastery.weak, u.mastery.total) + '%' }" />
+              <b>{{ u.accuracy }} %</b>
             </div>
             <p class="umeta">
-              {{ u.done }}/{{ u.lessons }} leçons · ✓ {{ u.mastery.known }} sues · {{ u.mastery.learning }} en cours<template v-if="u.mastery.weak"> · ⚠️ {{ u.mastery.weak }} à retravailler</template>
+              Bonnes réponses sur {{ u.answers }} questions<template v-if="u.weak"> · ⚠️ {{ u.weak }} fiche{{ u.weak > 1 ? 's' : '' }} à retravailler</template>
             </p>
+            <NuxtLink :to="`/lecon/${PRACTICE_ID}?unite=${u.id}`" class="ubtn">M’entraîner sur ce thème</NuxtLink>
           </li>
-        </ul>
-        <p class="legend"><span class="sw known" /> sues <span class="sw learning" /> en cours <span class="sw weak" /> à retravailler</p>
+        </ol>
         <p class="explain">
           Chaque bonne réponse fait monter une fiche d’un niveau et la fait revenir plus tard (1 jour, 3 jours, 1 semaine, 3 semaines).
           Chaque erreur la fait redescendre d’un niveau et la fait revenir tout de suite.
-          Une fiche est <b>à retravailler</b> quand elle est à un niveau bas et qu’il est temps de la revoir ; elle est <b>sue</b> à partir du niveau 3.
+          Une fiche est <b>à retravailler</b> quand elle est à un niveau bas et qu’il est temps de la revoir.
         </p>
       </section>
 
@@ -164,14 +155,12 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .legend { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0 0; font-size: 13px; color: var(--ink-mute); }
 .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-left: 6px; }
 .sw.right { background: var(--ok-fill); } .sw.wrong { background: var(--ko-fill); }
-.sw.known { background: var(--ok-fill); } .sw.learning { background: var(--gold); } .sw.weak { background: var(--ko-fill); }
 
 .units { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
 .uhead { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
 .uhead small { color: var(--ink-mute); font-size: 12px; text-transform: uppercase; }
-.mbar { display: flex; height: 12px; margin: 6px 0 4px; border-radius: 99px; overflow: hidden; background: var(--line); }
-.mbar .known { background: var(--ok-fill); } .mbar .learning { background: var(--gold); } .mbar .weak { background: var(--ko-fill); }
 .explain { margin: 10px 0 0; font-size: 14px; line-height: 1.45; color: var(--ink-mute); }
+.ubtn { display: inline-flex; align-items: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .umeta { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink-mute); }
 
 .missed { margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 8px; }
