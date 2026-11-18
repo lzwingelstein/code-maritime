@@ -110,11 +110,11 @@ export const VESSELS: Record<VesselId, Vessel> = {
     ],
   },
   pilot: {
-    id: 'pilot', name: 'Pilote en service', hull: 'power', night: true,
+    id: 'pilot', name: 'Bateau pilote en service', hull: 'power', night: true,
     lights: [...allRound(0.2, 3.8, 'white', 'red'), ...sides(0.1, 1.4), stern()], shapes: null,
     intro: '**Blanc sur rouge** visibles sur tout l’horizon : bateau pilote en service. En route, il ajoute ses feux de côté et de poupe.',
     statements: [
-      ['Blanc sur rouge : pilote en service.', true],
+      ['Blanc sur rouge : bateau pilote en service.', true],
       ['Un pilote en service montre rouge sur blanc.', false],
     ],
   },
