@@ -41,7 +41,7 @@ code-maritime/
 │       │   └── navires/         #   unit 2: vessels (lights by aspect, day shapes), lessons, exercise generator
 │       ├── components/          # CardVisual (dispatch), BuoyMark, NightLight, ShipScene (SVG), RichText
 │       ├── composables/         # useProgress (localStorage), useSound
-│       ├── layouts/default.vue  # pages with the bottom TabBar (Parcours, Fiches, Stats, Lexique); lessons use no layout
+│       ├── layouts/default.vue  # pages with the bottom TabBar (Parcours, Fiches with course sheets and lexicon, Stats); lessons use no layout
 │       ├── pages/               # index (path), fiches, stats, lexique, lecon/[id] (lesson)
 │       └── assets/themes/fixed.css  # the one UI palette — never hard-code a UI colour
 ├── deploy/docker-compose.prod.yml

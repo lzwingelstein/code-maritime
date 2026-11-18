@@ -1,12 +1,12 @@
 <script setup lang="ts">
-/** Main navigation, always at the bottom except inside a lesson. Icon and text on every tab. */
+/** Main navigation, always at the bottom except inside a lesson. Icon and text on every tab. The lexicon lives in the « Fiches » tab. */
 const TABS = [
   { to: '/', icon: '🧭', label: 'Parcours' },
-  { to: '/fiches', icon: '🗂️', label: 'Fiches' },
+  { to: '/fiches', icon: '🗂️', label: 'Fiches', also: ['/lexique'] },
   { to: '/stats', icon: '📊', label: 'Stats' },
-  { to: '/lexique', icon: '📖', label: 'Lexique' },
 ] as const
 const route = useRoute()
+const isOn = (t: typeof TABS[number]) => route.path === t.to || ('also' in t && (t.also as readonly string[]).includes(route.path))
 </script>
 
 <template>
@@ -16,8 +16,8 @@ const route = useRoute()
       :key="t.to"
       :to="t.to"
       class="tab"
-      :class="{ on: route.path === t.to }"
-      :aria-current="route.path === t.to ? 'page' : undefined"
+      :class="{ on: isOn(t) }"
+      :aria-current="isOn(t) ? 'page' : undefined"
     >
       <span class="ic" aria-hidden="true">{{ t.icon }}</span>
       <span>{{ t.label }}</span>
