@@ -1,14 +1,17 @@
 /**
- * Ship exercises. Six kinds:
+ * Ship exercises. Seven kinds:
  * identify (night lights → vessel), find (vessel → night scene), aspect (from which side do I see it),
- * truefalse, dayshape (day shapes → vessel) and dayfind (vessel → day shapes).
+ * truefalse, dayshape (day shapes → vessel), dayfind (vessel → day shapes) and meaning (vessel → what its status means).
  */
 import { pick, type Random } from '~/engine/random'
 import { familyPool, options, plain, trueFalse } from '../shared'
 import type { CourseExercise, Generator, Lesson, Visual } from '../types'
 import { ASPECT_LABELS, ASPECTS, VESSEL_IDS, VESSELS, type Aspect, type VesselId } from './vessels'
 
-export const KINDS = ['identify', 'find', 'aspect', 'truefalse', 'dayshape', 'dayfind'] as const
+export const KINDS = ['identify', 'find', 'aspect', 'truefalse', 'dayshape', 'dayfind', 'meaning'] as const
+
+/** Vessels whose status is a word to learn, all compared together in « meaning » questions. */
+const MEANING_VESSELS = VESSEL_IDS.filter(v => VESSELS[v].meaning)
 
 /** Vessels whose lights change enough with the aspect to ask "from which side". */
 export const ASPECT_VESSELS: VesselId[] = ['power', 'power50', 'sail']
@@ -83,6 +86,13 @@ export function exerciseGenerator(lesson: Lesson): Generator {
         return {
           ...base, heading: 'De jour', answer: id, layout: 'grid', prompt: `Touche la marque de jour : « ${v.name} »`, visual: null,
           choices: options(id, dayPool(id), rng).map(x => ({ id: x, name: VESSELS[x].name, visual: day(x) })),
+        }
+      case 'meaning':
+        if (!v.meaning) return null
+        return {
+          ...base, heading: 'Vocabulaire', answer: id, layout: 'list', prompt: `« ${v.name} », qu’est-ce que ça veut dire ?`, visual: null,
+          explanation: `${v.meaning}. ${plain(v.intro)}`,
+          choices: options(id, MEANING_VESSELS, rng).map(x => ({ id: x, name: VESSELS[x].meaning! })),
         }
       case 'truefalse':
         return trueFalse(id, v.statements, rng, statement, plain(v.intro))

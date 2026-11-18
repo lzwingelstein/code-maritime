@@ -191,3 +191,12 @@ feu du pêcheur dont l'engin s'étend à plus de 150 m.
 | Rattrapant : arrive à plus de 22,5° sur l'arrière du travers | RIPAM 13 | ✅ |
 | Amures : côté par lequel le voilier reçoit le vent ; côté au vent = opposé à celui où est bordée la grand-voile | RIPAM 12 b | ✅ |
 | Proue, poupe, travers, flottaison, tirant d'eau | vocabulaire maritime courant | — |
+
+## Vocabulaire dans les leçons
+
+| Ajout | Source | Statut |
+|---|---|---|
+| Sens des statuts (mouillage, chalutier, en pêche, bateau pilote, non maître de sa manœuvre, capacité de manœuvre restreinte, handicapé par son tirant d'eau, voilier au moteur) : nouvelles questions « Vocabulaire » | RIPAM 3 (d, f, g, h), 25 e, 29 | ✅ |
+| Bâbord amures s'écarte de tribord amures | RIPAM 12 a i | ✅ |
+| CROSS : centres régionaux opérationnels de surveillance et de sauvetage | mer.gouv.fr | ✅ |
+| Chenal, cap | vocabulaire maritime courant | — |

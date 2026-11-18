@@ -82,7 +82,7 @@ export const vhf = quizCourse({
     },
     {
       id: 'cross', name: 'Le sauvetage en mer', visual: e('🚁'),
-      intro: 'Les **CROSS** coordonnent le sauvetage en mer et veillent le **canal 16**. On les joint par **VHF 16** en mer (en priorité) ou au **196** par téléphone. Les bénévoles de la **SNSM** font une grande partie des interventions.',
+      intro: 'Les **CROSS** (centres régionaux opérationnels de surveillance et de sauvetage) coordonnent le sauvetage en mer et veillent le **canal 16**. On les joint par **VHF 16** en mer (en priorité) ou au **196** par téléphone. Les bénévoles de la **SNSM** font une grande partie des interventions.',
       questions: [
         { prompt: 'Qui coordonne les opérations de sauvetage en mer en France ?', answer: 'Le CROSS', wrong: ['La capitainerie', 'Météo-France', 'Le club nautique'] },
         { prompt: 'En mer, le moyen prioritaire pour alerter le CROSS est…', answer: 'La VHF canal 16', wrong: ['Un SMS', 'Le téléphone fixe du port', 'Les réseaux sociaux'] },

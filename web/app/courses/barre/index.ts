@@ -34,11 +34,12 @@ export const barre = quizCourse({
     },
     {
       id: 'crossing-port', name: 'Il arrive sur ma gauche', visual: scene('power', 'power', 300, 90),
-      intro: 'Si l’autre navire à moteur arrive de **ma gauche** (bâbord), c’est **lui** qui s’écarte. Je **garde mon cap et ma vitesse**, en surveillant : s’il ne manœuvre pas, j’agis seul, **sans venir sur bâbord**.',
+      intro: 'Si l’autre navire à moteur arrive de **ma gauche** (bâbord), c’est **lui** qui s’écarte. Je **garde mon cap** (la direction de mon avant) **et ma vitesse**, en surveillant : s’il ne manœuvre pas, j’agis seul, **sans venir sur bâbord**.',
       questions: [
         { prompt: WHO, visual: scene('power', 'power', 300, 90), ...who('L’autre navire') },
         { prompt: 'Que dois-je faire ?', visual: scene('power', 'power', 300, 90), answer: 'Garder mon cap et ma vitesse', wrong: ['Venir sur bâbord', 'M’arrêter', 'Venir tout de suite sur tribord'] },
         { prompt: 'Il ne manœuvre pas et le risque d’abordage grandit. Je…', visual: scene('power', 'power', 320, 110), answer: 'Manœuvre seul, sans venir sur bâbord', wrong: ['Garde mon cap jusqu’au bout', 'Viens sur bâbord, vers lui'] },
+        { prompt: '« Garder son cap », c’est…', answer: 'Garder la même direction', wrong: ['Garder la même vitesse', 'S’arrêter', 'Rester près de la côte'] },
       ],
       statements: [
         ['Le navire privilégié doit garder son cap et sa vitesse.', true],
@@ -110,11 +111,12 @@ export const barre = quizCourse({
     },
     {
       id: 'sail-tack', name: 'Deux voiliers, vent de bords différents', visual: scene('sail', 'sail', 50, 240, { wind: 300 }),
-      intro: 'Deux voiliers qui reçoivent le vent de **bords différents** : celui qui reçoit le vent de **bâbord** (de sa gauche) **s’écarte**.',
+      intro: 'Deux voiliers qui reçoivent le vent de **bords différents** : celui qui reçoit le vent de **bâbord** (de sa gauche), dit **bâbord amures**, **s’écarte** de celui qui est **tribord amures**.',
       questions: [
         { prompt: 'Je reçois le vent de bâbord, lui de tribord. ' + WHO, visual: scene('sail', 'sail', 50, 240, { wind: 300 }), ...who('Moi') },
         { prompt: 'Je reçois le vent de tribord, lui de bâbord. ' + WHO, visual: scene('sail', 'sail', 310, 120, { wind: 60 }), ...who('L’autre navire') },
         { prompt: 'Entre deux voiliers aux vents de bords différents, s’écarte celui qui reçoit le vent…', answer: 'De bâbord', wrong: ['De tribord', 'De l’arrière'] },
+        { prompt: 'Un voilier bâbord amures croise un voilier tribord amures. Qui s’écarte ?', answer: 'Le voilier bâbord amures', wrong: ['Le voilier tribord amures', 'Le plus rapide'] },
       ],
       statements: [
         ['Un voilier qui reçoit le vent de bâbord s’écarte d’un voilier qui le reçoit de tribord.', true],
@@ -136,7 +138,7 @@ export const barre = quizCourse({
     },
     {
       id: 'narrow-channel', name: 'Chenal étroit', visual: scene('sail', 'big', 0, 180, { channel: true }),
-      intro: 'Dans un **chenal étroit**, un navire de **moins de 20 m** ou un **voilier** ne doit pas **gêner** un navire qui ne peut naviguer qu’à l’intérieur du chenal. On navigue près du **bord situé sur tribord**.',
+      intro: 'Un **chenal** est un passage, souvent étroit et balisé, assez profond pour les navires. Dans un **chenal étroit**, un navire de **moins de 20 m** ou un **voilier** ne doit pas **gêner** un navire qui ne peut naviguer qu’à l’intérieur du chenal. On navigue près du **bord situé sur tribord**.',
       questions: [
         { prompt: 'Je suis un voilier de 9 m. Ce cargo ne peut naviguer que dans le chenal. Qui doit éviter de gêner l’autre ?', visual: scene('sail', 'big', 0, 180, { channel: true }), answer: 'Moi', wrong: ['Le cargo', 'Personne'] },
         { prompt: 'Dans un chenal étroit, je navigue…', answer: 'Près du bord situé sur mon tribord', wrong: ['Au milieu du chenal', 'Près du bord situé sur mon bâbord'] },
