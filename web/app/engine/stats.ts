@@ -47,3 +47,16 @@ export function masteryBreakdown(mastery: Record<string, CardMastery>, cardIds: 
   }
   return out
 }
+
+/** Units with answers, weakest first: lowest share of right answers, then most cards to rework. */
+export function fragileUnits(p: Progress, units: { id: string, cards: string[] }[], now: number) {
+  return units
+    .map(u => ({
+      id: u.id,
+      accuracy: accuracy(p, u.cards),
+      answers: u.cards.reduce((n, id) => n + (p.cards?.[id] ? p.cards[id].right + p.cards[id].wrong : 0), 0),
+      weak: masteryBreakdown(p.mastery, u.cards, now).weak,
+    }))
+    .filter((u): u is typeof u & { accuracy: number } => u.accuracy !== null)
+    .sort((a, b) => a.accuracy - b.accuracy || b.weak - a.weak)
+}

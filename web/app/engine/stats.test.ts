@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DAY_MS } from './mastery'
 import { emptyProgress, recordLesson } from './progress'
-import { accuracy, activity, HISTORY_DAYS, masteryBreakdown, mostMissed, totals } from './stats'
+import { accuracy, activity, fragileUnits, HISTORY_DAYS, masteryBreakdown, mostMissed, totals } from './stats'
 
 const day0 = new Date(2026, 10, 10, 10).getTime()
 const ans = (cardId: string, correct: boolean, isRetry = false) => ({ cardId, correct, isRetry })
@@ -56,5 +56,21 @@ describe('stats', () => {
     }
     expect(masteryBreakdown(mastery, ['a', 'b', 'c', 'd', 'e', 'f', 'g'], now))
       .toEqual({ unseen: 1, weak: 2, learning: 2, known: 2, total: 7 })
+  })
+})
+
+describe('fragile units', () => {
+  it('lists started units only, weakest accuracy first, with their weak cards', () => {
+    const now = day0
+    const p = {
+      ...emptyProgress(),
+      cards: { a: { right: 9, wrong: 1 }, b: { right: 1, wrong: 1 }, c: { right: 3, wrong: 1 } },
+      mastery: { a: { level: 3, due: now + DAY_MS }, b: { level: 0, due: now }, c: { level: 1, due: now - 1 } },
+    }
+    const units = [{ id: 'u1', cards: ['a'] }, { id: 'u2', cards: ['b', 'c'] }, { id: 'u3', cards: ['z'] }]
+    expect(fragileUnits(p, units, now)).toEqual([
+      { id: 'u2', accuracy: 67, answers: 6, weak: 2 },
+      { id: 'u1', accuracy: 90, answers: 10, weak: 0 },
+    ])
   })
 })

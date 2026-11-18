@@ -52,4 +52,11 @@ describe('practice series', () => {
     expect(weakCards(COURSES, { port: { level: 1, due: now - 1 } }, now)).toEqual(['port'])
     expect(weakCards(COURSES, { port: { level: 1, due: now + DAY_MS } }, now)).toEqual([])
   })
+
+  it('can be limited to one unit, from fewer seen cards', () => {
+    const vhf = COURSES.find(c => c.id === 'vhf')!
+    const steps = buildPractice([vhf], { ch16: weak, 'ch-work': weak, port: weak }, now, seeded(3), 6, 2)
+    expect(steps).toHaveLength(6)
+    expect(new Set(ids(steps))).toEqual(new Set(['ch16', 'ch-work']))
+  })
 })

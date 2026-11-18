@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { choiceName, COURSES, findLesson, regenerator } from '~/courses'
 import { buildExam, EXAM, EXAM_ID } from '~/courses/exam'
-import { buildPractice, PRACTICE_ID, practiceGenerator } from '~/courses/practice'
+import { buildPractice, PRACTICE, PRACTICE_ID, practiceGenerator } from '~/courses/practice'
 import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
@@ -14,6 +14,9 @@ const route = useRoute()
 const isExam = String(route.params.id) === EXAM_ID
 const isPractice = String(route.params.id) === PRACTICE_ID
 const found = isExam || isPractice ? undefined : findLesson(String(route.params.id))
+// A practice series may be limited to one unit: /lecon/entrainement?unite=<course id>.
+const practiceUnit = isPractice ? COURSES.find(c => c.id === route.query.unite) : undefined
+const practiceCourses = practiceUnit ? [practiceUnit] : COURSES
 const lesson = found?.lesson
 const course = found?.course
 const { progress, save } = useProgress()
@@ -24,11 +27,13 @@ const generate = found ? found.course.generator(found.lesson) : null
 // The exam never brings a question back, so it never regenerates one.
 const regenerate = generate
   ? regenerator(generate, rng)
-  : isPractice ? regenerator(practiceGenerator(COURSES), rng) : (e: CourseExercise) => e
+  : isPractice ? regenerator(practiceGenerator(practiceCourses), rng) : (e: CourseExercise) => e
 
 function newSession(): Session<CourseExercise> {
   const now = Date.now()
-  if (isPractice) return reactive(startSession(buildPractice(COURSES, progress.value.mastery, now, rng))) as Session<CourseExercise>
+  if (isPractice) return reactive(startSession(practiceUnit
+    ? buildPractice(practiceCourses, progress.value.mastery, now, rng, PRACTICE.questions, PRACTICE.unitMinCards)
+    : buildPractice(COURSES, progress.value.mastery, now, rng))) as Session<CourseExercise>
   if (isExam) return reactive(startSession(buildExam(COURSES, rng), { hearts: null, retryWrong: false })) as Session<CourseExercise>
   const steps = lesson && generate
     ? buildLesson(lesson.plan, {
@@ -143,7 +148,8 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
   <div class="shell">
     <!-- Unknown lesson -->
     <div v-if="isPractice && !s.steps.length" class="end">
-      <p>Termine d’abord quelques leçons : l’entraînement mélange les thèmes que tu as déjà vus.</p>
+      <p v-if="practiceUnit">Fais d’abord une leçon de l’unité « {{ practiceUnit.title }} » pour t’entraîner dessus.</p>
+      <p v-else>Termine d’abord quelques leçons : l’entraînement mélange les thèmes que tu as déjà vus.</p>
       <NuxtLink to="/" class="btn">Retour au parcours</NuxtLink>
     </div>
 

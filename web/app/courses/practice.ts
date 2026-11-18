@@ -7,7 +7,7 @@ import { pickWeighted, shuffle, type Random } from '~/engine/random'
 import type { Step } from '~/engine/types'
 import type { Course, CourseExercise, Generator } from './types'
 
-export const PRACTICE = { questions: 15, minCards: 4 } as const
+export const PRACTICE = { questions: 15, minCards: 4, unitMinCards: 2 } as const
 export const PRACTICE_ID = 'entrainement'
 
 /** Each card with the generator of its unit's review lesson (widest choices) and that lesson's kinds. */
@@ -41,10 +41,11 @@ export function buildPractice(
   now: number,
   rng: Random,
   total: number = PRACTICE.questions,
+  minCards: number = PRACTICE.minCards,
 ): Step<CourseExercise>[] {
   const sources = cardSources(courses)
   const cards = Object.keys(mastery).filter(id => sources.has(id))
-  if (cards.length < PRACTICE.minCards) return []
+  if (cards.length < minCards) return []
 
   const weight = (id: string) => reviewWeight(mastery[id], now) ** 2
   const steps: Step<CourseExercise>[] = []
