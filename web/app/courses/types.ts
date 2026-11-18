@@ -7,15 +7,15 @@ import type { Random } from '~/engine/random'
 import type { BaseExercise } from '~/engine/types'
 import type { ExtraMarkId, MarkId } from './balisage/marks'
 import type { Aspect, VesselId } from './navires/vessels'
-import type { PictoName } from './pictos'
+import type { PictoName, PictoTone } from './pictos'
 
 /** Something to draw: the question picture, a picture choice, a card, a path icon. */
 export type Visual =
   | { type: 'mark', markId: MarkId | ExtraMarkId, topOnly: boolean }
   | { type: 'light', markId: MarkId }
   | { type: 'ship', vesselId: VesselId, aspect: Aspect, mode: 'night' | 'day', silhouette?: boolean }
-  /** Line pictogram for sheets without a drawn scene. */
-  | { type: 'picto', name: PictoName }
+  /** Illustration for sheets without a drawn scene, on the backdrop colour of its theme. */
+  | { type: 'picto', name: PictoName, tone: PictoTone }
   /** Only for lesson icons, which the interface no longer shows. Never on a card. */
   | { type: 'emoji', char: string }
   | {

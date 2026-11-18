@@ -66,7 +66,7 @@ export const meteo = quizCourse({
   heading: 'Météo',
   cards: [
     {
-      id: 'beaufort', name: 'L’échelle de Beaufort', visual: picto('wind'),
+      id: 'beaufort', name: 'L’échelle de Beaufort', visual: picto('wind', 'meteo'),
       intro: 'La **force du vent** va de **0 (calme)** à **12 (ouragan)** : 3 petite brise, 4 jolie brise, 5 bonne brise, **6 vent frais**, **7 grand frais**, **8 coup de vent**, 9 fort coup de vent, 10 tempête, 11 violente tempête, 12 ouragan.',
       questions: termQuestions,
       statements: [
@@ -76,7 +76,7 @@ export const meteo = quizCourse({
       ],
     },
     {
-      id: 'beaufort-knots', name: 'Forces et nœuds', visual: picto('gauge'),
+      id: 'beaufort-knots', name: 'Forces et nœuds', visual: picto('gauge', 'meteo'),
       intro: 'Repères en **nœuds** (vent moyen) : force 4 = **11 à 16**, force 5 = **17 à 21**, force 6 = **22 à 27**, force 7 = **28 à 33**, force 8 = **34 à 40**. Les **rafales** peuvent être bien plus fortes que le vent moyen.',
       questions: knotQuestions,
       statements: [
@@ -85,7 +85,7 @@ export const meteo = quizCourse({
       ],
     },
     {
-      id: 'bms', name: 'Le bulletin météo spécial (BMS)', visual: picto('alert'),
+      id: 'bms', name: 'Le bulletin météo spécial (BMS)', visual: picto('alert', 'meteo'),
       intro: 'Météo-France diffuse un **BMS côte** dès que le vent moyen atteint **force 7** (**avis de grand frais**). Puis **avis de coup de vent** (force 8), **de fort coup de vent** (9), **de tempête** (10). En plaisance côtière, un **avis de grand frais** veut dire : **on reste au port**.',
       questions: [
         { prompt: 'À partir de quelle force Météo-France diffuse-t-il un BMS côte ?', answer: 'Force 7', wrong: ['Force 5', 'Force 6', 'Force 9'] },
@@ -98,7 +98,7 @@ export const meteo = quizCourse({
       ],
     },
     {
-      id: 'sources', name: 'Où trouver la météo', visual: picto('antenna'),
+      id: 'sources', name: 'Où trouver la météo', visual: picto('antenna', 'meteo'),
       intro: 'Le **bulletin côte** de **Météo-France** couvre jusqu’à **20 milles**. Il est diffusé par les **CROSS** en **VHF** à heures fixes (annoncé sur le **canal 16**, puis lu sur un canal de travail), affiché dans les **capitaineries**, et disponible sur le **site et l’appli Météo-France**.',
       questions: [
         { prompt: 'Qui diffuse les bulletins météo côtiers à la VHF ?', answer: 'Les CROSS', wrong: ['La SNSM', 'Les capitaineries uniquement', 'Les douanes'] },
@@ -111,7 +111,7 @@ export const meteo = quizCourse({
       ],
     },
     {
-      id: 'sea-state', name: 'L’état de la mer', visual: picto('waves'),
+      id: 'sea-state', name: 'L’état de la mer', visual: picto('waves', 'meteo'),
       intro: 'Les bulletins décrivent la mer selon la **hauteur des vagues** : calme, ridée, **belle** (jusqu’à 0,5 m), **peu agitée** (jusqu’à 1,25 m), **agitée** (jusqu’à 2,5 m), **forte** (jusqu’à 4 m), très forte, grosse, très grosse, énorme.',
       questions: seaQuestions,
       statements: [
@@ -120,7 +120,7 @@ export const meteo = quizCourse({
       ],
     },
     {
-      id: 'decision', name: 'Décider de sortir', visual: picto('question'),
+      id: 'decision', name: 'Décider de sortir', visual: picto('question', 'meteo'),
       intro: 'Avant de partir, on regarde la **prévision** pour **toute la durée** de la sortie, pas seulement l’instant. On tient compte des **rafales** et du **vent contre le courant** qui lève la mer. En mer, on **réécoute les bulletins**. Près des côtes l’été, la **brise thermique** souffle de la mer vers la terre l’après-midi.',
       questions: [
         { prompt: 'Pour décider de sortir, je regarde la météo…', answer: 'Pour toute la durée de la sortie', wrong: ['Seulement au moment du départ', 'De la veille', 'Seulement si le ciel est gris'] },

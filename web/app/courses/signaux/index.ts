@@ -137,7 +137,7 @@ export const signaux = quizCourse({
       statements: [['Au mouillage par brume, on sonne la cloche environ 5 secondes chaque minute.', true], ['Au mouillage par brume, on émet un son prolongé toutes les 2 minutes.', false]],
     },
     {
-      id: 'distress-visual', name: 'Signaux de détresse visuels', visual: picto('flare'),
+      id: 'distress-visual', name: 'Signaux de détresse visuels', visual: picto('flare', 'signaux'),
       intro: 'Pour signaler une **détresse** : **fusée à parachute** ou **feu à main rouge**, **fumigène orange**, **bras tendus levés et abaissés** lentement, **flammes** à bord, pavillons **N sur C**, pavillon carré avec une **boule**. On ne s’en sert **qu’en cas de vraie détresse**.',
       questions: [
         { prompt: 'Lequel de ces signaux est un signal de détresse ?', answer: 'Un fumigène orange', wrong: ['Un fumigène blanc', 'Un feu vert à main', 'Un pavillon jaune'] },
@@ -147,7 +147,7 @@ export const signaux = quizCourse({
       statements: [['Un signal fumigène orange est un signal de détresse.', true], ['On peut tirer une fusée de détresse pour saluer un autre bateau.', false]],
     },
     {
-      id: 'distress-sound-radio', name: 'Détresse : son et radio', visual: picto('sos'),
+      id: 'distress-sound-radio', name: 'Détresse : son et radio', visual: picto('sos', 'signaux'),
       intro: 'Par le son ou la radio : **son continu** d’un appareil de brume, **coups de canon** environ chaque minute, **SOS** en Morse (··· — — — ···), **« MAYDAY »** à la radio, **alerte ASN** (canal 70), **radiobalise**.',
       questions: [
         { prompt: 'Lequel de ces signaux sonores est un signal de détresse ?', answer: 'Un son continu d’un appareil de brume', wrong: ['3 sons brefs', '1 son prolongé toutes les 2 minutes', '5 sons brefs'] },
@@ -188,7 +188,7 @@ export const signaux = quizCourse({
       statements: [['Vert, blanc, vert : on attend l’autorisation de passer.', true], ['Vert, blanc, vert : trafic à double sens, on passe librement.', false]],
     },
     {
-      id: 'wind-warning', name: 'Avis de vent fort', visual: picto('wind'),
+      id: 'wind-warning', name: 'Avis de vent fort', visual: picto('wind', 'signaux'),
       intro: 'À la sortie de certains ports, un **feu blanc scintillant**, **de jour seulement**, annonce un **vent fort** : vent de **force 6 ou plus** observé ou prévu dans les prochaines heures. Éteint : pas d’avis.',
       questions: [
         { prompt: 'À la sortie du port, de jour, un feu blanc scintillant est allumé. Il annonce…', answer: 'Un vent de force 6 ou plus, observé ou prévu', wrong: ['Une entrée interdite', 'Un danger grave', 'Une marée haute'] },

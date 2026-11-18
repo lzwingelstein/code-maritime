@@ -15,7 +15,7 @@ export const reglementation = quizCourse({
   heading: 'Réglementation',
   cards: [
     {
-      id: 'licence', name: 'Le permis plaisance', visual: picto('idcard'),
+      id: 'licence', name: 'Le permis plaisance', visual: picto('idcard', 'reglementation'),
       intro: 'Le permis est obligatoire pour conduire un bateau de plaisance **à moteur** dont la puissance dépasse **4,5 kW (6 ch)**. On peut le passer dès **16 ans**. L’**option côtière** permet de naviguer **jusqu’à 6 milles d’un abri**, **de jour comme de nuit**, sans limite de puissance ; au-delà, il faut l’**extension hauturière**.',
       questions: [
         { prompt: 'Le permis est obligatoire au-delà de quelle puissance ?', answer: '4,5 kW (6 ch)', wrong: ['3 kW (4 ch)', '7,5 kW (10 ch)', '15 kW (20 ch)'] },
@@ -28,7 +28,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'papers', name: 'Les papiers du bord', visual: picto('document'),
+      id: 'papers', name: 'Les papiers du bord', visual: picto('document', 'reglementation'),
       intro: 'À bord : le **certificat d’enregistrement** du bateau (qui remplace depuis **2022** l’acte de francisation et la carte de circulation ; les anciens titres restent valables) et le **permis** du pilote.',
       questions: [
         { prompt: 'Quel document a remplacé l’acte de francisation et la carte de circulation ?', answer: 'Le certificat d’enregistrement', wrong: ['Le permis plaisance', 'La carte grise du véhicule', 'Le rôle d’équipage'] },
@@ -40,7 +40,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'skipper', name: 'Le chef de bord', visual: picto('captain'),
+      id: 'skipper', name: 'Le chef de bord', visual: picto('captain', 'reglementation'),
       intro: 'Le **chef de bord** est **responsable** du bateau et des **personnes à bord** : il prépare la sortie (météo, carburant, matériel), fait respecter les règles et choisit l’**abri** selon le bateau et les conditions. Sa responsabilité peut être **civile et pénale**.',
       questions: [
         { prompt: 'Qui est responsable de la sécurité des personnes à bord ?', answer: 'Le chef de bord', wrong: ['Le propriétaire, même absent', 'Chaque passager pour lui-même', 'Le port de départ'] },
@@ -52,7 +52,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'ce-categories', name: 'Catégories de conception CE', visual: picto('tag'),
+      id: 'ce-categories', name: 'Catégories de conception CE', visual: picto('tag', 'reglementation'),
       intro: 'Chaque bateau marqué CE a une **catégorie de conception** : **A** vent au-delà de force 8 et vagues de plus de 4 m ; **B** jusqu’à force 8 et 4 m ; **C** jusqu’à force 6 et 2 m ; **D** jusqu’à force 4 et 0,3 m (eaux protégées). La **plaque du constructeur** indique aussi le **nombre maximal de personnes**.',
       questions: [
         { prompt: 'Un bateau de catégorie C est conçu pour un vent jusqu’à…', answer: 'Force 6 et des vagues de 2 m', wrong: ['Force 8 et des vagues de 4 m', 'Force 4 et des vagues de 0,3 m', 'Force 10 et des vagues de 7 m'] },
@@ -65,7 +65,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'fuel', name: 'Autonomie en carburant', visual: picto('fuel'),
+      id: 'fuel', name: 'Autonomie en carburant', visual: picto('fuel', 'reglementation'),
       intro: 'On part **toujours avec le plein** et on garde une **marge de sécurité**. Règle pratique : **un tiers** du carburant pour l’aller, **un tiers** pour le retour, **un tiers** en réserve. Le vent, la mer et la vitesse augmentent la consommation.',
       questions: [
         { prompt: 'Selon la règle pratique du tiers, quelle part garder en réserve ?', answer: 'Un tiers', wrong: ['Un quart', 'La moitié', 'Rien si la mer est calme'] },
@@ -77,7 +77,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'alcohol', name: 'Alcool et maîtrise du bateau', visual: picto('ban'),
+      id: 'alcohol', name: 'Alcool et maîtrise du bateau', visual: picto('ban', 'reglementation'),
       intro: 'Depuis le **5 juin 2026**, conduire un bateau de plaisance à moteur en **état d’ivresse manifeste** est une **contravention**, comme le **défaut de maîtrise** : on doit **adapter sa vitesse et sa conduite** aux circonstances (croisement, zone fréquentée, visibilité, météo). Il n’y a **pas de taux d’alcool chiffré** comme sur la route : l’agent juge sur des **signes observables**.',
       questions: [
         { prompt: 'Depuis juin 2026, piloter un bateau à moteur en état d’ivresse manifeste…', answer: 'Est une infraction sanctionnée', wrong: ['Est autorisé hors des ports', 'N’est sanctionné qu’en cas d’accident'] },
@@ -89,7 +89,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'divers', name: 'Plongeurs', visual: picto('mask'),
+      id: 'divers', name: 'Plongeurs', visual: picto('mask', 'reglementation'),
       intro: 'Le bateau support de plongée hisse le **pavillon « Alpha »** (blanc et bleu) : des plongeurs sont sous l’eau. On **ralentit** et on **reste à bonne distance** (on enseigne souvent **100 m**) ou on passe **très lentement**.',
       questions: [
         { prompt: 'Un pavillon blanc et bleu « Alpha » signifie…', answer: 'Des plongeurs sont sous l’eau', wrong: ['Le bateau est en détresse', 'Le bateau est au mouillage', 'Pêche en cours'] },
@@ -101,7 +101,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'towing', name: 'Ski nautique et engins tractés', visual: picto('tow'),
+      id: 'towing', name: 'Ski nautique et engins tractés', visual: picto('tow', 'reglementation'),
       intro: 'Pour tracter un skieur, une bouée ou un wakeboard : **2 personnes d’au moins 16 ans** à bord, **l’une conduit**, **l’autre surveille** les personnes tractées. Elles portent un **gilet de couleur vive**, et le bateau doit pouvoir **les embarquer toutes** en plus de l’équipage.',
       questions: [
         { prompt: 'Combien de personnes faut-il au minimum à bord du bateau tracteur ?', answer: '2 : un pilote et un observateur', wrong: ['1 seul pilote', '3 personnes', 'Aucune règle'] },
@@ -113,7 +113,7 @@ export const reglementation = quizCourse({
       ],
     },
     {
-      id: 'locks', name: 'Passer une écluse', visual: picto('trafficLight'),
+      id: 'locks', name: 'Passer une écluse', visual: picto('trafficLight', 'reglementation'),
       intro: 'À l’approche d’une écluse, on **ralentit** et on **attend son tour**. **Feu rouge** : accès interdit. **Rouge et vert** : l’écluse se prépare. **Feu vert** : on peut entrer. Dans le sas : bateau **amarré**, **défenses** en place, **moteur arrêté**, et on suit les instructions de l’éclusier.',
       questions: [
         { prompt: 'Feux rouge et vert allumés ensemble à l’entrée d’une écluse :', answer: 'Elle se prépare, l’accès est encore interdit', wrong: ['J’entre tout de suite', 'L’écluse est hors service pour la journée'] },
