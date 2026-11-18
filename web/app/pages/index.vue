@@ -127,6 +127,7 @@ function onReset() {
     </section>
 
     <footer class="foot">
+      <NuxtLink to="/fiches" class="lex">🗂️ Mes fiches : relire le cours</NuxtLink>
       <NuxtLink to="/lexique" class="lex">📖 Lexique : les mots du permis expliqués</NuxtLink>
       <button type="button" @click="onReset">
         {{ confirming ? 'Touche encore pour tout effacer' : 'Réinitialiser ma progression' }}
