@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** A sound signal: played on show and on demand, and drawn as bars (short • / long ▬ / bell 🔔) for those who can't hear it. */
+/** A sound signal: played on show and on demand, and drawn as bars (short • / long ▬ / bell icon) for those who can't hear it. */
 import type { HornNote } from '~/courses/types'
 
 const props = withDefaults(defineProps<{ pattern: HornNote[], caption?: string, autoplay?: boolean }>(), { caption: undefined, autoplay: true })
@@ -23,11 +23,11 @@ onBeforeUnmount(() => clearTimeout(timer))
 <template>
   <div class="horn" role="img" :aria-label="`Signal sonore : ${spoken}${caption ? `, ${caption}` : ''}`">
     <div class="bars" aria-hidden="true">
-      <span v-for="(n, i) in pattern" :key="i" :class="['note', n]">{{ n === 'bell' ? '🔔' : '' }}</span>
+      <span v-for="(n, i) in pattern" :key="i" :class="['note', n]"><UiIcon v-if="n === 'bell'" name="bell" :size="26" /></span>
     </div>
     <p class="legend">{{ spoken }}<template v-if="caption"> · {{ caption }}</template></p>
     <button type="button" class="replay" @click="play">
-      🔊 {{ playing ? 'Lecture…' : 'Écouter' }}
+      <UiIcon name="speaker" :size="18" /> {{ playing ? 'Lecture…' : 'Écouter' }}
     </button>
   </div>
 </template>
@@ -41,10 +41,10 @@ onBeforeUnmount(() => clearTimeout(timer))
 .note { display: inline-flex; align-items: center; justify-content: center; height: 18px; border-radius: 9px; background: var(--ink); }
 .note.short { width: 18px; }
 .note.long { width: 72px; }
-.note.bell { width: auto; height: auto; background: none; font-size: 26px; }
+.note.bell { width: auto; height: auto; background: none; color: var(--ink); }
 .legend { margin: 0; font-size: 14px; color: var(--ink-mute); text-align: center; }
 .replay {
   min-height: 44px; padding: 0 18px; border: 2px solid var(--line); border-radius: 99px;
-  background: var(--surface); color: var(--primary); font-size: 15px; font-weight: 800;
+  background: var(--surface); color: var(--primary); font-size: 15px; font-weight: 600;
 }
 </style>

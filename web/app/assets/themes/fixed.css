@@ -3,13 +3,15 @@
 :root {
   --ink: #2B3440;
   --ink-mute: #5D6878;         /* 5.6:1 on white */
+  --bg: #F5F7FA;               /* page ground; cards stay --surface. --ink-mute on it: 5.2:1 */
   --surface: #FFFFFF;
   --line: #E3E6EA;
 
-  --primary: #1268BD;          /* 5.4:1 on white */
-  --primary-shadow: #0B4F92;
-  --primary-soft: #DDEEFC;
-  --primary-soft-line: #84BFF0;
+  --primary: #1F5FAE;          /* premium blue of the mock-ups: 6.3:1 on white, 5.9:1 on --bg */
+  --primary-shadow: #174A88;   /* pressed state */
+  --primary-soft: #E7EEF8;
+  --on-primary-mute: #E6EEF9;  /* secondary text on --primary, 5.4:1 */
+  --primary-soft-line: #8FB0DB;
 
   --ok: #2F8A00;               /* 4.6:1 on white */
   --ok-fill: #58CC02;
@@ -32,8 +34,8 @@
   --disabled-text: #737373;
   --disabled-shadow: #CDCDCD;
 
-  --tip-soft: #E8F3FC;
-  --tip-line: #B9DCF7;
+  --tip-soft: #EEF3FA;
+  --tip-line: #C5D5EC;
 
   --night-top: #030B18;
   --night-mid: #0B1E36;

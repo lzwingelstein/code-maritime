@@ -5,10 +5,9 @@ import { buildPractice, PRACTICE, PRACTICE_ID, practiceGenerator } from '~/cours
 import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
-import { DAILY_GOAL, introduce, recordExam, recordLesson, todayXp } from '~/engine/progress'
+import { introduce, recordExam, recordLesson } from '~/engine/progress'
 import { pick, seeded } from '~/engine/random'
 import { advance, check, currentStep, progress as share, select, startSession, type Session } from '~/engine/session'
-import { dayKey } from '~/engine/streak'
 
 definePageMeta({ layout: false })
 const ready = useReadiness()
@@ -72,7 +71,7 @@ function onMain() {
     const v = check(session, regenerate)
     if (v.correct) {
       sound.right()
-      verdictTitle.value = session.combo >= 3 && session.combo % 2 === 1 ? `🔥 ${session.combo} bonnes réponses d’affilée !` : pick(PRAISE, rng)
+      verdictTitle.value = session.combo >= 3 && session.combo % 2 === 1 ? `${session.combo} bonnes réponses d’affilée !` : pick(PRAISE, rng)
     }
     else {
       sound.wrong()
@@ -138,7 +137,6 @@ const detail = computed(() => {
   return `${answer} ${e.explanation}`
 })
 
-const today = dayKey(new Date())
 const LETTERS = ['A', 'B', 'C', 'D']
 const confetti = Array.from({ length: 40 }, (_, i) => ({
   left: (i * 41) % 100,
@@ -168,16 +166,15 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <template v-if="result.passed">
           <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
         </template>
-        <div class="big" aria-hidden="true">{{ result.passed ? '🎓' : '📚' }}</div>
+        <div class="big"><UiIcon :name="result.passed ? 'cap' : 'book'" :size="56" /></div>
         <h1 :class="{ fail: !result.passed }">{{ result.passed ? 'Reçu à l’examen blanc !' : 'Pas encore…' }}</h1>
         <div class="tiles">
           <div class="tile ok"><b>Bonnes réponses</b><span>✓ {{ s.questions - s.errors }} / {{ s.questions }}</span></div>
           <div class="tile gold"><b>Erreurs</b><span>✗ {{ s.errors }} / {{ EXAM.maxErrors }} max</span></div>
-          <div class="tile blue"><b>Temps</b><span>⏱ {{ mmss(result.seconds) }}</span></div>
+          <div class="tile blue"><b>Temps</b><span><UiIcon name="clock" :size="18" /> {{ mmss(result.seconds) }}</span></div>
         </div>
         <p class="sub">
           {{ result.passed ? 'Comme à l’examen : 5 erreurs au plus.' : `Il faut 5 erreurs au plus : continue les révisions, les questions ratées reviendront plus souvent.` }}
-          · ⚡ {{ result.xp }} XP
         </p>
         <div class="endbtns">
           <button type="button" class="btn" :class="{ ok: result.passed }" @click="retry">Nouvel examen</button>
@@ -186,16 +183,14 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
       </template>
       <template v-else-if="s.phase === 'won'">
         <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
-        <div class="big" aria-hidden="true">🏆</div>
+        <div class="big"><UiIcon name="trophy" :size="56" /></div>
         <h1>{{ isPractice ? 'Entraînement terminé !' : 'Leçon terminée !' }}</h1>
         <div class="tiles">
-          <div class="tile gold"><b>XP gagnés</b><span>⚡ {{ result.xp }}</span></div>
-          <div class="tile ok"><b>Précision</b><span>🎯 {{ result.accuracy }} %</span></div>
-          <div class="tile blue"><b>Temps</b><span>⏱ {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
+          <div class="tile ok"><b>Précision</b><span><UiIcon name="target" :size="18" /> {{ result.accuracy }} %</span></div>
+          <div class="tile blue"><b>Temps</b><span><UiIcon name="clock" :size="18" /> {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
         </div>
         <p class="sub">
-          🎯 Prêt à {{ ready.percent }} % pour l’examen · objectif du jour
-          {{ Math.min(todayXp(progress, today), DAILY_GOAL) }} / {{ DAILY_GOAL }} XP
+          Prêt à {{ ready.percent }} % pour l’examen
         </p>
         <NuxtLink to="/" class="btn ok">Continuer</NuxtLink>
       </template>
@@ -204,7 +199,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
     <!-- Lesson -->
     <template v-else>
       <header class="lhead">
-        <NuxtLink to="/" class="close" aria-label="Quitter la leçon">✕</NuxtLink>
+        <NuxtLink to="/" class="close" aria-label="Quitter la leçon"><UiIcon name="x" :size="24" /></NuxtLink>
         <div class="bar" role="progressbar" :aria-valuenow="Math.round(share(s) * 100)" aria-valuemax="100">
           <i :style="{ width: share(s) * 100 + '%', background: 'var(--ok-fill)' }" />
         </div>
@@ -212,7 +207,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <span v-else class="hearts" :aria-label="pending ? `${pending} question${pending > 1 ? 's' : ''} ratée${pending > 1 ? 's' : ''} à refaire` : undefined">{{ pending ? `↻ ${pending}` : '' }}</span>
       </header>
       <p v-if="isExam" class="examline">
-        Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · ⏱ {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
+        Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · <UiIcon name="clock" :size="16" /> {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
       </p>
 
       <main class="body" :class="{ shake: s.verdict && !s.verdict.correct }">
@@ -280,9 +275,9 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .examline { margin: 0; padding: 0 18px; font-size: 14px; color: var(--ink-mute); }
 
 .body { flex: 1; display: flex; flex-direction: column; padding: 8px 18px 190px; }
-.retry { display: inline-block; margin: 8px 0 0; padding: 3px 10px; border: 2px solid var(--primary); border-radius: 99px; font-size: 13px; font-weight: 800; color: var(--primary); }
+.retry { display: inline-block; margin: 8px 0 0; padding: 3px 10px; border: 2px solid var(--primary); border-radius: 99px; font-size: 13px; font-weight: 600; color: var(--primary); }
 .heading { margin: 6px 0 4px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
-.prompt { margin: 0 0 14px; font-size: 21px; font-weight: 900; line-height: 1.25; }
+.prompt { margin: 0 0 14px; font-size: 21px; font-weight: 700; line-height: 1.25; }
 .visual { display: flex; justify-content: center; margin: 4px 0 16px; }
 .v-mark :deep(svg) { height: 200px; }
 .v-mark-top :deep(svg) { height: 130px; }
@@ -293,16 +288,16 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .choices.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
   position: relative; min-height: 56px; padding: 14px; border: 2px solid var(--line); border-radius: 14px;
-  background: var(--surface); box-shadow: 0 4px 0 var(--line); color: var(--ink); font-size: 17px; font-weight: 800; text-align: left;
+  background: var(--surface); color: var(--ink); font-size: 17px; font-weight: 600; text-align: left;
 }
 .pair .choice { text-align: center; }
 .grid .choice { display: flex; justify-content: center; padding: 10px; }
 .grid .choice :deep(svg.buoy) { height: 130px; }
 .grid.tops .choice :deep(svg.buoy) { height: 84px; }
 .grid.pics-ship .choice { padding: 6px; }
-.choice.sel { border-color: var(--primary-soft-line); background: var(--primary-soft); box-shadow: 0 4px 0 var(--primary-soft-line); color: var(--primary); }
-.choice.good { border-color: var(--ok-fill); background: var(--ok-soft); box-shadow: 0 4px 0 var(--ok-fill); color: var(--ok-text); }
-.choice.bad { border-color: var(--ko-fill); background: var(--ko-soft); box-shadow: 0 4px 0 var(--ko-fill); color: var(--ko-text); }
+.choice.sel { border-color: var(--primary-soft-line); background: var(--primary-soft); color: var(--primary); }
+.choice.good { border-color: var(--ok-fill); background: var(--ok-soft); color: var(--ok-text); }
+.choice.bad { border-color: var(--ko-fill); background: var(--ko-soft); color: var(--ko-text); }
 .choice:disabled { cursor: default; }
 .mark { position: absolute; top: 6px; right: 10px; font-size: 18px; }
 
@@ -310,7 +305,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .sheet > div { width: 100%; max-width: 480px; padding: 16px 18px calc(20px + env(safe-area-inset-bottom)); }
 .sheet.ok { background: var(--ok-soft); border-color: transparent; }
 .sheet.ko { background: var(--ko-soft); border-color: transparent; }
-.sheet h3 { margin: 0 0 4px; font-size: 21px; font-weight: 900; }
+.sheet h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
 .sheet p { margin: 0 0 12px; font-size: 15px; line-height: 1.4; }
 .sheet.ok h3, .sheet.ok p { color: var(--ok-text); }
 .sheet.ko h3, .sheet.ko p { color: var(--ko-text); }
@@ -320,15 +315,15 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 @keyframes pop { 0% { transform: scale(.96); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
 
 .end { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 30px 22px; text-align: center; }
-.end .big { font-size: 72px; }
-.end h1 { margin: 12px 0 22px; font-size: 28px; font-weight: 900; color: var(--gold-text); }
+.end .big { display: flex; justify-content: center; color: var(--primary); }
+.end h1 { margin: 12px 0 22px; font-size: 28px; font-weight: 700; color: var(--gold-text); }
 .end h1.fail { color: var(--ko); }
 .end .btn { display: block; text-decoration: none; text-align: center; line-height: 28px; }
 .sub { margin: 0 0 26px; color: var(--ink-mute); }
 .tiles { display: flex; gap: 12px; width: 100%; margin-bottom: 24px; }
 .tile { flex: 1; overflow: hidden; border: 2px solid; border-radius: 16px; }
 .tile b { display: block; padding: 5px; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
-.tile span { display: block; padding: 12px 4px; font-size: 20px; font-weight: 900; }
+.tile span { display: block; padding: 12px 4px; font-size: 20px; font-weight: 700; }
 .tile.gold { border-color: var(--gold); } .tile.gold b { background: var(--gold-text); } .tile.gold span { color: var(--gold-text); }
 .tile.ok { border-color: var(--ok); } .tile.ok b { background: var(--ok); } .tile.ok span { color: var(--ok); }
 .tile.blue { border-color: var(--primary); } .tile.blue b { background: var(--primary); } .tile.blue span { color: var(--primary); }

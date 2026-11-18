@@ -30,6 +30,7 @@ export function useReadiness() {
       perDay,
       paceKnown: own !== null,
       perDayText: perDay.toLocaleString('fr-FR', { maximumFractionDigits: 1 }),
+      endShort: r.daysLeft > 365 ? 'dans plus d’un an' : `vers le ${end.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
       endText: r.daysLeft > 365 ? 'dans plus d’un an' : `vers le ${end.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}`,
     }
   })

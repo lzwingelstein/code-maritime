@@ -78,6 +78,6 @@ onBeforeUnmount(() => { token++ })
 .period { position: absolute; left: 12px; bottom: 14px; color: var(--night-text); font-size: 13px; }
 .replay {
   position: absolute; right: 8px; bottom: 8px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 99px;
-  background: rgba(255, 255, 255, .16); color: var(--night-text); font-size: 14px; font-weight: 800;
+  background: rgba(255, 255, 255, .16); color: var(--night-text); font-size: 14px; font-weight: 600;
 }
 </style>

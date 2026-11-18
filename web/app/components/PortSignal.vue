@@ -28,5 +28,5 @@ const label = computed(() => `Feux d’entrée de port, de haut en bas : ${props
 .lamp { filter: drop-shadow(0 0 6px rgba(255, 255, 255, .45)); }
 .flash { animation: flash 1s steps(1) infinite; }
 @keyframes flash { 50% { opacity: .1; } }
-.note { font-size: 14px; font-weight: 800; fill: var(--night-text); }
+.note { font-size: 14px; font-weight: 600; fill: var(--night-text); }
 </style>
