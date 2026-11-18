@@ -56,6 +56,10 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
   <div class="shell">
     <header class="top">
       <span class="course">⛵ Permis côtier</span>
+      <span class="info">
+        <template v-if="ready.lessonsLeft">Fin <b>{{ ready.endShort }}</b></template>
+        <template v-else>Parcours terminé ✓</template>
+      </span>
     </header>
 
     <section class="hero" aria-labelledby="ready-title">
@@ -68,7 +72,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
         <b>{{ ready.percent }}<small>%</small></b>
       </NuxtLink>
       <p class="when">
-        <template v-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} : fin du parcours {{ ready.endText }}.</template>
+        <template v-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} à faire, puis des révisions.</template>
         <template v-else>Parcours terminé : ancre tes fiches, puis vise un examen blanc.</template>
       </p>
       <NuxtLink :to="link(next.main)" class="btn main">
@@ -124,10 +128,12 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 
 <style scoped>
 .top {
-  position: sticky; top: 0; z-index: 5; display: flex; justify-content: center; align-items: center;
-  min-height: 52px; padding: 0 18px; border-bottom: 2px solid var(--line); background: var(--surface);
+  position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  min-height: 56px; padding: 0 18px; border-bottom: 2px solid var(--line); background: var(--surface);
 }
-.course { color: var(--primary); font-size: 17px; font-weight: 900; }
+.course { color: var(--primary); font-size: 17px; font-weight: 900; white-space: nowrap; }
+.info { font-size: 14px; font-weight: 700; color: var(--ink-mute); text-align: right; white-space: nowrap; }
+.info b { color: var(--ink); font-weight: 800; }
 /* One main action: readiness first, then the single big button. */
 .hero { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 16px 16px 0; padding: 20px 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
 .kicker { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); }
@@ -140,7 +146,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .gauge b small { font-size: 18px; color: var(--ink-mute); margin-left: 2px; }
 .when { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--ink); }
 .hero .main { align-self: stretch; display: block; text-decoration: none; line-height: 28px; }
-.hero .main .sub { display: block; font-size: 14px; font-weight: 700; line-height: 20px; text-transform: none; }
+.hero .main .sub { display: block; font-size: 14px; font-weight: 700; line-height: 20px; }
 .reason { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--ink-mute); }
 .hero .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 800; }
 /* Unit headers are titles, not buttons: no fill, no raised shadow, a rule underneath. */
@@ -152,12 +158,12 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .nwrap { display: flex; flex-direction: column; align-items: center; }
 .node {
   position: relative; display: flex; align-items: center; justify-content: center; width: 78px; height: 72px;
-  border-radius: 50%; background: var(--primary); box-shadow: 0 7px 0 var(--primary-shadow);
+  border-radius: 50%; background: var(--primary); box-shadow: 0 4px 0 var(--primary-shadow);
 }
 .node :deep(svg) { height: 56px; }
-.node:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--primary-shadow); }
-.node.done { background: var(--gold); box-shadow: 0 7px 0 var(--gold-shadow); }
-.node.locked { background: var(--disabled); box-shadow: 0 7px 0 var(--disabled-shadow); }
+.node:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--primary-shadow); }
+.node.done { background: var(--gold); box-shadow: 0 4px 0 var(--gold-shadow); }
+.node.locked { background: var(--disabled); box-shadow: 0 4px 0 var(--disabled-shadow); }
 .node.locked :deep(svg), .node.locked :deep(.emoji) { filter: grayscale(1) opacity(.4); }
 .lock { position: absolute; right: -4px; bottom: -6px; font-size: 18px; }
 .badge {
@@ -168,7 +174,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .bubble {
   position: absolute; top: -46px; left: 50%; padding: 6px 12px; border: 2px solid var(--line); border-radius: 12px;
   background: var(--surface); color: var(--primary); font-size: 13px; white-space: nowrap;
-  text-transform: uppercase; letter-spacing: .04em; transform: translateX(-50%); animation: bob 1.4s ease-in-out infinite;
+  font-weight: 800; transform: translateX(-50%); animation: bob 1.4s ease-in-out infinite;
 }
 .bubble::after {
   content: ""; position: absolute; bottom: -8px; left: 50%; margin-left: -7px;

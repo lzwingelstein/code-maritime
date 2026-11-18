@@ -288,16 +288,16 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .choices.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
   position: relative; min-height: 56px; padding: 14px; border: 2px solid var(--line); border-radius: 14px;
-  background: var(--surface); box-shadow: 0 4px 0 var(--line); color: var(--ink); font-size: 17px; font-weight: 800; text-align: left;
+  background: var(--surface); color: var(--ink); font-size: 17px; font-weight: 800; text-align: left;
 }
 .pair .choice { text-align: center; }
 .grid .choice { display: flex; justify-content: center; padding: 10px; }
 .grid .choice :deep(svg.buoy) { height: 130px; }
 .grid.tops .choice :deep(svg.buoy) { height: 84px; }
 .grid.pics-ship .choice { padding: 6px; }
-.choice.sel { border-color: var(--primary-soft-line); background: var(--primary-soft); box-shadow: 0 4px 0 var(--primary-soft-line); color: var(--primary); }
-.choice.good { border-color: var(--ok-fill); background: var(--ok-soft); box-shadow: 0 4px 0 var(--ok-fill); color: var(--ok-text); }
-.choice.bad { border-color: var(--ko-fill); background: var(--ko-soft); box-shadow: 0 4px 0 var(--ko-fill); color: var(--ko-text); }
+.choice.sel { border-color: var(--primary-soft-line); background: var(--primary-soft); color: var(--primary); }
+.choice.good { border-color: var(--ok-fill); background: var(--ok-soft); color: var(--ok-text); }
+.choice.bad { border-color: var(--ko-fill); background: var(--ko-soft); color: var(--ko-text); }
 .choice:disabled { cursor: default; }
 .mark { position: absolute; top: 6px; right: 10px; font-size: 18px; }
 
