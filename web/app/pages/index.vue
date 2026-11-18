@@ -7,7 +7,7 @@ import { nextStep } from '~/engine/next'
 import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
 
-const { progress, reset } = useProgress()
+const { progress } = useProgress()
 const today = dayKey(new Date())
 
 const streak = computed(() => currentStreak(progress.value.streak, today))
@@ -51,21 +51,13 @@ const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
 
 const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
-const confirming = ref(false)
-function onReset() {
-  if (confirming.value) {
-    reset()
-    confirming.value = false
-  }
-  else confirming.value = true
-}
 </script>
 
 <template>
   <div class="shell">
     <header class="top">
       <span class="stat" :aria-label="`Série : ${streak} jours`">🔥 {{ streak }}</span>
-      <NuxtLink to="/stats" class="stat course" aria-label="Statistiques">📊 Mes stats</NuxtLink>
+      <span class="stat course">⛵ Permis côtier</span>
       <span class="stat xp" :aria-label="`${progress.xp} points d’expérience`">⚡ {{ progress.xp }} XP</span>
     </header>
 
@@ -126,13 +118,6 @@ function onReset() {
       <NuxtLink :to="`/lecon/${EXAM_ID}`" class="btn">Passer un examen blanc</NuxtLink>
     </section>
 
-    <footer class="foot">
-      <NuxtLink to="/fiches" class="lex">🗂️ Mes fiches : relire le cours</NuxtLink>
-      <NuxtLink to="/lexique" class="lex">📖 Lexique : les mots du permis expliqués</NuxtLink>
-      <button type="button" @click="onReset">
-        {{ confirming ? 'Touche encore pour tout effacer' : 'Réinitialiser ma progression' }}
-      </button>
-    </footer>
   </div>
 </template>
 
@@ -142,7 +127,7 @@ function onReset() {
   padding: 14px 18px; border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .stat { font-size: 17px; }
-.course { display: inline-flex; align-items: center; min-height: 44px; color: var(--primary); text-decoration: none; }
+.course { color: var(--primary); font-weight: 900; }
 .xp { color: var(--gold-text); }
 .goal { padding: 14px 18px 4px; }
 .lab { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-mute); margin-bottom: 6px; }
@@ -187,7 +172,4 @@ function onReset() {
 .exam.practice { margin: 14px 16px 0; }
 .exam .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .exam .btn { display: block; text-decoration: none; line-height: 28px; }
-.foot { padding: 0 0 30px; text-align: center; }
-.lex { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-bottom: 8px; color: var(--primary); font-size: 15px; font-weight: 800; }
-.foot button { min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }
 </style>
