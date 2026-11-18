@@ -4,7 +4,15 @@ import { PRACTICE_ID } from '~/courses/practice'
 import { currentStreak, dayKey } from '~/engine/streak'
 import { accuracy, activity, fragileUnits, mostMissed, totals } from '~/engine/stats'
 
-const { progress } = useProgress()
+const { progress, reset } = useProgress()
+const confirming = ref(false)
+function onReset() {
+  if (confirming.value) {
+    reset()
+    confirming.value = false
+  }
+  else confirming.value = true
+}
 const now = Date.now()
 const today = dayKey(new Date(now))
 
@@ -41,9 +49,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 <template>
   <div class="shell">
     <header class="top">
-      <NuxtLink to="/" class="back" aria-label="Retour au parcours">←</NuxtLink>
       <h1>Statistiques</h1>
-      <span class="spacer" />
     </header>
 
     <main class="body">
@@ -120,17 +126,19 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
       </section>
 
       <p class="note">Les statistiques sont gardées sur ce téléphone, depuis la mise à jour du 18/11/2026.</p>
+      <button type="button" class="reset" @click="onReset">
+        {{ confirming ? 'Touche encore pour tout effacer' : 'Réinitialiser ma progression' }}
+      </button>
     </main>
   </div>
 </template>
 
 <style scoped>
 .top {
-  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; padding: 8px 12px;
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
   border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
-.back, .spacer { display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px; color: var(--ink-mute); text-decoration: none; }
 .body { padding: 14px 16px 40px; display: flex; flex-direction: column; gap: 14px; }
 
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -142,6 +150,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .card h2 { margin: 0 0 12px; font-size: 18px; font-weight: 900; }
 .empty, .note { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink-mute); }
 .note { text-align: center; }
+.reset { align-self: center; min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }
 .card .btn { display: block; margin-top: 12px; text-align: center; text-decoration: none; line-height: 28px; }
 
 .chart { display: flex; align-items: flex-end; gap: 4px; height: 130px; }

@@ -22,9 +22,7 @@ function state(cardId: string) {
 <template>
   <div class="shell">
     <header class="top">
-      <NuxtLink to="/" class="back" aria-label="Retour au parcours">←</NuxtLink>
       <h1>Mes fiches</h1>
-      <span class="spacer" />
     </header>
     <main class="body">
       <p v-if="!units.length" class="lead">Termine une leçon : ses fiches de cours apparaîtront ici pour que tu puisses les relire quand tu veux.</p>
@@ -45,19 +43,16 @@ function state(cardId: string) {
           </div>
         </details>
       </section>
-
-      <NuxtLink to="/lexique" class="lex">📖 Voir aussi le lexique</NuxtLink>
     </main>
   </div>
 </template>
 
 <style scoped>
 .top {
-  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; padding: 8px 12px;
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
   border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
-.back, .spacer { display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px; color: var(--ink-mute); text-decoration: none; }
 .body { padding: 14px 16px 40px; }
 .lead { margin: 0 0 8px; font-size: 15px; color: var(--ink-mute); line-height: 1.45; }
 .unit { margin-top: 18px; }
@@ -77,5 +72,4 @@ function state(cardId: string) {
 .state.known { color: var(--ok-text); }
 .state.weak { color: var(--ko-text); }
 .state.learning { color: var(--ink-mute); }
-.lex { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 20px; color: var(--primary); font-weight: 800; }
 </style>

@@ -7,9 +7,7 @@ const sorted = [...TERMS].sort((a, b) => a.term.localeCompare(b.term, 'fr'))
 <template>
   <div class="shell">
     <header class="top">
-      <NuxtLink to="/" class="back" aria-label="Retour au parcours">←</NuxtLink>
       <h1>Lexique</h1>
-      <span class="spacer" />
     </header>
     <main class="body">
       <p class="lead">Les mots du permis expliqués simplement. Dans les leçons, touche un mot <span class="u">souligné en pointillés</span> pour voir sa définition.</p>
@@ -25,11 +23,10 @@ const sorted = [...TERMS].sort((a, b) => a.term.localeCompare(b.term, 'fr'))
 
 <style scoped>
 .top {
-  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; padding: 8px 12px;
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
   border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
-.back, .spacer { display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px; color: var(--ink-mute); text-decoration: none; }
 .body { padding: 14px 16px 40px; }
 .lead { margin: 0 0 16px; font-size: 15px; color: var(--ink-mute); line-height: 1.45; }
 .u { text-decoration: underline dotted var(--primary); text-decoration-thickness: 2px; text-underline-offset: 3px; }

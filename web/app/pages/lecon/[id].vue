@@ -10,6 +10,7 @@ import { pick, seeded } from '~/engine/random'
 import { advance, check, currentStep, progress as share, select, startSession, type Session } from '~/engine/session'
 import { currentStreak, dayKey } from '~/engine/streak'
 
+definePageMeta({ layout: false })
 const route = useRoute()
 const isExam = String(route.params.id) === EXAM_ID
 const isPractice = String(route.params.id) === PRACTICE_ID
