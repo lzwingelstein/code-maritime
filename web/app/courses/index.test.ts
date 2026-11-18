@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { COURSES, EXAM_COURSES, findLesson, LESSON_IDS } from './index'
+import { PICTOS } from './pictos'
 
 describe('courses', () => {
   it('lesson ids are unique across courses', () => {
@@ -27,5 +28,17 @@ describe('exam courses', () => {
   it('leave out the boat basics, which are not an exam point', () => {
     expect(EXAM_COURSES.map(c => c.id)).not.toContain('bases')
     expect(EXAM_COURSES).toHaveLength(COURSES.length - 1)
+  })
+})
+
+describe('sheet pictures', () => {
+  it('never shows an emoji on a card: drawn scenes or line pictograms only', () => {
+    for (const c of COURSES) {
+      for (const id of new Set(c.lessons.flatMap(l => l.plan.cards))) {
+        const v = c.card(id).visual
+        expect(v.type, `${c.id}/${id}`).not.toBe('emoji')
+        if (v.type === 'picto') expect(PICTOS[v.name], `${c.id}/${id}`).toBeDefined()
+      }
+    }
   })
 })

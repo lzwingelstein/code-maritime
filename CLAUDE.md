@@ -39,7 +39,7 @@ code-maritime/
 │       │                        #   quiz.ts (authored-QCM course factory), exam.ts (40-question mock exam)
 │       │   ├── balisage/        #   unit 1: marks, lessons, exercise generator
 │       │   └── navires/         #   unit 2: vessels (lights by aspect, day shapes), lessons, exercise generator
-│       ├── components/          # CardVisual (dispatch), BuoyMark, NightLight, ShipScene (SVG), RichText
+│       ├── components/          # CardVisual (dispatch), BuoyMark, NightLight, ShipScene, CardPicto (SVG), UiIcon, RichText
 │       ├── composables/         # useProgress (localStorage), useSound
 │       ├── layouts/default.vue  # pages with the bottom TabBar (Parcours, Fiches with course sheets and lexicon, Stats); lessons use no layout
 │       ├── pages/               # index (path), fiches, stats, lexique, lecon/[id] (lesson)
@@ -60,6 +60,8 @@ code-maritime/
    or fewer than two choices exist).
 2. Test the generator: answer among unique choices, kinds only where they make sense, every lesson fills its count.
 3. New picture types: add a `Visual` variant in `courses/types.ts` and draw it from `CardVisual.vue`.
+   No emoji on a card (tested): a sheet without a drawn scene gets a line pictogram, `picto('<name>')`
+   from `courses/pictos.ts` (add one there if needed, 24 px grid, stroke only).
 4. Register the course in `courses/index.ts`. Card ids and lesson ids must be unique across courses (tested).
 5. Mostly rules and numbers? Write it with `quizCourse()` (cards with authored questions and statements);
    `QUIZ_COURSES` content is checked by `quiz.test.ts`. Give it a neutral `heading` (never the card name).

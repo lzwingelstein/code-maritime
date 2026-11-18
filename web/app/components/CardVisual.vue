@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** Draws any course visual: a buoy, a light rhythm, a ship scene or an emoji icon. */
+/** Draws any course visual: a buoy, a light rhythm, a ship scene or a pictogram. */
 import type { Visual } from '~/courses/types'
 
 defineProps<{ visual: Visual }>()
@@ -20,6 +20,7 @@ defineProps<{ visual: Visual }>()
   <BoatPlan v-else-if="visual.type === 'boat'" :part="visual.part" :labelled="visual.labelled" />
   <LightStack v-else-if="visual.type === 'stack'" :colours="visual.colours" />
   <PortSignal v-else-if="visual.type === 'port'" :lights="visual.lights" :flashing="visual.flashing" :exemption="visual.exemption" />
+  <CardPicto v-else-if="visual.type === 'picto'" :name="visual.name" />
   <span v-else class="emoji" aria-hidden="true">{{ visual.char }}</span>
 </template>
 
