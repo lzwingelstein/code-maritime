@@ -8,9 +8,10 @@ import { reviewWeight } from '~/engine/mastery'
 import { DAILY_GOAL, introduce, recordExam, recordLesson, todayXp } from '~/engine/progress'
 import { pick, seeded } from '~/engine/random'
 import { advance, check, currentStep, progress as share, select, startSession, type Session } from '~/engine/session'
-import { currentStreak, dayKey } from '~/engine/streak'
+import { dayKey } from '~/engine/streak'
 
 definePageMeta({ layout: false })
+const ready = useReadiness()
 const route = useRoute()
 const isExam = String(route.params.id) === EXAM_ID
 const isPractice = String(route.params.id) === PRACTICE_ID
@@ -193,7 +194,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <div class="tile blue"><b>Temps</b><span>⏱ {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
         </div>
         <p class="sub">
-          🔥 Série : {{ currentStreak(progress.streak, today) }} jour(s) · objectif du jour
+          🎯 Prêt à {{ ready.percent }} % pour l’examen · objectif du jour
           {{ Math.min(todayXp(progress, today), DAILY_GOAL) }} / {{ DAILY_GOAL }} XP
         </p>
         <NuxtLink to="/" class="btn ok">Continuer</NuxtLink>
