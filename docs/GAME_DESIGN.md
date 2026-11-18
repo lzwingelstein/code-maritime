@@ -20,7 +20,7 @@ Les thèmes de l'examen deviennent des **unités** ; la première est le balisag
 ### Unité 2 · Feux et marques des navires
 1. Navire à moteur (moins et plus de 50 m) : secteurs des feux, « sous quel angle je le vois »
 2. Le voilier (pas de feu de tête de mât)
-3. Pêche et pilote (vert sur blanc, rouge sur blanc, blanc sur rouge)
+3. Pêche et bateau pilote (vert sur blanc, rouge sur blanc, blanc sur rouge)
 4. Mouillage et navires gênés (un blanc, deux rouges, rouge-blanc-rouge, trois rouges)
 5. Marques de jour (boule, deux boules, boule-losange-boule, cylindre, cônes, voilier au moteur)
 6. Révision

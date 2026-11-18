@@ -33,7 +33,7 @@ export const LESSONS: Lesson[] = [
     },
   },
   {
-    id: 'peche-pilote', title: 'Pêche et pilote', icon: icon('🎣'), firstKind: 'identify',
+    id: 'peche-pilote', title: 'Pêche et bateau pilote', icon: icon('🎣'), firstKind: 'identify',
     plan: { cards: ['trawler', 'fishing', 'pilot'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🧠', title: 'Lis de haut en bas',
@@ -41,7 +41,7 @@ export const LESSONS: Lesson[] = [
         rows: [
           { visual: stack('green', 'white'), label: '**Vert sur blanc** : chalutier' },
           { visual: stack('red', 'white'), label: '**Rouge sur blanc** : autre pêcheur' },
-          { visual: stack('white', 'red'), label: '**Blanc sur rouge** : pilote' },
+          { visual: stack('white', 'red'), label: '**Blanc sur rouge** : bateau pilote' },
         ],
     },
   },

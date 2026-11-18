@@ -164,7 +164,7 @@ reste à faire (formulations de l'examen, pièges classiques).
 | Non maître de sa manœuvre : deux rouges, deux boules ; en route côtés et poupe | 27 | ✅ |
 | Capacité restreinte : rouge-blanc-rouge, boule-bicône-boule ; en route tête de mât, côtés, poupe | 27 | ✅ « losange » → « bicône » |
 | Tirant d'eau : trois rouges ou cylindre, en plus des feux de la règle 23 (facultatif) | 28 | ✅ « peut » ajouté |
-| Pilote : blanc sur rouge | 29 | ✅ |
+| Bateau pilote : blanc sur rouge | 29 | ✅ |
 | Mouillage : blanc sur tout l'horizon à l'avant, second plus bas à l'arrière à partir de 50 m ; boule à l'avant | 30 | ✅ précisé |
 
 Non couverts pour l'instant : remorquage et poussage (règle 24), navire échoué (règle 30), navires de moins de 7 m / 12 m,
