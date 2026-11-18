@@ -2,6 +2,7 @@
 import { COURSES, findLesson, LESSON_IDS } from '~/courses'
 import { EXAM, EXAM_ID } from '~/courses/exam'
 import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
+import { lessonStatus } from '~/engine/lesson-status'
 import { nextStep } from '~/engine/next'
 import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
 import { currentStreak, dayKey } from '~/engine/streak'
@@ -12,12 +13,14 @@ const today = dayKey(new Date())
 const streak = computed(() => currentStreak(progress.value.streak, today))
 const dayXp = computed(() => todayXp(progress.value, today))
 // Lessons are unlocked in path order, across units.
+const now = Date.now()
 const units = computed(() => COURSES.map((course, u) => ({
   course,
   label: `Unité ${u + 1} · ${course.unit}`,
   nodes: course.lessons.map((lesson) => {
     const i = LESSON_IDS.indexOf(lesson.id)
-    return { lesson, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done: progress.value.completions[lesson.id] ?? 0 }
+    const done = !!progress.value.completions[lesson.id]
+    return { lesson, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done, status: lessonStatus(lesson.plan.cards, progress.value.mastery, done, now) }
   }),
 })))
 const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
@@ -44,6 +47,7 @@ const altLabel = (k: 'lesson' | 'practice') => (k === 'practice' ? 'Plutôt m’
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
 
+const REVIEW_WHY = { mistakes: 'erreurs récentes', due: 'à réviser' } as const
 const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 const confirming = ref(false)
 function onReset() {
@@ -93,10 +97,11 @@ function onReset() {
             :to="`/lecon/${n.lesson.id}`"
             class="node"
             :class="{ done: n.done }"
-            :aria-label="`${n.lesson.title}${n.done ? `, terminée ${n.done} fois` : ''}`"
+            :aria-label="`${n.lesson.title}${n.status.state === 'done' ? ', terminée' : n.status.state === 'review' ? `, à revoir : ${REVIEW_WHY[n.status.reason]}` : ''}`"
           >
             <CardVisual :visual="n.lesson.icon" />
-            <span v-if="n.done" class="crown">👑 {{ n.done }}</span>
+            <span v-if="n.status.state === 'done'" class="badge" aria-hidden="true">✓</span>
+            <span v-else-if="n.status.state === 'review'" class="badge review" aria-hidden="true">↻</span>
             <span v-if="n.index === current" class="bubble">Commencer</span>
           </NuxtLink>
           <span v-else class="node locked" :aria-label="`${n.lesson.title}, verrouillée`">
@@ -104,6 +109,7 @@ function onReset() {
             <span class="lock" aria-hidden="true">🔒</span>
           </span>
           <span class="nlab">{{ n.lesson.title }}</span>
+          <span v-if="n.status.state === 'review'" class="why" aria-hidden="true">À revoir · {{ REVIEW_WHY[n.status.reason] }}</span>
         </div>
       </nav>
     </template>
@@ -153,10 +159,11 @@ function onReset() {
 .node.locked { background: var(--disabled); box-shadow: 0 7px 0 var(--disabled-shadow); }
 .node.locked :deep(svg), .node.locked :deep(.emoji) { filter: grayscale(1) opacity(.4); }
 .lock { position: absolute; right: -4px; bottom: -6px; font-size: 18px; }
-.crown {
-  position: absolute; right: -8px; bottom: -8px; padding: 1px 6px; border: 2px solid var(--line); border-radius: 99px;
-  background: var(--surface); color: var(--gold-text); font-size: 12px;
+.badge {
+  position: absolute; right: -10px; bottom: -8px; min-width: 28px; padding: 1px 7px; border: 2px solid var(--line); border-radius: 99px;
+  background: var(--surface); color: var(--gold-text); font-size: 15px; font-weight: 900; text-align: center; white-space: nowrap;
 }
+.badge.review { color: var(--primary); border-color: var(--primary); }
 .bubble {
   position: absolute; top: -46px; left: 50%; padding: 6px 12px; border: 2px solid var(--line); border-radius: 12px;
   background: var(--surface); color: var(--primary); font-size: 13px; white-space: nowrap;
@@ -167,6 +174,7 @@ function onReset() {
   border: 7px solid transparent; border-top-color: var(--surface); border-bottom: 0;
 }
 @keyframes bob { 50% { transform: translate(-50%, -5px); } }
+.why { margin-top: 2px; font-size: 13px; font-weight: 800; color: var(--primary); }
 .nlab { max-width: 150px; margin-top: 12px; font-size: 14px; color: var(--ink-mute); text-align: center; }
 .exam { margin: 0 16px 34px; padding: 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
 .exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 900; }
