@@ -33,8 +33,24 @@ describe('session', () => {
     expect(s.firstTry).toBe(2)
   })
 
+  it('has no heart limit by default: wrong questions come back until answered right', () => {
+    const s = startSession([q('x')])
+    expect(s.hearts).toBeNull()
+    for (let i = 0; i < 8; i++) {
+      select(s, 'b')
+      check(s, regenerate)
+      advance(s)
+      expect(s.phase).toBe('step')
+    }
+    select(s, 'a')
+    check(s, regenerate)
+    advance(s)
+    expect(s.phase).toBe('won')
+    expect(s.errors).toBe(8)
+  })
+
   it('a wrong answer costs a heart and brings the question back at the end, as a retry', () => {
-    const s = startSession([q('x'), q('y')])
+    const s = startSession([q('x'), q('y')], { hearts: 5 })
     select(s, 'b')
     const v = check(s, regenerate)
     expect(v.correct).toBe(false)

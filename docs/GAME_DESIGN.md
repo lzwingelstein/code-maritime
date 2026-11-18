@@ -39,11 +39,12 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
   de nuit (feu animé → marque), comprendre (signification → bouée), vrai ou faux.
 - On choisit puis **« Vérifier »** ; le verdict s'affiche dans une bannière en bas (✓/✗ et texte), puis « Continuer ».
   Pas de passage automatique.
-- **5 cœurs** : une erreur coûte un cœur, la question revient à la fin sous une autre forme (nouveaux choix).
-  Plus de cœurs : la leçon est perdue, on peut la retenter. La barre de progression ne recule jamais.
+- **Pas de cœurs** : une question ratée revient à la fin sous une autre forme (nouveaux choix), marquée
+  « ↻ Tu l'avais ratée », **jusqu'à ce qu'elle soit réussie**. La série ne se termine que quand tout est bon ;
+  l'en-tête affiche le nombre de questions ratées encore à refaire. La barre de progression ne recule jamais.
 
 ## Progression
-- **XP** : 10 par leçon, +5 sans perdre de cœur, +1 par série de 3 bonnes réponses (5 au plus).
+- **XP** : 10 par leçon, +5 sans aucune erreur, +1 par série de 3 bonnes réponses (5 au plus).
 - **Objectif du jour** : 30 XP. **Série** : une flamme par jour avec au moins une leçon finie.
 - **Répétition espacée** (comme BirdGuessr) : bonne réponse → la marque monte d'un niveau et revient après
   1 jour, 3 jours, 1 semaine puis 3 semaines ; erreur → elle redescend et redevient à revoir. Sert aux révisions.
@@ -53,7 +54,8 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
 - Série de **15 questions** qui **mélange toutes les unités**, uniquement sur les fiches **déjà vues**.
 - Tirage pondéré par la maîtrise (répétition espacée), **au carré** : les fiches ratées récemment ou à revoir
   reviennent bien plus souvent que les fiches sues. Jamais deux fois la même fiche d'affilée.
-- 5 cœurs, les erreurs reviennent en fin de série (comme une leçon), XP et série du jour comptés.
+- Comme une leçon : pas de cœurs, les erreurs reviennent jusqu'à être réussies ; XP et série du jour comptés.
+- Entraînement **par thème** depuis les stats (une seule unité, dès 2 fiches vues).
 - Ouvert dès 4 fiches vues ; l'accueil affiche le nombre de « points à retravailler »
   (fiches au niveau 0 ou 1 et à revoir).
 
