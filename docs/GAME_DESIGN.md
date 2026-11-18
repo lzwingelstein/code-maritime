@@ -4,6 +4,12 @@
 On apprend le code du permis côtier par séries courtes de questions, avec les mécaniques de Duolingo.
 Les thèmes de l'examen deviennent des **unités** ; la première est le balisage, le plus visuel et le plus piégeux.
 
+## Premier lancement
+- Un seul écran, facultatif (« Passer ») : **« Quand passes-tu l’examen ? »** — « J’ai une date » (sélecteur de jour), « Dans le mois », « Je ne sais pas encore ». Une ligne donne le rythme conseillé en direct.
+- Rythme : les leçons restantes réparties sur les jours avant l’examen, en gardant **10 jours de révisions** à la fin ; si l’examen est plus proche que ça, elles sont réparties sur les jours qui restent (« c’est serré »). « Dans le mois » = dans un mois jour pour jour.
+- Montré seulement à qui n’a encore fini aucune leçon ; modifiable depuis les stats (« Examen : … · Modifier »).
+- Une date connue s’affiche en haut à droite de l’accueil (« Examen dans 30 jours ») et la jauge dit le rythme (« environ 3 par jour, puis 10 jours de révisions »).
+
 ## Accueil
 - En haut, une seule action : la jauge **« Prêt pour l’examen »** (pourcentage, leçons restantes et date de fin estimée ; touche → stats), puis **un gros bouton** « Continuer » (nom de la leçon dessous) ou « Retravailler mes points faibles », avec la raison en une ligne et une alternative en lien.
 - Dessous, **« Ton parcours »** en sommaire : une carte par unité (rond d’état ✓ / numéro / cadenas, titre, barre « 2 / 6 »). Seule l’unité de la prochaine leçon est ouverte au départ ; un toucher ouvre ou ferme les autres. Une unité ouverte liste ses leçons, une par ligne, avec leur état écrit (« ✓ Faite », « ↻ À revoir · erreurs récentes », « Prochaine leçon » avec un bouton « Commencer », « Verrouillée »). Puis l’examen blanc sur une ligne.

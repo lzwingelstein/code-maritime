@@ -1,5 +1,6 @@
 /** Player progress: XP, daily goal, streak, lesson completions and card mastery. Pure functions; storage is elsewhere. */
 import { applyAnswer, type CardMastery } from './mastery'
+import type { ExamPlan } from './readiness'
 import { dayKey, recordPlay, type Streak } from './streak'
 import type { AnswerLog } from './types'
 
@@ -16,6 +17,8 @@ export interface Progress {
   cards?: Record<string, AnswerCount>
   /** Answers and XP per day, for the last HISTORY_DAYS days with activity. */
   history?: Record<string, DayStats>
+  /** When the player plans to sit the exam (asked once, on first launch; editable from the stats). */
+  examPlan?: ExamPlan
 }
 
 export interface AnswerCount {

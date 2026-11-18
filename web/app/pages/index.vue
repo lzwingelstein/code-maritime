@@ -7,6 +7,8 @@ import { nextStep } from '~/engine/next'
 import { bestExam, isUnlocked } from '~/engine/progress'
 
 const { progress } = useProgress()
+// First launch: ask once when the exam is (skippable). Players with lessons done are never sent there.
+if (!progress.value.examPlan && !Object.keys(progress.value.completions).length) navigateTo('/bienvenue', { replace: true })
 
 const ready = useReadiness()
 // Readiness ring: circumference of a 52 px radius circle.
@@ -76,7 +78,8 @@ const unitCount = (u: (typeof units.value)[number]) => (u.progress.state === 'lo
     <header class="top">
       <span class="course display"><UiIcon name="boat" :size="22" /> Permis côtier</span>
       <span class="info">
-        <template v-if="ready.lessonsLeft">Fin <b>{{ ready.endShort }}</b></template>
+        <template v-if="ready.exam && ready.exam.daysUntil >= 0">Examen <b>{{ ready.exam.approx ? 'dans un mois' : ready.exam.inText }}</b></template>
+        <template v-else-if="ready.lessonsLeft">Fin <b>{{ ready.endShort }}</b></template>
         <template v-else>Parcours terminé ✓</template>
       </span>
     </header>
@@ -91,7 +94,10 @@ const unitCount = (u: (typeof units.value)[number]) => (u.progress.state === 'lo
         <b class="display">{{ ready.percent }}<small>%</small></b>
       </NuxtLink>
       <p class="when">
-        <template v-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} à faire, puis des révisions.</template>
+        <template v-if="ready.lessonsLeft && ready.exam && ready.exam.daysUntil >= 0">
+          Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} : environ <b>{{ ready.exam.perDay }} par jour</b>{{ ready.exam.tight ? ' (c’est serré)' : ', puis 10 jours de révisions' }}.
+        </template>
+        <template v-else-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} à faire, puis des révisions.</template>
         <template v-else>Parcours terminé : ancre tes fiches, puis vise un examen blanc.</template>
       </p>
     </section>

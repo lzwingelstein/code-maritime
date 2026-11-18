@@ -1,5 +1,5 @@
 import { COURSES } from '~/courses'
-import { pace, readiness } from '~/engine/readiness'
+import { examPace, examTarget, pace, readiness } from '~/engine/readiness'
 import { dayKey } from '~/engine/streak'
 
 /** Pace assumed before the player's own is known: two lessons a day, about the 30 XP daily goal. */
@@ -25,12 +25,22 @@ export function useReadiness() {
       perDay,
     })
     const end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + r.daysLeft)
+    const target = examTarget(progress.value.examPlan, today)
+    const exam = target ? examPace({ lessonsLeft: r.lessonsLeft, today, target }) : null
+    const [ty, tm, td] = (target ?? today).split('-').map(Number) as [number, number, number]
+    const examDate = new Date(ty, tm - 1, td)
     return {
       ...r,
       perDay,
       paceKnown: own !== null,
       perDayText: perDay.toLocaleString('fr-FR', { maximumFractionDigits: 1 }),
       endShort: r.daysLeft > 365 ? 'dans plus d’un an' : `vers le ${end.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}`,
+      exam: exam && {
+        ...exam,
+        dateText: examDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' }),
+        inText: exam.daysUntil > 1 ? `dans ${exam.daysUntil} jours` : exam.daysUntil === 1 ? 'demain' : exam.daysUntil === 0 ? 'aujourd’hui' : 'passé',
+        approx: progress.value.examPlan?.choice === 'month',
+      },
       endText: r.daysLeft > 365 ? 'dans plus d’un an' : `vers le ${end.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}`,
     }
   })
