@@ -45,6 +45,6 @@ onBeforeUnmount(() => clearTimeout(timer))
 .legend { margin: 0; font-size: 14px; color: var(--ink-mute); text-align: center; }
 .replay {
   min-height: 44px; padding: 0 18px; border: 2px solid var(--line); border-radius: 99px;
-  background: var(--surface); color: var(--primary); font-size: 15px; font-weight: 800;
+  background: var(--surface); color: var(--primary); font-size: 15px; font-weight: 600;
 }
 </style>

@@ -275,9 +275,9 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .examline { margin: 0; padding: 0 18px; font-size: 14px; color: var(--ink-mute); }
 
 .body { flex: 1; display: flex; flex-direction: column; padding: 8px 18px 190px; }
-.retry { display: inline-block; margin: 8px 0 0; padding: 3px 10px; border: 2px solid var(--primary); border-radius: 99px; font-size: 13px; font-weight: 800; color: var(--primary); }
+.retry { display: inline-block; margin: 8px 0 0; padding: 3px 10px; border: 2px solid var(--primary); border-radius: 99px; font-size: 13px; font-weight: 600; color: var(--primary); }
 .heading { margin: 6px 0 4px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
-.prompt { margin: 0 0 14px; font-size: 21px; font-weight: 900; line-height: 1.25; }
+.prompt { margin: 0 0 14px; font-size: 21px; font-weight: 700; line-height: 1.25; }
 .visual { display: flex; justify-content: center; margin: 4px 0 16px; }
 .v-mark :deep(svg) { height: 200px; }
 .v-mark-top :deep(svg) { height: 130px; }
@@ -288,7 +288,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .choices.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choice {
   position: relative; min-height: 56px; padding: 14px; border: 2px solid var(--line); border-radius: 14px;
-  background: var(--surface); color: var(--ink); font-size: 17px; font-weight: 800; text-align: left;
+  background: var(--surface); color: var(--ink); font-size: 17px; font-weight: 600; text-align: left;
 }
 .pair .choice { text-align: center; }
 .grid .choice { display: flex; justify-content: center; padding: 10px; }
@@ -305,7 +305,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .sheet > div { width: 100%; max-width: 480px; padding: 16px 18px calc(20px + env(safe-area-inset-bottom)); }
 .sheet.ok { background: var(--ok-soft); border-color: transparent; }
 .sheet.ko { background: var(--ko-soft); border-color: transparent; }
-.sheet h3 { margin: 0 0 4px; font-size: 21px; font-weight: 900; }
+.sheet h3 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
 .sheet p { margin: 0 0 12px; font-size: 15px; line-height: 1.4; }
 .sheet.ok h3, .sheet.ok p { color: var(--ok-text); }
 .sheet.ko h3, .sheet.ko p { color: var(--ko-text); }
@@ -316,14 +316,14 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 
 .end { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 30px 22px; text-align: center; }
 .end .big { font-size: 72px; }
-.end h1 { margin: 12px 0 22px; font-size: 28px; font-weight: 900; color: var(--gold-text); }
+.end h1 { margin: 12px 0 22px; font-size: 28px; font-weight: 700; color: var(--gold-text); }
 .end h1.fail { color: var(--ko); }
 .end .btn { display: block; text-decoration: none; text-align: center; line-height: 28px; }
 .sub { margin: 0 0 26px; color: var(--ink-mute); }
 .tiles { display: flex; gap: 12px; width: 100%; margin-bottom: 24px; }
 .tile { flex: 1; overflow: hidden; border: 2px solid; border-radius: 16px; }
 .tile b { display: block; padding: 5px; color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
-.tile span { display: block; padding: 12px 4px; font-size: 20px; font-weight: 900; }
+.tile span { display: block; padding: 12px 4px; font-size: 20px; font-weight: 700; }
 .tile.gold { border-color: var(--gold); } .tile.gold b { background: var(--gold-text); } .tile.gold span { color: var(--gold-text); }
 .tile.ok { border-color: var(--ok); } .tile.ok b { background: var(--ok); } .tile.ok span { color: var(--ok); }
 .tile.blue { border-color: var(--primary); } .tile.blue b { background: var(--primary); } .tile.blue span { color: var(--primary); }

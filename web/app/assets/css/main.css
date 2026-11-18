@@ -6,11 +6,13 @@
     margin: 0;
     background: var(--surface);
     color: var(--ink);
-    font-family: Nunito, system-ui, sans-serif;
-    font-weight: 700;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+    font-weight: 400;
     -webkit-tap-highlight-color: transparent;
   }
   button { font-family: inherit; cursor: pointer; }
+  /* Titles and big numbers: Space Grotesk, as in the mock-ups. */
+  h1, h2, h3, .display { font-family: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif; letter-spacing: -.01em; }
   button:focus-visible, a:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
 }
 
@@ -32,7 +34,7 @@
     border: 0;
     border-radius: 16px;
     font-size: 17px;
-    font-weight: 800;
+    font-weight: 600;
     color: #fff;
     background: var(--primary);
   }

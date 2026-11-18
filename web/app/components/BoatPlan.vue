@@ -115,8 +115,8 @@ const mark = computed(() => ({
 .wind-head { fill: var(--ink); }
 .sea { fill: var(--tip-soft); }
 .red { fill: var(--ko-fill); } .green { fill: var(--ok-fill); }
-.lab { font-size: 15px; font-weight: 800; fill: var(--ink); }
-.sub { font-size: 12px; font-weight: 600; fill: var(--ink-mute); }
+.lab { font-size: 15px; font-weight: 600; fill: var(--ink); }
+.sub { font-size: 12px; font-weight: 500; fill: var(--ink-mute); }
 .q circle { fill: var(--primary); }
-.q text { font-size: 17px; font-weight: 900; fill: #fff; }
+.q text { font-size: 17px; font-weight: 700; fill: #fff; }
 </style>

@@ -32,7 +32,7 @@ const isOn = (t: typeof TABS[number]) => route.path === t.to || ('also' in t && 
 }
 .tab {
   flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  min-height: 64px; color: var(--ink-mute); font-size: 12px; font-weight: 800; text-decoration: none;
+  min-height: 64px; color: var(--ink-mute); font-size: 12px; font-weight: 600; text-decoration: none;
   border-top: 3px solid transparent; margin-top: -2px;
 }
 .tab .ic { font-size: 22px; line-height: 1; filter: grayscale(1); opacity: .7; }

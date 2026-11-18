@@ -32,9 +32,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   width: 100%; max-width: 560px; padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
   border-radius: 20px 20px 0 0; background: var(--surface); color: var(--ink); text-align: left;
 }
-.kicker { margin: 0; font-size: 13px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
-.sheet h2 { margin: 4px 0 8px; font-size: 21px; font-weight: 900; }
+.kicker { margin: 0; font-size: 13px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.sheet h2 { margin: 4px 0 8px; font-size: 21px; font-weight: 700; }
 .def { margin: 0 0 16px; font-size: 17px; line-height: 1.45; }
 .sheet .btn { display: block; width: 100%; }
-.all { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 4px; color: var(--primary); font-weight: 800; }
+.all { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 4px; color: var(--primary); font-weight: 600; }
 </style>

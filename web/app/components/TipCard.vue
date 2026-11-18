@@ -20,8 +20,8 @@ defineProps<{ tip: Tip }>()
 
 <style scoped>
 .card { padding: 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; animation: pop .25s; }
-.card h2 { margin: 10px 0 6px; font-size: 23px; font-weight: 900; }
-.card p { margin: 8px 0 0; font-size: 16px; font-weight: 600; line-height: 1.45; }
+.card h2 { margin: 10px 0 6px; font-size: 23px; font-weight: 700; }
+.card p { margin: 8px 0 0; font-size: 16px; font-weight: 500; line-height: 1.45; }
 .card.tip { background: var(--tip-soft); border-color: var(--tip-line); }
 .tiprows { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
 .tiprows li { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; border-radius: 14px; background: var(--surface); font-size: 14px; line-height: 1.3; }

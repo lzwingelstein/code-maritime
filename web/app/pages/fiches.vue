@@ -108,14 +108,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
   border-bottom: 2px solid var(--line); background: var(--surface);
 }
-.top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
+.top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 700; text-align: center; }
 .sw { margin-bottom: 14px; }
 .body { padding: 14px 16px 24px; }
 .lead, .legend { margin: 0 0 8px; font-size: 14px; color: var(--ink-mute); line-height: 1.45; }
 .legend { margin-top: 16px; text-align: center; }
 .unit { margin-top: 18px; }
-.unit h2 { margin: 0 0 10px; font-size: 18px; font-weight: 900; }
-.unit h2 small { display: block; font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }
+.unit h2 { margin: 0 0 10px; font-size: 18px; font-weight: 700; }
+.unit h2 small { display: block; font-size: 12px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }
 
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
 .thumb {
@@ -129,11 +129,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .pic :deep(.emoji), .emoji { font-size: 40px; }
 .name {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  max-height: calc(2.5em + 11px); padding: 4px 6px 7px; border-top: 1px solid var(--line); font-size: 12px; font-weight: 800; line-height: 1.25;
+  max-height: calc(2.5em + 11px); padding: 4px 6px 7px; border-top: 1px solid var(--line); font-size: 12px; font-weight: 600; line-height: 1.25;
 }
 .badge {
   position: absolute; top: 4px; right: 4px; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 99px;
-  background: var(--surface); border: 2px solid currentColor; font-size: 12px; font-weight: 900; line-height: 18px;
+  background: var(--surface); border: 2px solid currentColor; font-size: 12px; font-weight: 700; line-height: 18px;
 }
 .badge.known { color: var(--ok-text); }
 .badge.weak { color: var(--ko-text); }
@@ -141,12 +141,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .viewer { position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--surface); }
 .vtop { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; border-bottom: 2px solid var(--line); }
 .vbtn { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; font-size: 22px; color: var(--ink-mute); }
-.count { font-size: 15px; font-weight: 800; color: var(--ink-mute); }
+.count { font-size: 15px; font-weight: 600; color: var(--ink-mute); }
 .vbody { flex: 1; overflow-y: auto; padding: 14px 16px; max-width: 480px; width: 100%; margin: 0 auto; }
 .vnav { display: flex; gap: 10px; padding: 10px 16px calc(12px + env(safe-area-inset-bottom)); border-top: 2px solid var(--line); max-width: 480px; width: 100%; margin: 0 auto; }
-.nav { flex: 1; min-height: 48px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--primary); font-size: 16px; font-weight: 900; }
+.nav { flex: 1; min-height: 48px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--primary); font-size: 16px; font-weight: 700; }
 .nav:disabled { color: var(--ink-mute); opacity: .5; }
-.state { margin: 10px 0 0; font-size: 14px; font-weight: 800; }
+.state { margin: 10px 0 0; font-size: 14px; font-weight: 600; }
 .state.known { color: var(--ok-text); }
 .state.weak { color: var(--ko-text); }
 </style>

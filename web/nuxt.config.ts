@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-10-01',
   devtools: { enabled: true },
   modules: ['@nuxt/eslint'],
-  css: ['~/assets/css/main.css'],
+  css: ['@fontsource-variable/inter', '@fontsource-variable/space-grotesk', '~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
   },
@@ -27,9 +27,6 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'manifest', href: '/manifest.webmanifest' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Nunito:wght@600..900&display=swap' },
       ],
     },
   },
