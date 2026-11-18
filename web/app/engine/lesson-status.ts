@@ -1,15 +1,21 @@
 /**
- * Marker of a lesson on the path: done and solid, or worth doing again because some of its cards
- * were missed recently (level 0) or are due again under spaced repetition (done a while ago).
+ * Lessons flagged "À revoir" on the path. Only recent mistakes (cards back at level 0) count, and only a few
+ * lessons are flagged at once so the path never turns into a wall of reviews. Cards merely due under spaced
+ * repetition are left to the practice series, which already picks them first.
  */
-import { isDue, type CardMastery } from './mastery'
+import type { CardMastery } from './mastery'
 
-export type LessonStatus = { state: 'todo' } | { state: 'done' } | { state: 'review', reason: 'mistakes' | 'due' }
+export const MAX_REVIEW_MARKERS = 2
 
-export function lessonStatus(cards: string[], mastery: Record<string, CardMastery>, done: boolean, now: number): LessonStatus {
-  if (!done) return { state: 'todo' }
-  const seen = cards.map(id => mastery[id]).filter((m): m is CardMastery => !!m)
-  if (seen.some(m => m.level === 0)) return { state: 'review', reason: 'mistakes' }
-  if (seen.some(m => isDue(m, now))) return { state: 'review', reason: 'due' }
-  return { state: 'done' }
+export function lessonsToReview(
+  lessons: { id: string, cards: string[], done: boolean }[],
+  mastery: Record<string, CardMastery>,
+  max: number = MAX_REVIEW_MARKERS,
+): string[] {
+  return lessons
+    .map((l, order) => ({ id: l.id, order, mistakes: l.done ? l.cards.filter(id => mastery[id]?.level === 0).length : 0 }))
+    .filter(l => l.mistakes > 0)
+    .sort((a, b) => b.mistakes - a.mistakes || a.order - b.order)
+    .slice(0, max)
+    .map(l => l.id)
 }
