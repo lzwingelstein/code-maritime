@@ -1,9 +1,9 @@
 /**
  * Lesson session: plain TypeScript state + functions that mutate it (wrap it in `reactive()` in a page).
  * - choose, then check: the verdict shows, then the player continues (no automatic move);
- * - a wrong answer costs a heart and the question comes back at the end, regenerated (other choices);
+ * - a wrong answer comes back at the end, regenerated (other choices), until it is answered right;
  * - progress counts finished steps, so a mistake never moves the bar back;
- * - no hearts left: the lesson is lost.
+ * - no heart limit by default; with `hearts` set, a wrong answer costs one and none left loses the lesson.
  * Exam mode (hearts: null, retryWrong: false): no heart limit, a wrong answer is final and only counted in `errors`.
  */
 import type { AnswerLog, BaseExercise, Step, Verdict } from './types'
@@ -37,7 +37,7 @@ export function startSession<E extends BaseExercise>(
   steps: Step<E>[],
   options: { hearts?: number | null, retryWrong?: boolean } = {},
 ): Session<E> {
-  const hearts = options.hearts === undefined ? 5 : options.hearts
+  const hearts = options.hearts ?? null
   return {
     steps: [...steps],
     index: 0,

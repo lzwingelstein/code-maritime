@@ -112,6 +112,8 @@ onMounted(() => {
 onBeforeUnmount(() => clearInterval(clock))
 const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`
 const answered = computed(() => s.value.answers.length)
+/** Missed questions still waiting at the end of the series. */
+const pending = computed(() => s.value.steps.slice(s.value.index + (s.value.verdict?.correct ? 1 : 0)).filter(st => st.type === 'question' && st.isRetry).length)
 
 function retry() {
   s.value = newSession()
@@ -195,15 +197,6 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         </p>
         <NuxtLink to="/" class="btn ok">Continuer</NuxtLink>
       </template>
-      <template v-else>
-        <div class="big" aria-hidden="true">🌊</div>
-        <h1 class="fail">Plus de cœurs…</h1>
-        <p class="sub">Tu as fait 5 erreurs. Ce que tu as raté reviendra plus souvent : réessaie !</p>
-        <div class="endbtns">
-          <button type="button" class="btn" @click="retry">Réessayer</button>
-          <NuxtLink to="/" class="btn ghost">Retour au parcours</NuxtLink>
-        </div>
-      </template>
     </div>
 
     <!-- Lesson -->
@@ -214,7 +207,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <i :style="{ width: share(s) * 100 + '%', background: 'var(--ok-fill)' }" />
         </div>
         <span v-if="isExam" class="hearts" :aria-label="`${s.errors} erreurs sur ${EXAM.maxErrors} permises`">✗ {{ s.errors }}/{{ EXAM.maxErrors }}</span>
-        <span v-else class="hearts" :aria-label="`${s.hearts} cœurs restants`">❤️ {{ s.hearts }}</span>
+        <span v-else class="hearts" :aria-label="pending ? `${pending} question${pending > 1 ? 's' : ''} ratée${pending > 1 ? 's' : ''} à refaire` : undefined">{{ pending ? `↻ ${pending}` : '' }}</span>
       </header>
       <p v-if="isExam" class="examline">
         Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · ⏱ {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
@@ -249,6 +242,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 
         <!-- Question -->
         <template v-else-if="exercise">
+          <p v-if="step?.type === 'question' && step.isRetry" class="retry">↻ Tu l’avais ratée : réessaie</p>
           <p class="heading">{{ exercise.heading }}</p>
           <h2 class="prompt">{{ exercise.prompt }}</h2>
           <div v-if="exercise.visual" class="visual" :class="`v-${exercise.visual.type}${exercise.visual.type === 'mark' && exercise.visual.topOnly ? '-top' : ''}`">
@@ -300,10 +294,11 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .lhead { display: flex; align-items: center; gap: 12px; padding: 12px 16px 6px; }
 .close { display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px; color: var(--ink-mute); text-decoration: none; }
 .lhead .bar { flex: 1; height: 16px; }
-.hearts { min-width: 48px; text-align: right; font-size: 18px; color: var(--ko); }
+.hearts { min-width: 48px; text-align: right; font-size: 18px; color: var(--ko-text); }
 .examline { margin: 0; padding: 0 18px; font-size: 14px; color: var(--ink-mute); }
 
 .body { flex: 1; display: flex; flex-direction: column; padding: 8px 18px 190px; }
+.retry { display: inline-block; margin: 8px 0 0; padding: 3px 10px; border: 2px solid var(--primary); border-radius: 99px; font-size: 13px; font-weight: 800; color: var(--primary); }
 .heading { margin: 6px 0 4px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
 .prompt { margin: 0 0 14px; font-size: 21px; font-weight: 900; line-height: 1.25; }
 .visual { display: flex; justify-content: center; margin: 4px 0 16px; }

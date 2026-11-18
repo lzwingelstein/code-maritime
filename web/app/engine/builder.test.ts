@@ -63,9 +63,9 @@ describe('buildLesson', () => {
 })
 
 describe('lessonXp', () => {
-  it('gives 10, +5 when no heart was lost, +1 per 3-answer combo up to 5', () => {
-    expect(lessonXp({ hearts: 3, maxHearts: 5, maxCombo: 2 })).toBe(10)
-    expect(lessonXp({ hearts: 5, maxHearts: 5, maxCombo: 7 })).toBe(17)
-    expect(lessonXp({ hearts: 5, maxHearts: 5, maxCombo: 40 })).toBe(20)
+  it('gives 10, +5 without any mistake, +1 per 3-answer combo up to 5', () => {
+    expect(lessonXp({ errors: 2, maxCombo: 2 })).toBe(10)
+    expect(lessonXp({ errors: 0, maxCombo: 7 })).toBe(17)
+    expect(lessonXp({ errors: 0, maxCombo: 40 })).toBe(20)
   })
 })
