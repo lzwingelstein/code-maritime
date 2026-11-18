@@ -3,6 +3,7 @@
 :root {
   --ink: #2B3440;
   --ink-mute: #5D6878;         /* 5.6:1 on white */
+  --bg: #F5F7FA;               /* page ground; cards stay --surface. --ink-mute on it: 5.2:1 */
   --surface: #FFFFFF;
   --line: #E3E6EA;
 

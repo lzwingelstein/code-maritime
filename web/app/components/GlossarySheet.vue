@@ -17,7 +17,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 <template>
   <div v-if="current" class="veil" @click.self="close">
     <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="gl-title">
-      <p class="kicker">📖 Lexique</p>
+      <p class="kicker"><UiIcon name="book" :size="16" /> Lexique</p>
       <h2 id="gl-title">{{ current.term }}</h2>
       <p class="def"><RichText :text="current.definition" :terms="false" /></p>
       <button ref="closeBtn" type="button" class="btn" @click="close">J’ai compris</button>

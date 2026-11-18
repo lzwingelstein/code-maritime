@@ -25,7 +25,7 @@ const sorted = [...TERMS].sort((a, b) => a.term.localeCompare(b.term, 'fr'))
 <style scoped>
 .top {
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
-  border-bottom: 2px solid var(--line); background: var(--surface);
+  background: var(--bg);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 700; text-align: center; }
 .sw { margin-bottom: 14px; }

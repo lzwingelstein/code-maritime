@@ -64,25 +64,25 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
           <i :style="{ width: ready.percent + '%' }" />
         </div>
         <ul class="rlist">
-          <li>📚 <b>Parcours</b> : {{ ready.path }} % des leçons faites</li>
-          <li>🧠 <b>Fiches maîtrisées</b> : {{ ready.mastery }} % <small>(une fiche est sue quand tu la réussis encore une semaine après)</small></li>
+          <li><UiIcon name="book" /> <b>Parcours</b> : {{ ready.path }} % des leçons faites</li>
+          <li><UiIcon name="layers" /> <b>Fiches maîtrisées</b> : {{ ready.mastery }} % <small>(une fiche est sue quand tu la réussis encore une semaine après)</small></li>
           <li v-if="ready.lessonsLeft">
-            ⏳ Encore <b>{{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }}</b> : fin du parcours <b>{{ ready.endText }}</b>
+            <UiIcon name="clock" /> Encore <b>{{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }}</b> : fin du parcours <b>{{ ready.endText }}</b>
             <small v-if="ready.paceKnown">À ton rythme des deux dernières semaines : {{ ready.perDayText }} leçon{{ ready.perDay >= 2 ? 's' : '' }} nouvelle{{ ready.perDay >= 2 ? 's' : '' }} par jour. La date bouge avec toi.</small>
             <small v-else>Estimation à {{ ready.perDayText }} leçons par jour : elle s’adaptera à ton rythme dès tes prochaines leçons.</small>
             <small>Compte ensuite une dizaine de jours de révisions pour bien retenir les dernières fiches.</small>
           </li>
-          <li v-else>✓ Toutes les leçons sont faites : continue l’entraînement pour ancrer les fiches.</li>
-          <li>🎓 <b>Le dernier pas</b> : réussir un examen blanc ({{ EXAM.maxErrors }} fautes au plus).<template v-if="best"> Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}</template></li>
+          <li v-else><UiIcon name="check" /> Toutes les leçons sont faites : continue l’entraînement pour ancrer les fiches.</li>
+          <li><UiIcon name="cap" /> <b>Le dernier pas</b> : réussir un examen blanc ({{ EXAM.maxErrors }} fautes au plus).<template v-if="best"> Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}</template></li>
         </ul>
       </section>
 
       <!-- Summary -->
       <section class="tiles" aria-label="Résumé">
-        <div class="tile"><b>{{ acc === null ? '–' : `${acc} %` }}</b><span>🎯 de bonnes réponses</span></div>
-        <div class="tile"><b>{{ all.right + all.wrong }}</b><span>✍️ réponses</span></div>
-        <div class="tile"><b>{{ lessonsDone }} / {{ lessonsTotal }}</b><span>📚 leçons finies</span></div>
-        <div class="tile"><b>{{ exams.length }}</b><span>🎓 examens blancs</span></div>
+        <div class="tile"><b>{{ acc === null ? '–' : `${acc} %` }}</b><span><UiIcon name="target" :size="16" /> de bonnes réponses</span></div>
+        <div class="tile"><b>{{ all.right + all.wrong }}</b><span><UiIcon name="pen" :size="16" /> réponses</span></div>
+        <div class="tile"><b>{{ lessonsDone }} / {{ lessonsTotal }}</b><span><UiIcon name="book" :size="16" /> leçons finies</span></div>
+        <div class="tile"><b>{{ exams.length }}</b><span><UiIcon name="cap" :size="16" /> examens blancs</span></div>
       </section>
 
       <!-- Activity -->
@@ -111,7 +111,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
               <b>{{ u.accuracy }} %</b>
             </div>
             <p class="umeta">
-              Bonnes réponses sur {{ u.answers }} questions<template v-if="u.weak"> · ⚠️ {{ u.weak }} fiche{{ u.weak > 1 ? 's' : '' }} à retravailler</template>
+              Bonnes réponses sur {{ u.answers }} questions<template v-if="u.weak"> · <UiIcon name="alert" :size="16" /> {{ u.weak }} fiche{{ u.weak > 1 ? 's' : '' }} à retravailler</template>
             </p>
             <NuxtLink :to="`/lecon/${PRACTICE_ID}?unite=${u.id}`" class="ubtn">M’entraîner sur ce thème</NuxtLink>
           </li>
@@ -160,7 +160,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 <style scoped>
 .top {
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
-  border-bottom: 2px solid var(--line); background: var(--surface);
+  background: var(--bg);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 700; text-align: center; }
 .body { padding: 14px 16px 40px; display: flex; flex-direction: column; gap: 14px; }
@@ -171,11 +171,11 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .rlist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.4; }
 .rlist small { display: block; color: var(--ink-mute); font-size: 13px; }
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.tile { padding: 12px; border: 2px solid var(--line); border-radius: 16px; text-align: center; }
+.tile { padding: 12px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); text-align: center; }
 .tile b { display: block; font-size: 24px; font-weight: 700; color: var(--primary); }
 .tile span { font-size: 13px; color: var(--ink-mute); }
 
-.card { padding: 16px; border: 2px solid var(--line); border-radius: 18px; }
+.card { padding: 16px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); }
 .card h2 { margin: 0 0 12px; font-size: 18px; font-weight: 700; }
 .empty, .note { margin: 0; font-size: 14px; font-weight: 500; color: var(--ink-mute); }
 .note { text-align: center; }

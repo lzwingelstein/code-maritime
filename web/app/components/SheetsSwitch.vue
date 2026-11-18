@@ -2,8 +2,8 @@
 /** Two sections of the « Fiches » tab: course sheets and lexicon. */
 const route = useRoute()
 const ITEMS = [
-  { to: '/fiches', label: '🗂️ Cours' },
-  { to: '/lexique', label: '📖 Lexique' },
+  { to: '/fiches', label: 'Cours', icon: 'cards' },
+  { to: '/lexique', label: 'Lexique', icon: 'book' },
 ] as const
 </script>
 
@@ -17,7 +17,7 @@ const ITEMS = [
       :class="{ on: route.path === i.to }"
       :aria-current="route.path === i.to ? 'page' : undefined"
     >
-      {{ i.label }}
+      <UiIcon :name="i.icon" :size="18" />&nbsp;{{ i.label }}
     </NuxtLink>
   </nav>
 </template>

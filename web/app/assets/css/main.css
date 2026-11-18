@@ -4,7 +4,7 @@
 @layer base {
   html, body {
     margin: 0;
-    background: var(--surface);
+    background: var(--bg);
     color: var(--ink);
     font-family: 'Inter Variable', Inter, system-ui, sans-serif;
     font-weight: 400;

@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
         { name: 'description', content: 'Apprends le code du permis bateau côtier par petites leçons.' },
-        { name: 'theme-color', content: '#FFFFFF' },
+        { name: 'theme-color', content: '#F5F7FA' },
         { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-title', content: 'Permis côtier' },

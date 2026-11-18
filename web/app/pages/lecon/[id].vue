@@ -71,7 +71,7 @@ function onMain() {
     const v = check(session, regenerate)
     if (v.correct) {
       sound.right()
-      verdictTitle.value = session.combo >= 3 && session.combo % 2 === 1 ? `🔥 ${session.combo} bonnes réponses d’affilée !` : pick(PRAISE, rng)
+      verdictTitle.value = session.combo >= 3 && session.combo % 2 === 1 ? `${session.combo} bonnes réponses d’affilée !` : pick(PRAISE, rng)
     }
     else {
       sound.wrong()
@@ -166,12 +166,12 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <template v-if="result.passed">
           <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
         </template>
-        <div class="big" aria-hidden="true">{{ result.passed ? '🎓' : '📚' }}</div>
+        <div class="big"><UiIcon :name="result.passed ? 'cap' : 'book'" :size="56" /></div>
         <h1 :class="{ fail: !result.passed }">{{ result.passed ? 'Reçu à l’examen blanc !' : 'Pas encore…' }}</h1>
         <div class="tiles">
           <div class="tile ok"><b>Bonnes réponses</b><span>✓ {{ s.questions - s.errors }} / {{ s.questions }}</span></div>
           <div class="tile gold"><b>Erreurs</b><span>✗ {{ s.errors }} / {{ EXAM.maxErrors }} max</span></div>
-          <div class="tile blue"><b>Temps</b><span>⏱ {{ mmss(result.seconds) }}</span></div>
+          <div class="tile blue"><b>Temps</b><span><UiIcon name="clock" :size="18" /> {{ mmss(result.seconds) }}</span></div>
         </div>
         <p class="sub">
           {{ result.passed ? 'Comme à l’examen : 5 erreurs au plus.' : `Il faut 5 erreurs au plus : continue les révisions, les questions ratées reviendront plus souvent.` }}
@@ -183,14 +183,14 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
       </template>
       <template v-else-if="s.phase === 'won'">
         <i v-for="(c, i) in confetti" :key="i" class="conf" :style="{ left: c.left + 'vw', background: c.colour, animationDelay: c.delay + 's', animationDuration: c.duration + 's' }" />
-        <div class="big" aria-hidden="true">🏆</div>
+        <div class="big"><UiIcon name="trophy" :size="56" /></div>
         <h1>{{ isPractice ? 'Entraînement terminé !' : 'Leçon terminée !' }}</h1>
         <div class="tiles">
-          <div class="tile ok"><b>Précision</b><span>🎯 {{ result.accuracy }} %</span></div>
-          <div class="tile blue"><b>Temps</b><span>⏱ {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
+          <div class="tile ok"><b>Précision</b><span><UiIcon name="target" :size="18" /> {{ result.accuracy }} %</span></div>
+          <div class="tile blue"><b>Temps</b><span><UiIcon name="clock" :size="18" /> {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
         </div>
         <p class="sub">
-          🎯 Prêt à {{ ready.percent }} % pour l’examen
+          Prêt à {{ ready.percent }} % pour l’examen
         </p>
         <NuxtLink to="/" class="btn ok">Continuer</NuxtLink>
       </template>
@@ -199,7 +199,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
     <!-- Lesson -->
     <template v-else>
       <header class="lhead">
-        <NuxtLink to="/" class="close" aria-label="Quitter la leçon">✕</NuxtLink>
+        <NuxtLink to="/" class="close" aria-label="Quitter la leçon"><UiIcon name="x" :size="24" /></NuxtLink>
         <div class="bar" role="progressbar" :aria-valuenow="Math.round(share(s) * 100)" aria-valuemax="100">
           <i :style="{ width: share(s) * 100 + '%', background: 'var(--ok-fill)' }" />
         </div>
@@ -207,7 +207,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <span v-else class="hearts" :aria-label="pending ? `${pending} question${pending > 1 ? 's' : ''} ratée${pending > 1 ? 's' : ''} à refaire` : undefined">{{ pending ? `↻ ${pending}` : '' }}</span>
       </header>
       <p v-if="isExam" class="examline">
-        Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · ⏱ {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
+        Question {{ Math.min(answered + (s.verdict ? 0 : 1), s.questions) }} / {{ s.questions }} · <UiIcon name="clock" :size="16" /> {{ mmss(elapsed) }} / {{ EXAM.minutes }}:00
       </p>
 
       <main class="body" :class="{ shake: s.verdict && !s.verdict.correct }">
@@ -315,7 +315,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 @keyframes pop { 0% { transform: scale(.96); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
 
 .end { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; padding: 30px 22px; text-align: center; }
-.end .big { font-size: 72px; }
+.end .big { display: flex; justify-content: center; color: var(--primary); }
 .end h1 { margin: 12px 0 22px; font-size: 28px; font-weight: 700; color: var(--gold-text); }
 .end h1.fail { color: var(--ko); }
 .end .btn { display: block; text-decoration: none; text-align: center; line-height: 28px; }

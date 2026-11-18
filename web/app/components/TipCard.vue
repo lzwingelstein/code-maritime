@@ -6,7 +6,7 @@ defineProps<{ tip: Tip }>()
 
 <template>
   <div class="card tip">
-    <div class="big" aria-hidden="true">{{ tip.emoji }}</div>
+    <div class="big"><UiIcon name="bulb" :size="40" /></div>
     <h2>{{ tip.title }}</h2>
     <p><RichText :text="tip.text" /></p>
     <ul v-if="tip.rows" class="tiprows">
@@ -33,6 +33,6 @@ defineProps<{ tip: Tip }>()
 .tippic :deep(svg.encounter) { max-height: 230px; }
 .tippic :deep(.horn) { padding: 8px 4px; }
 .tippic :deep(.horn .legend), .tippic :deep(.horn .replay) { display: none; }
-.card .big { font-size: 44px; }
+.card .big { color: var(--primary); }
 @keyframes pop { 0% { transform: scale(.96); } 60% { transform: scale(1.03); } 100% { transform: scale(1); } }
 </style>

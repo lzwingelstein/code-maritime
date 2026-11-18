@@ -22,7 +22,7 @@ defineProps<{ card: CardInfo, badge?: string }>()
 </template>
 
 <style scoped>
-.card { padding: 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; animation: pop .25s; }
+.card { padding: 18px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); text-align: center; animation: pop .25s; }
 .card h2 { margin: 10px 0 6px; font-size: 23px; font-weight: 700; }
 .card p { margin: 8px 0 0; font-size: 16px; font-weight: 500; line-height: 1.45; }
 .points { margin: 12px 0 0; padding: 0; list-style: none; text-align: left; }

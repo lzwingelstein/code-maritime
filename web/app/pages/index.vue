@@ -19,10 +19,10 @@ const toReview = computed(() => lessonsToReview(
 const units = computed(() => COURSES.map((course, u) => ({
   course,
   label: `Unité ${u + 1} · ${course.unit}`,
-  nodes: course.lessons.map((lesson) => {
+  nodes: course.lessons.map((lesson, k) => {
     const i = LESSON_IDS.indexOf(lesson.id)
     const done = !!progress.value.completions[lesson.id]
-    return { lesson, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done, review: toReview.value.includes(lesson.id) }
+    return { lesson, num: k + 1, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done, review: toReview.value.includes(lesson.id) }
   }),
 })))
 const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
@@ -55,7 +55,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 <template>
   <div class="shell">
     <header class="top">
-      <span class="course display">⛵ Permis côtier</span>
+      <span class="course display"><UiIcon name="boat" :size="22" /> Permis côtier</span>
       <span class="info">
         <template v-if="ready.lessonsLeft">Fin <b>{{ ready.endShort }}</b></template>
         <template v-else>Parcours terminé ✓</template>
@@ -85,7 +85,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 
     <template v-for="u in units" :key="u.course.id">
       <section class="unit" :class="{ locked: !u.nodes[0]?.unlocked }">
-        <small>{{ u.label }}<template v-if="!u.nodes[0]?.unlocked"> · 🔒 verrouillée</template></small>
+        <small>{{ u.label }}<template v-if="!u.nodes[0]?.unlocked"> · verrouillée</template></small>
         <h1>{{ u.course.title }}</h1>
       </section>
 
@@ -98,14 +98,16 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
             :class="{ done: n.done }"
             :aria-label="`${n.lesson.title}${n.review ? ', à revoir : erreurs récentes' : n.done ? ', terminée' : ''}`"
           >
-            <CardVisual :visual="n.lesson.icon" />
+            <CardVisual v-if="n.lesson.icon.type !== 'emoji'" :visual="n.lesson.icon" />
+            <span v-else class="num display" aria-hidden="true">{{ n.num }}</span>
             <span v-if="n.review" class="badge review" aria-hidden="true">↻</span>
             <span v-else-if="n.done" class="badge" aria-hidden="true">✓</span>
             <span v-if="n.index === current" class="bubble">Commencer</span>
           </NuxtLink>
           <span v-else class="node locked" :aria-label="`${n.lesson.title}, verrouillée`">
-            <CardVisual :visual="n.lesson.icon" />
-            <span class="lock" aria-hidden="true">🔒</span>
+            <CardVisual v-if="n.lesson.icon.type !== 'emoji'" :visual="n.lesson.icon" />
+            <span v-else class="num display" aria-hidden="true">{{ n.num }}</span>
+            <span class="lock" aria-hidden="true"><UiIcon name="lock" :size="16" /></span>
           </span>
           <span class="nlab">{{ n.lesson.title }}</span>
           <span v-if="n.review" class="why" aria-hidden="true">À revoir · erreurs récentes</span>
@@ -114,7 +116,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
     </template>
 
     <section class="exam" aria-labelledby="exam-title">
-      <h2 id="exam-title">🎓 Examen blanc</h2>
+      <h2 id="exam-title"><UiIcon name="cap" :size="22" /> Examen blanc</h2>
       <p>{{ EXAM.questions }} questions de toutes les unités, {{ EXAM.maxErrors }} erreurs au plus, environ {{ EXAM.minutes }} minutes : comme le jour de l’examen.</p>
       <p v-if="best" class="score">
         Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}
@@ -129,13 +131,13 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 <style scoped>
 .top {
   position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  min-height: 56px; padding: 0 18px; border-bottom: 2px solid var(--line); background: var(--surface);
+  min-height: 56px; padding: 0 18px; background: var(--bg);
 }
 .course { color: var(--primary); font-size: 17px; font-weight: 700; white-space: nowrap; }
 .info { font-size: 14px; font-weight: 500; color: var(--ink-mute); text-align: right; white-space: nowrap; }
 .info b { color: var(--ink); font-weight: 600; }
 /* One main action: readiness first, then the single big button. */
-.hero { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 16px 16px 0; padding: 20px 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
+.hero { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 16px 16px 0; padding: 20px 18px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); text-align: center; }
 .kicker { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); }
 .gauge { position: relative; display: block; width: 136px; height: 136px; color: var(--ink); text-decoration: none; }
 .gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
@@ -160,12 +162,19 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
   position: relative; display: flex; align-items: center; justify-content: center; width: 78px; height: 72px;
   border-radius: 50%; background: var(--primary); box-shadow: 0 4px 0 var(--primary-shadow);
 }
-.node :deep(svg) { height: 56px; }
+.node :deep(svg:not(.icon)) { height: 56px; }
 .node:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--primary-shadow); }
 .node.done { background: var(--gold); box-shadow: 0 4px 0 var(--gold-shadow); }
 .node.locked { background: var(--disabled); box-shadow: 0 4px 0 var(--disabled-shadow); }
-.node.locked :deep(svg), .node.locked :deep(.emoji) { filter: grayscale(1) opacity(.4); }
-.lock { position: absolute; right: -4px; bottom: -6px; font-size: 18px; }
+.node.locked :deep(svg:not(.icon)) { filter: grayscale(1) opacity(.4); }
+.lock {
+  position: absolute; right: -8px; bottom: -8px; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+  border: 2px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink-mute);
+}
+/* Lessons without a drawn picture show their number in the unit (no emoji in the interface). */
+.num { color: #fff; font-size: 30px; font-weight: 700; }
+.node.done .num { color: var(--gold-text); }
+.node.locked .num { color: var(--disabled-text); }
 .badge {
   position: absolute; right: -10px; bottom: -8px; min-width: 28px; padding: 1px 7px; border: 2px solid var(--line); border-radius: 99px;
   background: var(--surface); color: var(--gold-text); font-size: 15px; font-weight: 700; text-align: center; white-space: nowrap;
@@ -183,7 +192,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 @keyframes bob { 50% { transform: translate(-50%, -5px); } }
 .why { margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--primary); }
 .nlab { max-width: 150px; margin-top: 12px; font-size: 14px; color: var(--ink-mute); text-align: center; }
-.exam { margin: 0 16px 34px; padding: 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
+.exam { margin: 0 16px 34px; padding: 18px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); text-align: center; }
 .exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
 .exam p { margin: 0 0 12px; font-size: 15px; font-weight: 500; color: var(--ink-mute); line-height: 1.4; }
 .exam .score { color: var(--ink); font-weight: 600; }

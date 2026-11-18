@@ -25,8 +25,8 @@ const all = computed(() => units.value.flatMap(u => u.items))
 function state(cardId: string) {
   const m = progress.value.mastery[cardId]
   if (!m) return null
-  if (m.level >= 3) return { icon: '✓', text: 'Sue', cls: 'known' }
-  if (m.level <= 1 && isDue(m, now)) return { icon: '⚠️', text: 'À retravailler', cls: 'weak' }
+  if (m.level >= 3) return { icon: 'check' as const, text: 'Sue', cls: 'known' }
+  if (m.level <= 1 && isDue(m, now)) return { icon: 'alert' as const, text: 'À retravailler', cls: 'weak' }
   return null
 }
 const plainName = (s: string) => s.replaceAll('**', '')
@@ -71,28 +71,28 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
           <li v-for="it in u.items" :key="it.key">
             <button type="button" class="thumb" :class="{ tip: 'tip' in it }" :aria-label="`${'tip' in it ? 'Astuce' : 'Fiche'} : ${plainName(it.title)}${'cardId' in it && state(it.cardId) ? `, ${state(it.cardId)!.text}` : ''}`" @click="show(it.key)">
               <span class="pic" aria-hidden="true">
-                <span v-if="'tip' in it" class="emoji">{{ it.tip.emoji }}</span>
+                <span v-if="'tip' in it" class="bulb"><UiIcon name="bulb" :size="40" /></span>
                 <CardVisual v-else :visual="it.card.visual" />
               </span>
-              <span class="name" aria-hidden="true">{{ 'tip' in it ? '💡 ' : '' }}{{ plainName(it.title) }}</span>
-              <span v-if="'cardId' in it && state(it.cardId)" class="badge" :class="state(it.cardId)!.cls" aria-hidden="true">{{ state(it.cardId)!.icon }}</span>
+              <span class="name" aria-hidden="true">{{ plainName(it.title) }}</span>
+              <span v-if="'cardId' in it && state(it.cardId)" class="badge" :class="state(it.cardId)!.cls" aria-hidden="true"><UiIcon :name="state(it.cardId)!.icon" :size="16" /></span>
             </button>
           </li>
         </ul>
       </section>
-      <p v-if="units.length" class="legend">✓ fiche sue · ⚠️ à retravailler · 💡 astuce de la leçon</p>
+      <p v-if="units.length" class="legend"><UiIcon name="check" :size="16" /> fiche sue · <UiIcon name="alert" :size="16" /> à retravailler · <UiIcon name="bulb" :size="16" /> astuce de la leçon</p>
     </main>
 
     <div v-if="current" class="viewer" role="dialog" aria-modal="true" :aria-label="plainName(current.title)" @touchstart.passive="onTouchStart" @touchend="onTouchEnd">
       <header class="vtop">
-        <button type="button" class="vbtn" aria-label="Fermer" @click="open = null">✕</button>
+        <button type="button" class="vbtn" aria-label="Fermer" @click="open = null"><UiIcon name="x" :size="22" /></button>
         <span class="count">{{ open! + 1 }} / {{ all.length }}</span>
         <span class="vbtn" />
       </header>
       <div class="vbody">
         <TipCard v-if="'tip' in current" :key="current.key" :tip="current.tip" />
         <InfoCard v-else :key="current.key" :card="current.card" badge="Fiche">
-          <p v-if="state(current.cardId)" class="state" :class="state(current.cardId)!.cls">{{ state(current.cardId)!.icon }} {{ state(current.cardId)!.text }}</p>
+          <p v-if="state(current.cardId)" class="state" :class="state(current.cardId)!.cls"><UiIcon :name="state(current.cardId)!.icon" :size="18" /> {{ state(current.cardId)!.text }}</p>
         </InfoCard>
       </div>
       <footer class="vnav">
@@ -106,7 +106,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 <style scoped>
 .top {
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; min-height: 56px; padding: 8px 12px;
-  border-bottom: 2px solid var(--line); background: var(--surface);
+  background: var(--bg);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 700; text-align: center; }
 .sw { margin-bottom: 14px; }
@@ -126,7 +126,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .pic { display: flex; align-items: center; justify-content: center; height: 92px; padding: 6px; overflow: hidden; }
 .pic :deep(svg) { max-height: 80px; width: auto; max-width: 100%; }
 .pic :deep(.horn .legend), .pic :deep(.horn .replay) { display: none; }
-.pic :deep(.emoji), .emoji { font-size: 40px; }
+.pic :deep(.emoji) { font-size: 40px; }
+.bulb { color: var(--primary); }
 .name {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   max-height: calc(2.5em + 11px); padding: 4px 6px 7px; border-top: 1px solid var(--line); font-size: 12px; font-weight: 600; line-height: 1.25;
