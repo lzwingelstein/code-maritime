@@ -22,9 +22,10 @@ function state(cardId: string) {
 <template>
   <div class="shell">
     <header class="top">
-      <h1>Mes fiches</h1>
+      <h1>Fiches</h1>
     </header>
     <main class="body">
+      <SheetsSwitch class="sw" />
       <p v-if="!units.length" class="lead">Termine une leçon : ses fiches de cours apparaîtront ici pour que tu puisses les relire quand tu veux.</p>
       <p v-else class="lead">Le cours des leçons que tu as terminées. Touche une leçon pour relire ses fiches.</p>
 
@@ -53,6 +54,7 @@ function state(cardId: string) {
   border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
+.sw { margin-bottom: 14px; }
 .body { padding: 14px 16px 40px; }
 .lead { margin: 0 0 8px; font-size: 15px; color: var(--ink-mute); line-height: 1.45; }
 .unit { margin-top: 18px; }
