@@ -23,6 +23,7 @@ const PATHS = {
   bell: ['M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z', 'M10 21h4'],
   trophy: ['M8 4h8v5a4 4 0 0 1-8 0z', 'M8 6H4.5a3 3 0 0 0 3.5 4', 'M16 6h3.5a3 3 0 0 1-3.5 4', 'M12 13v4', 'M8 21h8', 'M9 17h6v4H9z'],
   refresh: ['M20 11a8 8 0 1 0-2.3 5.7', 'M20 5v6h-6'],
+  chevron: ['M6 9l6 6 6-6'],
 } as const
 
 export type IconName = keyof typeof PATHS

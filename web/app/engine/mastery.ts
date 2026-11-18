@@ -28,3 +28,20 @@ export function reviewWeight(m: CardMastery | undefined, now: number): number {
   const weakness = MAX_LEVEL + 1 - (m?.level ?? 0)
   return isDue(m, now) ? weakness * 2 : weakness / 4
 }
+
+/** A card is known from this level on (seen right again a week later). */
+export const KNOWN_LEVEL = 3
+
+export type MasteryStep = 'new' | 'learning' | 'known' | 'weak'
+
+/**
+ * Mastery shown to the player: a step said in words and up to three filled dots.
+ * Weak = a low card due again (recent mistake or long unseen), as on the « À retravailler » badges.
+ */
+export function masteryStep(m: CardMastery | undefined, now: number): { step: MasteryStep, dots: number } {
+  if (!m) return { step: 'new', dots: 0 }
+  const dots = Math.min(m.level, KNOWN_LEVEL)
+  if (m.level >= KNOWN_LEVEL) return { step: 'known', dots }
+  if (m.level <= 1 && isDue(m, now)) return { step: 'weak', dots }
+  return { step: 'learning', dots }
+}

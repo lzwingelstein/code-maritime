@@ -2,7 +2,7 @@
 import { COURSES, findLesson, LESSON_IDS } from '~/courses'
 import { EXAM, EXAM_ID } from '~/courses/exam'
 import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
-import { lessonsToReview } from '~/engine/lesson-status'
+import { lessonsToReview, unitProgress } from '~/engine/lesson-status'
 import { nextStep } from '~/engine/next'
 import { bestExam, isUnlocked } from '~/engine/progress'
 
@@ -16,15 +16,15 @@ const toReview = computed(() => lessonsToReview(
   COURSES.flatMap(c => c.lessons).map(l => ({ id: l.id, cards: l.plan.cards, done: !!progress.value.completions[l.id] })),
   progress.value.mastery,
 ))
-const units = computed(() => COURSES.map((course, u) => ({
-  course,
-  label: `Unité ${u + 1} · ${course.unit}`,
-  nodes: course.lessons.map((lesson, k) => {
+const units = computed(() => COURSES.map((course, u) => {
+  const nodes = course.lessons.map((lesson, k) => {
     const i = LESSON_IDS.indexOf(lesson.id)
     const done = !!progress.value.completions[lesson.id]
     return { lesson, num: k + 1, index: i, unlocked: isUnlocked(progress.value, LESSON_IDS, i), done, review: toReview.value.includes(lesson.id) }
-  }),
-})))
+  })
+  return { course, num: u + 1, nodes, progress: unitProgress(nodes) }
+}))
+const doneCount = computed(() => units.value.reduce((n, u) => n + u.progress.done, 0))
 const current = computed(() => LESSON_IDS.findIndex((id, i) => isUnlocked(progress.value, LESSON_IDS, i) && !progress.value.completions[id]))
 
 const seen = computed(() => Object.keys(progress.value.mastery).length)
@@ -52,7 +52,23 @@ const altLabel = (k: 'lesson' | 'practice') => (k === 'practice' ? 'Plutôt m’
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
 
-const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
+
+// Path summary: only the unit holding the next lesson is open at first; the player can open or close any.
+const opened = ref<string | null | undefined>(undefined)
+const activeUnit = computed(() => units.value.find(u => u.nodes.some(n => n.index === current.value))?.course.id ?? null)
+const isOpen = (id: string) => (opened.value === undefined ? activeUnit.value : opened.value) === id
+const toggle = (id: string) => { opened.value = isOpen(id) ? null : id }
+type Node = (typeof units.value)[number]['nodes'][number]
+const lessonState = (n: Node) => {
+  if (!n.unlocked) return { text: 'Verrouillée', cls: 'locked' }
+  if (n.review) return { text: '↻ À revoir · erreurs récentes', cls: 'review' }
+  if (n.done) return { text: '✓ Faite', cls: 'done' }
+  if (n.index === current.value) return { text: 'Prochaine leçon', cls: 'current' }
+  return { text: 'À faire', cls: 'todo' }
+}
+const unitCount = (u: (typeof units.value)[number]) => (u.progress.state === 'locked'
+  ? `${u.progress.total} leçons · verrouillée`
+  : `${u.progress.done} / ${u.progress.total}`)
 </script>
 
 <template>
@@ -89,48 +105,70 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
       <NuxtLink v-if="next.other" :to="link(next.other)" class="alt">{{ altLabel(next.other) }}</NuxtLink>
     </section>
 
-    <template v-for="u in units" :key="u.course.id">
-      <section class="unit" :class="{ locked: !u.nodes[0]?.unlocked }">
-        <small>{{ u.label }}<template v-if="!u.nodes[0]?.unlocked"> · verrouillée</template></small>
-        <h1>{{ u.course.title }}</h1>
-      </section>
-
-      <nav class="path" :aria-label="`Leçons : ${u.course.title}`">
-        <div v-for="n in u.nodes" :key="n.lesson.id" class="nwrap" :style="{ transform: `translateX(${OFFSETS[n.index % 8]}px)` }">
-          <NuxtLink
-            v-if="n.unlocked"
-            :to="`/lecon/${n.lesson.id}`"
-            class="node"
-            :class="{ done: n.done }"
-            :aria-label="`${n.lesson.title}${n.review ? ', à revoir : erreurs récentes' : n.done ? ', terminée' : ''}`"
+    <section class="route" aria-labelledby="route-title">
+      <div class="rhead">
+        <h2 id="route-title">Ton parcours</h2>
+        <span>{{ doneCount }} / {{ LESSON_IDS.length }} leçons</span>
+      </div>
+      <ol class="units">
+        <li v-for="u in units" :key="u.course.id" class="ucard" :class="u.progress.state">
+          <button
+            type="button"
+            class="uhead"
+            :aria-expanded="isOpen(u.course.id)"
+            :aria-controls="`unit-${u.course.id}`"
+            @click="toggle(u.course.id)"
           >
-            <CardVisual v-if="n.lesson.icon.type !== 'emoji'" :visual="n.lesson.icon" />
-            <span v-else class="num display" aria-hidden="true">{{ n.num }}</span>
-            <span v-if="n.review" class="badge review" aria-hidden="true">↻</span>
-            <span v-else-if="n.done" class="badge" aria-hidden="true">✓</span>
-            <span v-if="n.index === current" class="bubble">Commencer</span>
-          </NuxtLink>
-          <span v-else class="node locked" :aria-label="`${n.lesson.title}, verrouillée`">
-            <CardVisual v-if="n.lesson.icon.type !== 'emoji'" :visual="n.lesson.icon" />
-            <span v-else class="num display" aria-hidden="true">{{ n.num }}</span>
-            <span class="lock" aria-hidden="true"><UiIcon name="lock" :size="16" /></span>
-          </span>
-          <span class="nlab">{{ n.lesson.title }}</span>
-          <span v-if="n.review" class="why" aria-hidden="true">À revoir · erreurs récentes</span>
-        </div>
-      </nav>
-    </template>
-
-    <section class="exam" aria-labelledby="exam-title">
-      <h2 id="exam-title"><UiIcon name="cap" :size="22" /> Examen blanc</h2>
-      <p>{{ EXAM.questions }} questions de toutes les unités, {{ EXAM.maxErrors }} erreurs au plus, environ {{ EXAM.minutes }} minutes : comme le jour de l’examen.</p>
-      <p v-if="best" class="score">
-        Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}
-        <template v-if="last"> · Dernier : {{ last.total - last.errors }}/{{ last.total }}</template>
-      </p>
-      <NuxtLink :to="`/lecon/${EXAM_ID}`" class="btn">Passer un examen blanc</NuxtLink>
+            <span class="dot" aria-hidden="true">
+              <UiIcon v-if="u.progress.state === 'done'" name="check" :size="18" />
+              <UiIcon v-else-if="u.progress.state === 'locked'" name="lock" :size="16" />
+              <span v-else class="display">{{ u.num }}</span>
+            </span>
+            <span class="utext">
+              <span class="utitle display">{{ u.course.title }}</span>
+              <span class="umeta">
+                <span class="ubar" role="progressbar" :aria-valuenow="u.progress.done" aria-valuemin="0" :aria-valuemax="u.progress.total" :aria-label="`${u.course.title} : ${u.progress.done} leçons faites sur ${u.progress.total}`">
+                  <i :style="{ width: `${u.progress.done / u.progress.total * 100}%` }" />
+                </span>
+                <span class="ucount">{{ unitCount(u) }}</span>
+              </span>
+            </span>
+            <UiIcon name="chevron" class="chev" :class="{ up: isOpen(u.course.id) }" />
+          </button>
+          <ol v-if="isOpen(u.course.id)" :id="`unit-${u.course.id}`" class="lessons">
+            <li v-for="n in u.nodes" :key="n.lesson.id">
+              <NuxtLink v-if="n.unlocked" :to="`/lecon/${n.lesson.id}`" class="lrow" :class="lessonState(n).cls">
+                <span class="lnum display" aria-hidden="true">{{ n.num }}</span>
+                <span class="ltext">
+                  <span class="ltitle">{{ n.lesson.title }}</span>
+                  <span class="lstate">{{ lessonState(n).text }}</span>
+                </span>
+                <span v-if="n.index === current" class="pill">Commencer</span>
+                <span v-else-if="n.review" class="pill ghost">Revoir</span>
+              </NuxtLink>
+              <span v-else class="lrow locked">
+                <span class="lnum display" aria-hidden="true">{{ n.num }}</span>
+                <span class="ltext">
+                  <span class="ltitle">{{ n.lesson.title }}</span>
+                  <span class="lstate">Verrouillée</span>
+                </span>
+              </span>
+            </li>
+          </ol>
+        </li>
+      </ol>
     </section>
 
+    <section class="exam" aria-labelledby="exam-title">
+      <span class="eic" aria-hidden="true"><UiIcon name="cap" :size="22" /></span>
+      <div class="etext">
+        <h2 id="exam-title">Examen blanc</h2>
+        <span class="emeta">
+          {{ EXAM.questions }} questions · {{ EXAM.maxErrors }} fautes max · {{ EXAM.minutes }} min<template v-if="best"> · Meilleur {{ best.total - best.errors }}/{{ best.total }}{{ best.passed ? ' ✓' : '' }}</template><template v-if="last"> · Dernier {{ last.total - last.errors }}/{{ last.total }}</template>
+        </span>
+      </div>
+      <NuxtLink :to="`/lecon/${EXAM_ID}`" class="pill ghost" aria-label="Passer un examen blanc">Passer</NuxtLink>
+    </section>
   </div>
 </template>
 
@@ -164,50 +202,52 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .go-sub { font-size: 14px; font-weight: 400; color: var(--on-primary-mute); }
 .reason { margin: 0; padding: 0 4px; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--ink-mute); }
 .next .alt { align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 600; }
-/* Unit headers are titles, not buttons: no fill, no raised shadow, a rule underneath. */
-.unit { margin: 26px 16px 0; padding: 0 2px 10px; border-bottom: 2px solid var(--line); }
-.unit small { font-size: 12px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }
-.unit h1 { margin: 2px 0 0; font-size: 20px; font-weight: 700; color: var(--ink); }
-.unit.locked small, .unit.locked h1 { color: var(--ink-mute); }
-.path { display: flex; flex-direction: column; align-items: center; gap: 62px; padding: 62px 0 40px; }
-.nwrap { display: flex; flex-direction: column; align-items: center; }
-.node {
-  position: relative; display: flex; align-items: center; justify-content: center; width: 78px; height: 72px;
-  border-radius: 50%; background: var(--primary); box-shadow: 0 4px 0 var(--primary-shadow);
+/* Path summary: one card per unit, only the open one lists its lessons. */
+.route { margin: 28px 16px 0; }
+.rhead { display: flex; align-items: baseline; justify-content: space-between; padding: 0 4px 10px; }
+.rhead h2 { margin: 0; font-size: 20px; font-weight: 600; }
+.rhead span { font-size: 14px; color: var(--ink-mute); }
+.units { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.ucard { overflow: hidden; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); }
+.ucard.active { border-color: var(--primary-soft-line); }
+.uhead {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 14px;
+  border: 0; background: none; color: var(--ink); text-align: left;
 }
-.node :deep(svg:not(.icon)) { height: 56px; }
-.node:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--primary-shadow); }
-.node.done { background: var(--gold); box-shadow: 0 4px 0 var(--gold-shadow); }
-.node.locked { background: var(--disabled); box-shadow: 0 4px 0 var(--disabled-shadow); }
-.node.locked :deep(svg:not(.icon)) { filter: grayscale(1) opacity(.4); }
-.lock {
-  position: absolute; right: -8px; bottom: -8px; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;
-  border: 2px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink-mute);
+.dot { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; font-size: 15px; font-weight: 700; }
+.done .dot { background: var(--ok-soft); color: var(--ok-text); }
+.active .dot { background: var(--primary); color: #fff; }
+.locked .dot { background: var(--line); color: var(--ink-mute); }
+.utext { display: flex; flex: 1; flex-direction: column; gap: 6px; min-width: 0; }
+.utitle { overflow: hidden; font-size: 16px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; }
+.locked .utitle { color: var(--ink-mute); }
+.umeta { display: flex; align-items: center; gap: 8px; }
+.ubar { flex: 1; height: 6px; overflow: hidden; border-radius: 3px; background: var(--line); }
+.ubar i { display: block; height: 100%; border-radius: 3px; background: var(--primary); }
+.done .ubar i { background: var(--ok); }
+.ucount { font-size: 13px; color: var(--ink-mute); white-space: nowrap; }
+.chev { color: var(--ink-mute); transition: transform .2s; }
+.chev.up { transform: rotate(180deg); }
+.lessons { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 6px 10px 10px; border-top: 1px solid var(--line); list-style: none; }
+.lrow { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 8px; border-radius: 12px; color: var(--ink); text-decoration: none; }
+.lrow.current { background: var(--primary-soft); }
+.lnum { width: 26px; flex-shrink: 0; font-size: 15px; font-weight: 600; text-align: center; }
+.ltext { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.ltitle { font-size: 15px; font-weight: 500; }
+.current .ltitle { font-weight: 600; }
+.lstate { font-size: 13px; font-weight: 500; color: var(--ink-mute); }
+.done .lstate { color: var(--ok-text); }
+.review .lstate { color: var(--primary); }
+.current .lstate { color: var(--primary-shadow); }
+.lrow.locked .ltitle, .lrow.locked .lnum { color: var(--ink-mute); }
+.pill {
+  display: inline-flex; flex-shrink: 0; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 12px;
+  background: var(--primary); color: #fff; font-size: 14px; font-weight: 600; text-decoration: none;
 }
-/* Lessons without a drawn picture show their number in the unit (no emoji in the interface). */
-.num { color: #fff; font-size: 30px; font-weight: 700; }
-.node.done .num { color: var(--gold-text); }
-.node.locked .num { color: var(--disabled-text); }
-.badge {
-  position: absolute; right: -10px; bottom: -8px; min-width: 28px; padding: 1px 7px; border: 2px solid var(--line); border-radius: 99px;
-  background: var(--surface); color: var(--gold-text); font-size: 15px; font-weight: 700; text-align: center; white-space: nowrap;
-}
-.badge.review { color: var(--primary); border-color: var(--primary); }
-.bubble {
-  position: absolute; top: -46px; left: 50%; padding: 6px 12px; border: 2px solid var(--line); border-radius: 12px;
-  background: var(--surface); color: var(--primary); font-size: 13px; white-space: nowrap;
-  font-weight: 600; transform: translateX(-50%); animation: bob 1.4s ease-in-out infinite;
-}
-.bubble::after {
-  content: ""; position: absolute; bottom: -8px; left: 50%; margin-left: -7px;
-  border: 7px solid transparent; border-top-color: var(--surface); border-bottom: 0;
-}
-@keyframes bob { 50% { transform: translate(-50%, -5px); } }
-.why { margin-top: 2px; font-size: 13px; font-weight: 600; color: var(--primary); }
-.nlab { max-width: 150px; margin-top: 12px; font-size: 14px; color: var(--ink-mute); text-align: center; }
-.exam { margin: 0 16px 34px; padding: 18px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); text-align: center; }
-.exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
-.exam p { margin: 0 0 12px; font-size: 15px; font-weight: 500; color: var(--ink-mute); line-height: 1.4; }
-.exam .score { color: var(--ink); font-weight: 600; }
-.exam .btn { display: block; text-decoration: none; line-height: 28px; }
+.pill.ghost { padding: 0 12px; border: 2px solid var(--line); background: var(--surface); color: var(--primary); }
+.exam { display: flex; align-items: center; gap: 14px; margin: 12px 16px 34px; padding: 14px 16px; border: 2px solid var(--line); border-radius: 18px; background: var(--surface); }
+.eic { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: var(--primary-soft); color: var(--primary); }
+.etext { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
+.exam h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.emeta { font-size: 13px; line-height: 1.35; color: var(--ink-mute); }
 </style>

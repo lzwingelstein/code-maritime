@@ -6,7 +6,9 @@ const TABS = [
   { to: '/stats', icon: 'chart', label: 'Stats' },
 ] as const
 const route = useRoute()
-const isOn = (t: typeof TABS[number]) => route.path === t.to || ('also' in t && (t.also as readonly string[]).includes(route.path))
+// Static hosting may add a trailing slash (/stats/): compare without it.
+const here = computed(() => (route.path.length > 1 ? route.path.replace(/\/$/, '') : route.path))
+const isOn = (t: typeof TABS[number]) => here.value === t.to || ('also' in t && (t.also as readonly string[]).includes(here.value))
 </script>
 
 <template>
