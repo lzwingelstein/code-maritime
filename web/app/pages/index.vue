@@ -5,12 +5,12 @@ import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
 import { lessonsToReview } from '~/engine/lesson-status'
 import { nextStep } from '~/engine/next'
 import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
-import { currentStreak, dayKey } from '~/engine/streak'
+import { dayKey } from '~/engine/streak'
 
 const { progress } = useProgress()
 const today = dayKey(new Date())
 
-const streak = computed(() => currentStreak(progress.value.streak, today))
+const ready = useReadiness()
 const dayXp = computed(() => todayXp(progress.value, today))
 // Lessons are unlocked in path order, across units.
 const toReview = computed(() => lessonsToReview(
@@ -56,7 +56,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 <template>
   <div class="shell">
     <header class="top">
-      <span class="stat" :aria-label="`Série : ${streak} jours`">🔥 {{ streak }}</span>
+      <NuxtLink to="/stats" class="stat ready" :aria-label="`Prêt à ${ready.percent} % pour l’examen : voir le détail`">🎯 {{ ready.percent }} %</NuxtLink>
       <span class="stat course">⛵ Permis côtier</span>
       <span class="stat xp" :aria-label="`${progress.xp} points d’expérience`">⚡ {{ progress.xp }} XP</span>
     </header>
@@ -127,6 +127,7 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
   padding: 14px 18px; border-bottom: 2px solid var(--line); background: var(--surface);
 }
 .stat { font-size: 17px; }
+.ready { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
 .course { color: var(--primary); font-weight: 900; }
 .xp { color: var(--gold-text); }
 .goal { padding: 14px 18px 4px; }

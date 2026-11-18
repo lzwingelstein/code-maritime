@@ -6,6 +6,7 @@ Les thèmes de l'examen deviennent des **unités** ; la première est le balisag
 
 ## Parcours
 - Une unité = une suite de **leçons** débloquées dans l'ordre (la précédente finie une fois). Une leçon déjà faite reste ouverte, même si une leçon est ajoutée avant elle.
+- **Préparation à l’examen** (en-tête, stats, fin de leçon) : moyenne du parcours fait et des fiches maîtrisées (niveau 3 = sue) ; estimation des jours restants à 2 leçons par jour. La flamme (série de jours) n’est plus affichée.
 - Une leçon finie affiche ✓ ; elle reste rejouable. Au plus 2 leçons avec des erreurs récentes sont marquées « À revoir ».
 - La dernière leçon de l'unité est une **révision** : elle mélange toutes les marques et insiste sur les plus faibles.
 

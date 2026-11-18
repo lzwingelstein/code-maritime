@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { COURSES } from '~/courses'
 import { PRACTICE_ID } from '~/courses/practice'
-import { currentStreak, dayKey } from '~/engine/streak'
+import { EXAM } from '~/courses/exam'
+import { bestExam } from '~/engine/progress'
+import { dayKey } from '~/engine/streak'
 import { accuracy, activity, fragileUnits, mostMissed, totals } from '~/engine/stats'
 
 const { progress, reset } = useProgress()
@@ -18,7 +20,8 @@ const today = dayKey(new Date(now))
 
 const all = computed(() => totals(progress.value))
 const acc = computed(() => accuracy(progress.value))
-const streak = computed(() => currentStreak(progress.value.streak, today))
+const ready = useReadiness()
+const best = computed(() => bestExam(progress.value))
 const lessonsDone = computed(() => COURSES.flatMap(c => c.lessons).filter(l => progress.value.completions[l.id]).length)
 const lessonsTotal = COURSES.reduce((n, c) => n + c.lessons.length, 0)
 
@@ -53,12 +56,28 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
     </header>
 
     <main class="body">
+      <!-- Readiness -->
+      <section class="card ready" aria-labelledby="ready-title">
+        <h2 id="ready-title">Ta préparation à l’examen</h2>
+        <p class="big">{{ ready.percent }} %</p>
+        <div class="rbar" role="progressbar" :aria-valuenow="ready.percent" aria-valuemin="0" aria-valuemax="100" aria-label="Préparation à l’examen">
+          <i :style="{ width: ready.percent + '%' }" />
+        </div>
+        <ul class="rlist">
+          <li>📚 <b>Parcours</b> : {{ ready.path }} % des leçons faites</li>
+          <li>🧠 <b>Fiches maîtrisées</b> : {{ ready.mastery }} % <small>(une fiche est sue quand tu la réussis encore une semaine après)</small></li>
+          <li v-if="ready.lessonsLeft">⏳ Encore <b>{{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }}</b> : environ <b>{{ ready.daysLeft }} jour{{ ready.daysLeft > 1 ? 's' : '' }}</b> à {{ LESSONS_PER_DAY }} leçons par jour</li>
+          <li v-else>✓ Toutes les leçons sont faites : continue l’entraînement pour ancrer les fiches.</li>
+          <li>🎓 <b>Le dernier pas</b> : réussir un examen blanc ({{ EXAM.maxErrors }} fautes au plus).<template v-if="best"> Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}</template></li>
+        </ul>
+      </section>
+
       <!-- Summary -->
       <section class="tiles" aria-label="Résumé">
         <div class="tile"><b>{{ acc === null ? '–' : `${acc} %` }}</b><span>🎯 de bonnes réponses</span></div>
         <div class="tile"><b>{{ all.right + all.wrong }}</b><span>✍️ réponses</span></div>
         <div class="tile"><b>{{ lessonsDone }} / {{ lessonsTotal }}</b><span>📚 leçons finies</span></div>
-        <div class="tile"><b>{{ streak }}</b><span>🔥 jours de suite</span></div>
+        <div class="tile"><b>{{ progress.xp }}</b><span>⚡ XP</span></div>
       </section>
 
       <!-- Activity -->
@@ -141,6 +160,11 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
 .top h1 { flex: 1; margin: 0; font-size: 19px; font-weight: 900; text-align: center; }
 .body { padding: 14px 16px 40px; display: flex; flex-direction: column; gap: 14px; }
 
+.ready .big { margin: 0; font-size: 40px; font-weight: 900; color: var(--primary); text-align: center; }
+.rbar { height: 14px; margin: 6px 0 12px; border-radius: 99px; overflow: hidden; background: var(--line); }
+.rbar i { display: block; height: 100%; background: var(--primary); }
+.rlist { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 15px; line-height: 1.4; }
+.rlist small { display: block; color: var(--ink-mute); font-size: 13px; }
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .tile { padding: 12px; border: 2px solid var(--line); border-radius: 16px; text-align: center; }
 .tile b { display: block; font-size: 24px; font-weight: 900; color: var(--primary); }
