@@ -169,3 +169,15 @@ reste à faire (formulations de l'examen, pièges classiques).
 
 Non couverts pour l'instant : remorquage et poussage (règle 24), navire échoué (règle 30), navires de moins de 7 m / 12 m,
 feu du pêcheur dont l'engin s'étend à plus de 150 m.
+
+## Lexique — sources des définitions
+
+| Terme | Source | Statut |
+|---|---|---|
+| Navire en pêche, non maître de sa manœuvre, capacité de manœuvre restreinte (et exemples de travaux), handicapé par son tirant d’eau, faisant route | RIPAM règle 3 (d, f, g, h, i) | ✅ |
+| Feu de tête de mât (225°), feux de côté (112,5°), feu de poupe (135°) | RIPAM règle 21 | ✅ |
+| Chalutier, bateau pilote, au mouillage, remorquage | RIPAM règles 24, 26, 29, 30 | ✅ |
+| CROSS : VHF canal 16 en mer, 196 par téléphone depuis la côte | mer.gouv.fr, « Comment alerter les secours en mer ? » | ✅ |
+| ASN : alerte de détresse sur le canal 70 | déjà vérifié (unité VHF) | ✅ |
+| Zéro des cartes, coefficient (20 à 120), marnage, échelle de Beaufort (0 à 12) | déjà vérifiés (unités Environnement et Météo) | ✅ |
+| Tirant d’eau, erre, chenal, travers, cap, poupe | vocabulaire maritime courant, sans enjeu réglementaire | — |

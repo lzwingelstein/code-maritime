@@ -127,6 +127,7 @@ function onReset() {
     </section>
 
     <footer class="foot">
+      <NuxtLink to="/lexique" class="lex">📖 Lexique : les mots du permis expliqués</NuxtLink>
       <button type="button" @click="onReset">
         {{ confirming ? 'Touche encore pour tout effacer' : 'Réinitialiser ma progression' }}
       </button>
@@ -186,5 +187,6 @@ function onReset() {
 .exam .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .exam .btn { display: block; text-decoration: none; line-height: 28px; }
 .foot { padding: 0 0 30px; text-align: center; }
+.lex { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-bottom: 8px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .foot button { min-height: 44px; border: 0; background: none; color: var(--ink-mute); font-size: 13px; text-decoration: underline; }
 </style>

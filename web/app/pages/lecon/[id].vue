@@ -230,7 +230,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <!-- New card -->
         <div v-else-if="card" class="card">
           <span class="new">{{ card.badge }}</span>
-          <h2>{{ card.name }}</h2>
+          <h2><RichText :text="card.name" /></h2>
           <div class="intro-visual">
             <CardVisual :visual="card.visual" />
           </div>
@@ -244,7 +244,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <template v-else-if="exercise">
           <p v-if="step?.type === 'question' && step.isRetry" class="retry">↻ Tu l’avais ratée : réessaie</p>
           <p class="heading">{{ exercise.heading }}</p>
-          <h2 class="prompt">{{ exercise.prompt }}</h2>
+          <h2 class="prompt"><RichText :text="exercise.prompt" /></h2>
           <div v-if="exercise.visual" class="visual" :class="`v-${exercise.visual.type}${exercise.visual.type === 'mark' && exercise.visual.topOnly ? '-top' : ''}`">
             <CardVisual :key="s.index" :visual="exercise.visual" />
           </div>
@@ -273,7 +273,7 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <div>
           <template v-if="s.verdict">
             <h3>{{ s.verdict.correct ? '✓' : '✗' }} {{ verdictTitle }}</h3>
-            <p v-if="detail">{{ detail }}</p>
+            <p v-if="detail"><RichText :text="detail" /></p>
           </template>
           <button
             type="button"
