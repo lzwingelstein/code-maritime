@@ -44,7 +44,10 @@ const reason = computed(() => {
 const link = (k: 'lesson' | 'practice') => `/lecon/${k === 'practice' ? PRACTICE_ID : LESSON_IDS[current.value]}`
 const label = (k: 'lesson' | 'practice') => (k === 'practice'
   ? (weak.value ? `Retravailler mes ${points(weak.value)}` : `S’entraîner (${PRACTICE.questions} questions)`)
-  : 'Continuer')
+  : 'Continuer ma révision')
+const sub = computed(() => (next.value.main === 'lesson'
+  ? (nextLesson.value ? `${nextLesson.value.course.title} · ${nextLesson.value.lesson.title}` : '')
+  : `${PRACTICE.questions} questions sur les fiches déjà vues`))
 const altLabel = (k: 'lesson' | 'practice') => (k === 'practice' ? 'Plutôt m’entraîner' : 'Plutôt avancer dans le parcours')
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
@@ -75,9 +78,12 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
         <template v-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} à faire, puis des révisions.</template>
         <template v-else>Parcours terminé : ancre tes fiches, puis vise un examen blanc.</template>
       </p>
-      <NuxtLink :to="link(next.main)" class="btn main">
-        {{ label(next.main) }}
-        <span v-if="next.main === 'lesson' && nextLesson" class="sub">{{ nextLesson.course.title }} · {{ nextLesson.lesson.title }}</span>
+    </section>
+
+    <section class="next" aria-label="Prochaine étape">
+      <NuxtLink :to="link(next.main)" class="go">
+        <span class="go-title display">{{ label(next.main) }}</span>
+        <span class="go-sub">{{ sub }}</span>
       </NuxtLink>
       <p class="reason">{{ reason }}</p>
       <NuxtLink v-if="next.other" :to="link(next.other)" class="alt">{{ altLabel(next.other) }}</NuxtLink>
@@ -147,10 +153,17 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .gauge b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 700; }
 .gauge b small { font-size: 18px; color: var(--ink-mute); margin-left: 2px; }
 .when { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.4; color: var(--ink); }
-.hero .main { align-self: stretch; display: block; text-decoration: none; line-height: 28px; }
-.hero .main .sub { display: block; font-size: 14px; font-weight: 500; line-height: 20px; }
-.reason { margin: 0; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--ink-mute); }
-.hero .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 600; }
+/* The main action: its own card under the gauge, text aligned left. */
+.next { display: flex; flex-direction: column; gap: 8px; margin: 14px 16px 0; }
+.go {
+  display: flex; flex-direction: column; gap: 4px; padding: 18px 22px; border-radius: 18px;
+  background: var(--primary); color: #fff; text-decoration: none;
+}
+.go:active { transform: translateY(1px); background: var(--primary-shadow); }
+.go-title { font-size: 20px; font-weight: 600; }
+.go-sub { font-size: 14px; font-weight: 400; color: var(--on-primary-mute); }
+.reason { margin: 0; padding: 0 4px; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--ink-mute); }
+.next .alt { align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 600; }
 /* Unit headers are titles, not buttons: no fill, no raised shadow, a rule underneath. */
 .unit { margin: 26px 16px 0; padding: 0 2px 10px; border-bottom: 2px solid var(--line); }
 .unit small { font-size: 12px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }

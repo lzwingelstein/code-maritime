@@ -10,6 +10,7 @@
   --primary: #1268BD;          /* 5.4:1 on white */
   --primary-shadow: #0B4F92;
   --primary-soft: #DDEEFC;
+  --on-primary-mute: #E6EEF9;  /* secondary text on --primary, 4.8:1 */
   --primary-soft-line: #84BFF0;
 
   --ok: #2F8A00;               /* 4.6:1 on white */
