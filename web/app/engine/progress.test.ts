@@ -53,3 +53,17 @@ describe('progress', () => {
     expect(parseProgress(JSON.stringify({ xp: 12 })).xp).toBe(12)
   })
 })
+
+describe('path lessons per day', () => {
+  const t = new Date(2026, 10, 18, 10).getTime()
+  const win = (lessonId: string, path?: boolean) => ({ lessonId, won: true, xp: 10, answers: [], path })
+
+  it('counts a lesson the first time it is done only, and never practice or exam', () => {
+    let p = recordLesson(emptyProgress(), win('l1'), t)
+    p = recordLesson(p, win('l1'), t)
+    p = recordLesson(p, win('l2'), t)
+    p = recordLesson(p, win('entrainement', false), t)
+    expect(p.history!['2026-11-18']!.lessons).toBe(2)
+  })
+})
+

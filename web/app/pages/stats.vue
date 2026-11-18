@@ -66,7 +66,12 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
         <ul class="rlist">
           <li>📚 <b>Parcours</b> : {{ ready.path }} % des leçons faites</li>
           <li>🧠 <b>Fiches maîtrisées</b> : {{ ready.mastery }} % <small>(une fiche est sue quand tu la réussis encore une semaine après)</small></li>
-          <li v-if="ready.lessonsLeft">⏳ Encore <b>{{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }}</b> : environ <b>{{ ready.daysLeft }} jour{{ ready.daysLeft > 1 ? 's' : '' }}</b> à {{ LESSONS_PER_DAY }} leçons par jour</li>
+          <li v-if="ready.lessonsLeft">
+            ⏳ Encore <b>{{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }}</b> : fin du parcours <b>{{ ready.endText }}</b>
+            <small v-if="ready.paceKnown">À ton rythme des deux dernières semaines : {{ ready.perDayText }} leçon{{ ready.perDay >= 2 ? 's' : '' }} nouvelle{{ ready.perDay >= 2 ? 's' : '' }} par jour. La date bouge avec toi.</small>
+            <small v-else>Estimation à {{ ready.perDayText }} leçons par jour : elle s’adaptera à ton rythme dès tes prochaines leçons.</small>
+            <small>Compte ensuite une dizaine de jours de révisions pour bien retenir les dernières fiches.</small>
+          </li>
           <li v-else>✓ Toutes les leçons sont faites : continue l’entraînement pour ancrer les fiches.</li>
           <li>🎓 <b>Le dernier pas</b> : réussir un examen blanc ({{ EXAM.maxErrors }} fautes au plus).<template v-if="best"> Meilleur : {{ best.total - best.errors }}/{{ best.total }} {{ best.passed ? '✓ reçu' : '' }}</template></li>
         </ul>

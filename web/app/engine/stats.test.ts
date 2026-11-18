@@ -12,7 +12,7 @@ describe('answer history', () => {
     p = recordLesson(p, { lessonId: 'l', won: false, xp: 0, answers: [ans('a', false)] }, day0 + DAY_MS)
     expect(p.cards).toEqual({ a: { right: 1, wrong: 1 }, b: { right: 1, wrong: 1 } })
     expect(p.history).toEqual({
-      '2026-11-10': { right: 2, wrong: 1, xp: 12 },
+      '2026-11-10': { right: 2, wrong: 1, xp: 12, lessons: 1 },
       '2026-11-11': { right: 0, wrong: 1, xp: 0 },
     })
     expect(totals(p)).toEqual({ right: 2, wrong: 2 })
@@ -36,7 +36,7 @@ describe('stats', () => {
     const p = recordLesson(emptyProgress(), { lessonId: 'l', won: true, xp: 10, answers: [ans('a', true), ans('a', false)] }, day0)
     expect(activity(p, '2026-11-12', 4)).toEqual([
       { day: '2026-11-09', right: 0, wrong: 0, xp: 0 },
-      { day: '2026-11-10', right: 1, wrong: 1, xp: 10 },
+      { day: '2026-11-10', right: 1, wrong: 1, xp: 10, lessons: 1 },
       { day: '2026-11-11', right: 0, wrong: 0, xp: 0 },
       { day: '2026-11-12', right: 0, wrong: 0, xp: 0 },
     ])
