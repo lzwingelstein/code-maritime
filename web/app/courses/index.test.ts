@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { COURSES, findLesson, LESSON_IDS } from './index'
+import { COURSES, EXAM_COURSES, findLesson, LESSON_IDS } from './index'
 
 describe('courses', () => {
   it('lesson ids are unique across courses', () => {
@@ -20,5 +20,12 @@ describe('courses', () => {
   it('finds a lesson and its course', () => {
     expect(findLesson('voilier')?.course.id).toBe('navires')
     expect(findLesson('nope')).toBeUndefined()
+  })
+})
+
+describe('exam courses', () => {
+  it('leave out the boat basics, which are not an exam point', () => {
+    expect(EXAM_COURSES.map(c => c.id)).not.toContain('bases')
+    expect(EXAM_COURSES).toHaveLength(COURSES.length - 1)
   })
 })

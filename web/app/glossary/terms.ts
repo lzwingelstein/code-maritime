@@ -70,6 +70,18 @@ export const TERMS: Term[] = [
     definition: 'Un navire, le **remorqueur**, en **tire** (ou pousse) un autre avec un câble. L’ensemble est long et change difficilement de route.',
   },
   {
+    id: 'amures', term: 'Amures (bâbord, tribord)', match: ['bâbord amures', 'tribord amures', 'amures'],
+    definition: 'Le côté par lequel un voilier **reçoit le vent**. **Tribord amures** : le vent vient de tribord (de sa droite). **Bâbord amures** : il vient de bâbord (de sa gauche).',
+  },
+  {
+    id: 'auvent', term: 'Au vent, sous le vent', match: ['au vent', 'sous le vent'],
+    definition: 'Le côté **au vent** est celui **d’où vient le vent** ; le côté **sous le vent** est l’autre, celui où il va.',
+  },
+  {
+    id: 'flottaison', term: 'Ligne de flottaison', match: ['ligne de flottaison', 'flottaison'],
+    definition: 'La limite entre la **coque** et l’**eau** : ce qui est en dessous est immergé.',
+  },
+  {
     id: 'chenal', term: 'Chenal', match: ['chenaux', 'chenal'],
     definition: 'Passage, souvent **étroit et balisé**, où l’eau est assez profonde pour les navires : entrée de port, d’estuaire ou de rivière.',
   },

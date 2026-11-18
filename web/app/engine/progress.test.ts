@@ -41,6 +41,12 @@ describe('progress', () => {
     expect(ids.map((_, i) => isUnlocked(p, ids, i))).toEqual([true, true, false])
   })
 
+  it('keeps a done lesson open when a new lesson is added before it', () => {
+    const ids = ['new', 'l1', 'l2', 'l3']
+    const p = { ...emptyProgress(), completions: { l1: 1 } }
+    expect(ids.map((_, i) => isUnlocked(p, ids, i))).toEqual([true, true, true, false])
+  })
+
   it('reads saved data defensively', () => {
     expect(parseProgress('not json')).toEqual(emptyProgress())
     expect(parseProgress(null)).toEqual(emptyProgress())

@@ -46,11 +46,18 @@ export type Visual =
   }
 
   | {
+    /** A boat from above (or from the side for waterline and draft), one part pointed at. */
+    type: 'boat'
+    part: BoatPart
+    labelled?: boolean
+  }
+  | {
     /** All-round lights in a vertical line, top to bottom (working lights read from top to bottom). */
     type: 'stack'
     colours: StackColour[]
   }
 
+export type BoatPart = 'bow' | 'stern' | 'port' | 'starboard' | 'abeam' | 'abaft' | 'tack-starboard' | 'tack-port' | 'waterline' | 'draft'
 export type StackColour = 'white' | 'red' | 'green'
 export type EncounterVessel = 'power' | 'sail' | 'fishing' | 'nuc' | 'big'
 export type HornNote = 'short' | 'long' | 'bell'

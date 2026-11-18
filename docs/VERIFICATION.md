@@ -181,3 +181,13 @@ feu du pêcheur dont l'engin s'étend à plus de 150 m.
 | ASN : alerte de détresse sur le canal 70 | déjà vérifié (unité VHF) | ✅ |
 | Zéro des cartes, coefficient (20 à 120), marnage, échelle de Beaufort (0 à 12) | déjà vérifiés (unités Environnement et Météo) | ✅ |
 | Tirant d’eau, erre, chenal, travers, cap, poupe | vocabulaire maritime courant, sans enjeu réglementaire | — |
+
+## Pour commencer · Les bases du bord
+
+| Affirmation de l'appli | Source | Statut |
+|---|---|---|
+| Pas un point du programme officiel : exclue de l'examen blanc | Arrêté du 28 septembre 2007, art. 1.2 | ✅ |
+| Feux de côté : rouge à bâbord, vert à tribord ; feu de poupe blanc à l'arrière | RIPAM 21 | ✅ |
+| Rattrapant : arrive à plus de 22,5° sur l'arrière du travers | RIPAM 13 | ✅ |
+| Amures : côté par lequel le voilier reçoit le vent ; côté au vent = opposé à celui où est bordée la grand-voile | RIPAM 12 b | ✅ |
+| Proue, poupe, travers, flottaison, tirant d'eau | vocabulaire maritime courant | — |

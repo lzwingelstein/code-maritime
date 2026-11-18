@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { seeded } from '~/engine/random'
 import { buildExam, EXAM } from './exam'
-import { COURSES } from './index'
+import { EXAM_COURSES as COURSES } from './index'
 
 describe('mock exam', () => {
   it('has the official number of questions, all of them questions', () => {

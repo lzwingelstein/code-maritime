@@ -5,9 +5,15 @@ On apprend le code du permis côtier par séries courtes de questions, avec les 
 Les thèmes de l'examen deviennent des **unités** ; la première est le balisage, le plus visuel et le plus piégeux.
 
 ## Parcours
-- Une unité = une suite de **leçons** débloquées dans l'ordre (la précédente finie une fois).
-- Chaque leçon finie donne une couronne ; elle reste rejouable.
+- Une unité = une suite de **leçons** débloquées dans l'ordre (la précédente finie une fois). Une leçon déjà faite reste ouverte, même si une leçon est ajoutée avant elle.
+- Une leçon finie affiche ✓ ; elle reste rejouable. Au plus 2 leçons avec des erreurs récentes sont marquées « À revoir ».
 - La dernière leçon de l'unité est une **révision** : elle mélange toutes les marques et insiste sur les plus faibles.
+
+### Pour commencer · Les bases du bord (hors examen)
+Le vocabulaire que les questions utilisent sans l'expliquer. Ce n'est pas un point du programme : l'unité ouvre le parcours mais l'examen blanc n'y puise pas. Schéma d'un bateau vu de dessus (ou de profil), la partie demandée marquée « ? ».
+1. Se repérer à bord : avant (proue) et arrière (poupe), bâbord et tribord, travers (et « plus de 22,5° sur l'arrière du travers »)
+2. La coque et le vent : ligne de flottaison et tirant d'eau ; amures, au vent, sous le vent
+3. Révision
 
 ### Unité 1 · Le balisage (région A)
 1. Marques latérales (bâbord, tribord)
