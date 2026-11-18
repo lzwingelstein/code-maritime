@@ -97,7 +97,8 @@ export function recordLesson(
 }
 
 export function isUnlocked(p: Progress, lessonIds: string[], index: number): boolean {
-  return index === 0 || (p.completions[lessonIds[index - 1]!] ?? 0) > 0
+  // A lesson already done stays open, even if a lesson is added before it in the path.
+  return index === 0 || (p.completions[lessonIds[index - 1]!] ?? 0) > 0 || (p.completions[lessonIds[index]!] ?? 0) > 0
 }
 
 export function recordExam(p: Progress, r: Omit<ExamResult, 'day'>, now: number): Progress {

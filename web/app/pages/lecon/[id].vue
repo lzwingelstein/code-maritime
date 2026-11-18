@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { choiceName, COURSES, findLesson, regenerator } from '~/courses'
+import { choiceName, COURSES, EXAM_COURSES, findLesson, regenerator } from '~/courses'
 import { buildExam, EXAM, EXAM_ID } from '~/courses/exam'
 import { buildPractice, PRACTICE, PRACTICE_ID, practiceGenerator } from '~/courses/practice'
 import type { CourseExercise } from '~/courses/types'
@@ -34,7 +34,7 @@ function newSession(): Session<CourseExercise> {
   if (isPractice) return reactive(startSession(practiceUnit
     ? buildPractice(practiceCourses, progress.value.mastery, now, rng, PRACTICE.questions, PRACTICE.unitMinCards)
     : buildPractice(COURSES, progress.value.mastery, now, rng))) as Session<CourseExercise>
-  if (isExam) return reactive(startSession(buildExam(COURSES, rng), { hearts: null, retryWrong: false })) as Session<CourseExercise>
+  if (isExam) return reactive(startSession(buildExam(EXAM_COURSES, rng), { hearts: null, retryWrong: false })) as Session<CourseExercise>
   const steps = lesson && generate
     ? buildLesson(lesson.plan, {
         rng,
