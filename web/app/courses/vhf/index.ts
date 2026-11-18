@@ -3,6 +3,7 @@
  * CROSS Gris-Nez, ministère de la Mer (196). See docs/VERIFICATION.md.
  */
 import { quizCourse, type QuizQuestion } from '../quiz'
+import { picto } from '../pictos'
 
 const e = (char: string) => ({ type: 'emoji' as const, char })
 
@@ -31,7 +32,7 @@ export const vhf = quizCourse({
   heading: 'VHF',
   cards: [
     {
-      id: 'ch16', name: 'Le canal 16', visual: e('📻'),
+      id: 'ch16', name: 'Le canal 16', visual: picto('radio'),
       intro: 'Le **canal 16** est le canal d’**appel**, de **détresse**, d’**urgence** et de **sécurité** : tout le monde l’écoute, les CROSS aussi. On y fait des appels **courts**, puis on **dégage** sur un canal de travail.',
       questions: [
         { prompt: 'Quel canal VHF est celui de la détresse et de l’appel ?', answer: '16', wrong: ['9', '70', '72'] },
@@ -43,7 +44,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'ch-work', name: 'Canaux de travail', visual: e('🔁'),
+      id: 'ch-work', name: 'Canaux de travail', visual: picto('swap'),
       intro: 'Les canaux **6, 8, 72 et 77** servent aux échanges **de navire à navire**. Le canal **9** est le plus utilisé par les **capitaineries** des ports de plaisance.',
       questions: [
         { prompt: 'Lequel de ces canaux sert aux échanges entre navires ?', answer: '72', wrong: ['16', '70', '9'] },
@@ -56,7 +57,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'licence-vhf', name: 'Qui peut utiliser une VHF ?', visual: e('🪪'),
+      id: 'licence-vhf', name: 'Qui peut utiliser une VHF ?', visual: picto('idcard'),
       intro: 'Dans les **eaux territoriales françaises**, le **permis plaisance** suffit pour utiliser **toute VHF** (fixe, portable, avec ou sans ASN). Une **portable sans ASN de 6 W au plus** ne demande aucune qualification. **Hors des eaux françaises**, il faut le **CRR** (certificat restreint de radiotéléphoniste).',
       questions: [
         { prompt: 'Avec mon permis côtier, puis-je utiliser une VHF fixe dans les eaux françaises ?', answer: 'Oui, le permis suffit', wrong: ['Non, il faut le CRR', 'Seulement une portable', 'Seulement en cas de détresse'] },
@@ -68,7 +69,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'asn', name: 'ASN, canal 70 et MMSI', visual: e('🆘'),
+      id: 'asn', name: 'ASN, canal 70 et MMSI', visual: picto('sos'),
       intro: 'L’**ASN** (appel sélectif numérique) envoie une alerte automatique sur le **canal 70** avec le bouton **DISTRESS** : il transmet l’**identité** du bateau (son **MMSI**, **9 chiffres**, qui commence par **226, 227 ou 228** en France) et sa **position** si la VHF est reliée au GPS. On confirme ensuite en phonie sur le **16**.',
       questions: [
         { prompt: 'Sur quel canal passe l’alerte numérique ASN ?', answer: '70', wrong: ['16', '9', '6'] },
@@ -81,7 +82,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'cross', name: 'Le sauvetage en mer', visual: e('🚁'),
+      id: 'cross', name: 'Le sauvetage en mer', visual: picto('helicopter'),
       intro: 'Les **CROSS** (centres régionaux opérationnels de surveillance et de sauvetage) coordonnent le sauvetage en mer et veillent le **canal 16**. On les joint par **VHF 16** en mer (en priorité) ou au **196** par téléphone. Les bénévoles de la **SNSM** font une grande partie des interventions.',
       questions: [
         { prompt: 'Qui coordonne les opérations de sauvetage en mer en France ?', answer: 'Le CROSS', wrong: ['La capitainerie', 'Météo-France', 'Le club nautique'] },
@@ -93,7 +94,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'mayday', name: 'MAYDAY : détresse', visual: e('🆘'),
+      id: 'mayday', name: 'MAYDAY : détresse', visual: picto('sos'),
       intro: '**MAYDAY** = **détresse** : **danger grave et imminent**, une **aide immédiate** est demandée. Sur le 16 : « **MAYDAY MAYDAY MAYDAY**, ici [nom du bateau ×3, MMSI] », puis **position**, **nature de la détresse**, **aide demandée**, **nombre de personnes**, autres informations, « **à vous** ».',
       questions: [
         { prompt: 'Mon bateau coule et nous devons l’abandonner. Je lance…', answer: PRIORITY.mayday, wrong: [PRIORITY.panpan, PRIORITY.securite] },
@@ -106,7 +107,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'panpan', name: 'PAN PAN : urgence', visual: e('⚠️'),
+      id: 'panpan', name: 'PAN PAN : urgence', visual: picto('alert'),
       intro: '**PAN PAN** = **urgence** : un problème sérieux pour le bateau ou une personne, **sans danger immédiat pour la vie** (panne moteur qui dérive vers des cailloux loin, blessé léger…). Même structure que le MAYDAY : « PAN PAN ×3, à tous ×3, ici… », position, problème, aide demandée.',
       questions: [
         { prompt: 'Panne de moteur, je dérive lentement au large, personne n’est en danger immédiat. Je lance…', answer: PRIORITY.panpan, wrong: [PRIORITY.mayday, PRIORITY.securite] },
@@ -118,7 +119,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'securite', name: 'SÉCURITÉ : information', visual: e('📢'),
+      id: 'securite', name: 'SÉCURITÉ : information', visual: picto('megaphone'),
       intro: '**SÉCURITÉ** annonce une **information pour la sécurité de la navigation** ou la **météo** : conteneur à la dérive, bouée cardinale manquante, avis de coup de vent…',
       questions: [
         { prompt: 'Je vois un conteneur flottant entre deux eaux. Je lance…', answer: PRIORITY.securite, wrong: [PRIORITY.mayday, PRIORITY.panpan] },
@@ -130,7 +131,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'alphabet', name: 'L’alphabet phonétique', visual: e('🔤'),
+      id: 'alphabet', name: 'L’alphabet phonétique', visual: picto('abc'),
       intro: 'Pour **épeler** un nom à la VHF sans erreur, on utilise l’**alphabet phonétique international** : **A**lpha, **B**ravo, **C**harlie, **D**elta, **E**cho, **F**oxtrot, **G**olf, **H**otel, **I**ndia, **J**uliett, **K**ilo, **L**ima, **M**ike, **N**ovember, **O**scar, **P**apa, **Q**uebec, **R**omeo, **S**ierra, **T**ango, **U**niform, **V**ictor, **W**hiskey, **X**-ray, **Y**ankee, **Z**ulu.',
       questions: alphabetQuestions,
       statements: [
@@ -140,7 +141,7 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'english', name: 'Anglais de base', visual: e('🇬🇧'),
+      id: 'english', name: 'Anglais de base', visual: picto('english'),
       intro: 'Quelques mots à connaître : **Over** = « à vous » (j’attends la réponse), **Out** = « terminé », **Say again** = « répétez », **Roger** = « reçu », **Mayday relay** = relais d’un message de détresse.',
       questions: [
         { prompt: 'À la VHF, « Over » signifie…', answer: 'À vous, j’attends votre réponse', wrong: ['Terminé, je coupe', 'Répétez', 'Reçu'] },

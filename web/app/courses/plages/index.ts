@@ -6,6 +6,7 @@
 import { quizCourse } from '../quiz'
 import type { Visual } from '../types'
 import type { ExtraMarkId, MarkId } from '../balisage/marks'
+import { picto } from '../pictos'
 
 const mark = (markId: MarkId | ExtraMarkId): Visual => ({ type: 'mark', markId, topOnly: false })
 const which = 'Quelle est cette bouée ?'
@@ -108,7 +109,7 @@ export const plages = quizCourse({
       ],
     },
     {
-      id: 'new-danger', name: 'Danger nouveau', visual: { type: 'emoji', char: '⚠️' },
+      id: 'new-danger', name: 'Danger nouveau', visual: picto('alert'),
       intro: 'Un **danger nouveau** n’est pas encore sur les cartes. On le balise avec des marques **cardinales ou latérales** (parfois de danger isolé), à **feux scintillants**. S’il est grave, une marque peut être **doublée** ; une balise radar peut émettre la lettre Morse **« D »**.',
       questions: [
         { prompt: 'Deux marques cardinales Nord identiques côte à côte signalent probablement…', answer: 'Un danger nouveau et grave', wrong: ['Un chenal préféré', 'Une zone de baignade', 'Une erreur de balisage'] },
