@@ -15,7 +15,7 @@ export const securite = quizCourse({
   heading: 'Sécurité',
   cards: [
     {
-      id: 'zones', name: 'Les zones de navigation', visual: picto('zones'),
+      id: 'zones', name: 'Les zones de navigation', visual: picto('zones', 'securite'),
       intro: 'Le matériel dépend de la **distance d’un abri** : **basique** à moins de **2 milles**, **côtier** de **2 à moins de 6 milles**, **semi-hauturier** de 6 à moins de 60 milles, **hauturier** au-delà. Le permis côtier permet d’aller jusqu’à **6 milles d’un abri**.',
       questions: [
         { prompt: 'Je navigue à 4 milles d’un abri. Quel armement me faut-il ?', answer: 'Côtier', wrong: ['Basique', 'Semi-hauturier', 'Hauturier'] },
@@ -28,7 +28,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'eif', name: 'Gilets : équipement individuel de flottabilité', visual: picto('vest'),
+      id: 'eif', name: 'Gilets : équipement individuel de flottabilité', visual: picto('vest', 'securite'),
       intro: 'Un **équipement individuel de flottabilité** par personne, facile à attraper : **50 N** en basique, **100 N** en côtier. Un enfant de **30 kg ou moins** porte un **100 N**, quelle que soit la distance. Les enfants de **moins d’un an** ne comptent pas dans le nombre de personnes à bord.',
       questions: [
         { prompt: 'En navigation côtière, chaque adulte dispose d’un gilet d’au moins…', answer: '100 N', wrong: ['50 N', '150 N', '275 N'] },
@@ -41,7 +41,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'light', name: 'Dispositif lumineux', visual: picto('flashlight'),
+      id: 'light', name: 'Dispositif lumineux', visual: picto('flashlight', 'securite'),
       intro: 'Un **dispositif lumineux étanche** d’au moins **6 heures d’autonomie** : une lampe torche pour le bord, **ou** une lampe par personne (flash, torche ou cyalume) **portée ou fixée au gilet**.',
       questions: [
         { prompt: 'Quelle autonomie minimale pour le dispositif lumineux ?', answer: '6 heures', wrong: ['1 heure', '3 heures', '12 heures'] },
@@ -53,7 +53,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'basic-kit', name: 'Armement basique', visual: picto('toolbox'),
+      id: 'basic-kit', name: 'Armement basique', visual: picto('toolbox', 'securite'),
       intro: 'Jusqu’à 2 milles : **gilets**, **dispositif lumineux**, **extincteur(s)**, **écope ou pompe à main** (si le bateau n’est pas autovideur ou s’il est habitable), **point et bout de remorquage**, **ligne de mouillage** adaptée, un moyen de connaître **l’heure et le coefficient de la marée** (sauf en Méditerranée), et le **pavillon national** hors des eaux territoriales.',
       questions: [
         { prompt: 'Lequel de ces équipements fait partie de l’armement basique ?', answer: 'Un dispositif de remorquage', wrong: ['Trois feux rouges à main', 'Un compas magnétique', 'Des cartes marines officielles'] },
@@ -66,7 +66,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'kill-cord', name: 'Coupe-circuit', visual: picto('cord'),
+      id: 'kill-cord', name: 'Coupe-circuit', visual: picto('cord', 'securite'),
       intro: 'Quand le bateau en a un, le **coupe-circuit** est **attaché au poignet, à la jambe ou au gilet** du pilote **dès que le moteur tourne** : s’il tombe à l’eau, le moteur s’arrête. Un **second** coupe-circuit doit être facile à atteindre, et tout le monde à bord sait où il est.',
       questions: [
         { prompt: 'Le moteur tourne. Le coupe-circuit est…', answer: 'Attaché au pilote (poignet, jambe ou gilet)', wrong: ['Rangé près du moteur', 'Retiré pour ne pas gêner', 'Attaché au volant'] },
@@ -78,7 +78,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'coastal-kit', name: 'Armement côtier', visual: picto('compass'),
+      id: 'coastal-kit', name: 'Armement côtier', visual: picto('compass', 'securite'),
       intro: 'De 2 à 6 milles, en plus du basique (et avec des gilets de **100 N**) : une **bouée** de sauvetage (fer à cheval ou couronne, au nom du bateau), **3 feux rouges à main**, un **compas magnétique étanche**, les **cartes marines officielles** à jour, le **RIPAM** (ou un résumé) et un **document sur le balisage** de la zone.',
       questions: [
         { prompt: 'Combien de feux rouges à main en armement côtier ?', answer: '3', wrong: ['1', '2', '6'] },
@@ -91,7 +91,7 @@ export const securite = quizCourse({
       ],
     },
     {
-      id: 'man-overboard', name: 'Un homme à la mer', visual: picto('lifebuoy'),
+      id: 'man-overboard', name: 'Un homme à la mer', visual: picto('lifebuoy', 'securite'),
       intro: 'Si quelqu’un tombe à l’eau : **crier « un homme à la mer »**, **lancer la bouée**, **désigner quelqu’un qui ne le quitte pas des yeux** et le montre du bras, **éloigner l’hélice** de la personne (débrayer), noter la position (touche MOB du GPS) et **alerter les secours** si besoin : **VHF canal 16** en priorité en mer, ou le **196** au téléphone (CROSS).',
       questions: [
         { prompt: 'Quelqu’un tombe à l’eau. Le premier réflexe est de…', answer: 'Crier « un homme à la mer » et lancer la bouée', wrong: ['Plonger tout de suite pour le chercher', 'Accélérer pour faire demi-tour', 'Appeler sa famille'] },

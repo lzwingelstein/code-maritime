@@ -48,7 +48,7 @@ export const barre = quizCourse({
       ],
     },
     {
-      id: 'give-way-manner', name: 'Comment s’écarter', visual: picto('turn'),
+      id: 'give-way-manner', name: 'Comment s’écarter', visual: picto('turn', 'barre'),
       intro: 'Celui qui doit s’écarter manœuvre **tôt et franchement**, pour passer **largement**. Le privilégié garde **cap et vitesse**, mais si l’abordage devient inévitable, il fait **la manœuvre la plus utile**.',
       questions: [
         { prompt: 'Le navire qui doit s’écarter manœuvre…', answer: 'Tôt et franchement', wrong: ['Au dernier moment', 'Par petites touches pour ne pas gêner', 'Seulement si l’autre le demande'] },
@@ -150,7 +150,7 @@ export const barre = quizCourse({
       ],
     },
     {
-      id: 'tss', name: 'Dispositif de séparation du trafic', visual: picto('lanes'),
+      id: 'tss', name: 'Dispositif de séparation du trafic', visual: picto('lanes', 'barre'),
       intro: 'Dans un **dispositif de séparation du trafic** (« rail »), on suit la voie **dans le sens du trafic**, loin de la ligne de séparation. Pour le **traverser**, on le coupe **à peu près perpendiculairement**.',
       questions: [
         { prompt: 'Pour traverser un rail de navigation, je coupe le trafic…', answer: 'À peu près perpendiculairement', wrong: ['En biais, dans le sens du courant', 'En suivant la ligne de séparation'] },

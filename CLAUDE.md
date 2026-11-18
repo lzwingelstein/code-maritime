@@ -60,8 +60,8 @@ code-maritime/
    or fewer than two choices exist).
 2. Test the generator: answer among unique choices, kinds only where they make sense, every lesson fills its count.
 3. New picture types: add a `Visual` variant in `courses/types.ts` and draw it from `CardVisual.vue`.
-   No emoji on a card (tested): a sheet without a drawn scene gets a line pictogram, `picto('<name>')`
-   from `courses/pictos.ts` (add one there if needed, 24 px grid, stroke only).
+   No emoji on a card (tested): a sheet without a drawn scene gets an illustration, `picto('<name>', '<course id>')`
+   from `courses/pictos.ts` (flat rounded shapes on a round backdrop in the theme colour, 48 px grid, no red or green).
 4. Register the course in `courses/index.ts`. Card ids and lesson ids must be unique across courses (tested).
 5. Mostly rules and numbers? Write it with `quizCourse()` (cards with authored questions and statements);
    `QUIZ_COURSES` content is checked by `quiz.test.ts`. Give it a neutral `heading` (never the card name).
