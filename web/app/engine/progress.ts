@@ -25,6 +25,8 @@ export interface AnswerCount {
 
 export interface DayStats extends AnswerCount {
   xp: number
+  /** Lessons of the path done for the first time that day (replays, practice and exams left out). */
+  lessons?: number
 }
 
 export const HISTORY_DAYS = 60
@@ -64,7 +66,8 @@ export function introduce(p: Progress, cardId: string, now: number): Progress {
 
 export function recordLesson(
   p: Progress,
-  r: { lessonId: string, won: boolean, xp: number, answers: AnswerLog[] },
+  /** `path: false` for a practice or an exam: it does not move the path forward. */
+  r: { lessonId: string, won: boolean, xp: number, answers: AnswerLog[], path?: boolean },
   now: number,
 ): Progress {
   const mastery = { ...p.mastery }
@@ -79,6 +82,7 @@ export function recordLesson(
     cards[a.cardId] = c
   }
   if (r.won) day.xp += r.xp
+  if (r.won && r.path !== false && !p.completions[r.lessonId]) day.lessons = (day.lessons ?? 0) + 1
   const history = Object.fromEntries(
     Object.entries({ ...p.history, [today]: day }).sort(([a], [b]) => a.localeCompare(b)).slice(-HISTORY_DAYS),
   )

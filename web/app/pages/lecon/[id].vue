@@ -93,14 +93,14 @@ function finish(won: boolean) {
   if (isExam) {
     const passed = session.errors <= EXAM.maxErrors
     const xp = passed ? 20 : 10
-    const after = recordLesson(progress.value, { lessonId: EXAM_ID, won: true, xp, answers: session.answers }, now)
+    const after = recordLesson(progress.value, { lessonId: EXAM_ID, won: true, xp, answers: session.answers, path: false }, now)
     save(recordExam(after, { errors: session.errors, total: session.questions, passed }, now))
     result.value = { xp, seconds, accuracy: Math.round((session.questions - session.errors) / session.questions * 100), passed }
     if (passed) sound.win()
     return
   }
   const xp = won ? lessonXp(session) : 0
-  save(recordLesson(progress.value, { lessonId: isPractice ? PRACTICE_ID : lesson!.id, won, xp, answers: session.answers }, now))
+  save(recordLesson(progress.value, { lessonId: isPractice ? PRACTICE_ID : lesson!.id, won, xp, answers: session.answers, path: !isPractice }, now))
   result.value = { xp, seconds, accuracy: Math.round(session.firstTry / Math.max(1, session.questions) * 100) }
   if (won) sound.win()
 }
