@@ -25,9 +25,10 @@ describe('courses', () => {
 })
 
 describe('exam courses', () => {
-  it('leave out the boat basics, which are not an exam point', () => {
+  it('leave out the boat basics (not an exam point) and the alphabet drill (a quarter of a unit would weigh too much)', () => {
     expect(EXAM_COURSES.map(c => c.id)).not.toContain('bases')
-    expect(EXAM_COURSES).toHaveLength(COURSES.length - 1)
+    expect(EXAM_COURSES.map(c => c.id)).not.toContain('alphabet')
+    expect(EXAM_COURSES).toHaveLength(COURSES.length - 2)
   })
 })
 

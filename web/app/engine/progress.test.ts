@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { emptyProgress, introduce, isUnlocked, parseProgress, recordLesson, todayXp } from './progress'
+import { emptyProgress, introduce, isUnlocked, migrateCards, parseProgress, recordLesson, todayXp } from './progress'
 import { DAY_MS } from './mastery'
 
 const now = new Date(2026, 10, 12, 9).getTime()
@@ -67,3 +67,16 @@ describe('path lessons per day', () => {
   })
 })
 
+
+describe('migrateCards', () => {
+  it('copies an old card’s mastery to the cards that replace it, then drops the old one', () => {
+    const p = { ...emptyProgress(), mastery: { old: { level: 2, due: 5 }, b: { level: 3, due: 9 } }, cards: { old: { right: 4, wrong: 1 } } }
+    const m = migrateCards(p, { old: ['a', 'b'] })
+    expect(m.mastery).toEqual({ a: { level: 2, due: 5 }, b: { level: 3, due: 9 } })
+    expect(m.cards).toEqual({})
+  })
+  it('leaves progress untouched when there is nothing to migrate', () => {
+    const p = { ...emptyProgress(), mastery: { a: { level: 1, due: 1 } } }
+    expect(migrateCards(p, { old: ['a'] })).toBe(p)
+  })
+})

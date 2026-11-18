@@ -20,6 +20,8 @@ defineProps<{ visual: Visual }>()
   <BoatPlan v-else-if="visual.type === 'boat'" :part="visual.part" :labelled="visual.labelled" />
   <LightStack v-else-if="visual.type === 'stack'" :colours="visual.colours" />
   <PortSignal v-else-if="visual.type === 'port'" :lights="visual.lights" :flashing="visual.flashing" :exemption="visual.exemption" />
+  <LetterTile v-else-if="visual.type === 'letter'" :char="visual.char" />
+  <SpokenWord v-else-if="visual.type === 'spoken'" :word="visual.word" />
   <CardPicto v-else-if="visual.type === 'picto'" :name="visual.name" :tone="visual.tone" />
   <span v-else class="emoji" aria-hidden="true">{{ visual.char }}</span>
 </template>
