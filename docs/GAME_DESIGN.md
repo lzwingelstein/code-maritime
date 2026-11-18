@@ -6,7 +6,7 @@ Les thèmes de l'examen deviennent des **unités** ; la première est le balisag
 
 ## Accueil
 - En haut, une seule action : la jauge **« Prêt pour l’examen »** (pourcentage, leçons restantes et date de fin estimée ; touche → stats), puis **un gros bouton** « Continuer » (nom de la leçon dessous) ou « Retravailler mes points faibles », avec la raison en une ligne et une alternative en lien.
-- Le chemin des leçons vient dessous, puis l’examen blanc.
+- Dessous, **« Ton parcours »** en sommaire : une carte par unité (rond d’état ✓ / numéro / cadenas, titre, barre « 2 / 6 »). Seule l’unité de la prochaine leçon est ouverte au départ ; un toucher ouvre ou ferme les autres. Une unité ouverte liste ses leçons, une par ligne, avec leur état écrit (« ✓ Faite », « ↻ À revoir · erreurs récentes », « Prochaine leçon » avec un bouton « Commencer », « Verrouillée »). Puis l’examen blanc sur une ligne.
 - Ni XP ni objectif du jour à l’écran : ils encombraient sans aider à se préparer (l’XP reste compté dans les données).
 
 ## Parcours
@@ -54,6 +54,10 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
 - **Pas de cœurs** : une question ratée revient à la fin sous une autre forme (nouveaux choix), marquée
   « ↻ Tu l'avais ratée », **jusqu'à ce qu'elle soit réussie**. La série ne se termine que quand tout est bon ;
   l'en-tête affiche le nombre de questions ratées encore à refaire. La barre de progression ne recule jamais.
+
+## Fiches
+- Chaque fiche montre son **niveau de maîtrise** : 3 points (un par niveau, plein au 3ᵉ) et un mot : « Nouvelle », « En cours », « ✓ Sue » (niveau 3), « ! À revoir » (niveau 0 ou 1 et à revoir).
+- Filtres « Toutes », « À revoir (n) », « Sues (n) » ; chaque unité indique « x sues sur y ».
 
 ## Progression
 - **XP** (compté, plus affiché) : 10 par leçon, +5 sans aucune erreur, +1 par série de 3 bonnes réponses (5 au plus).

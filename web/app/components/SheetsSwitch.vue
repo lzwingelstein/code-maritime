@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /** Two sections of the « Fiches » tab: course sheets and lexicon. */
 const route = useRoute()
+const here = computed(() => route.path.replace(/(.)\/$/, '$1'))
 const ITEMS = [
   { to: '/fiches', label: 'Cours', icon: 'cards' },
   { to: '/lexique', label: 'Lexique', icon: 'book' },
@@ -14,8 +15,8 @@ const ITEMS = [
       :key="i.to"
       :to="i.to"
       class="seg"
-      :class="{ on: route.path === i.to }"
-      :aria-current="route.path === i.to ? 'page' : undefined"
+      :class="{ on: here === i.to }"
+      :aria-current="here === i.to ? 'page' : undefined"
     >
       <UiIcon :name="i.icon" :size="18" />&nbsp;{{ i.label }}
     </NuxtLink>

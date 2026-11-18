@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DAY_MS } from './mastery'
-import { lessonsToReview, MAX_REVIEW_MARKERS } from './lesson-status'
+import { lessonsToReview, MAX_REVIEW_MARKERS, unitProgress } from './lesson-status'
 
 const now = 100 * DAY_MS
 const later = now + DAY_MS
@@ -27,5 +27,19 @@ describe('lessonsToReview', () => {
     ]
     const mastery = { a: missed, b: missed, c: missed, d: missed }
     expect(lessonsToReview(lessons, mastery)).toEqual(['l2', 'l1'])
+  })
+})
+
+describe('unitProgress', () => {
+  const n = (unlocked: boolean, done: boolean) => ({ unlocked, done })
+  it('counts done lessons and calls a fully done unit done', () => {
+    expect(unitProgress([n(true, true), n(true, true)])).toEqual({ done: 2, total: 2, state: 'done' })
+  })
+  it('calls a unit with its first lesson open active, even before any lesson is done', () => {
+    expect(unitProgress([n(true, false), n(false, false)])).toEqual({ done: 0, total: 2, state: 'active' })
+    expect(unitProgress([n(true, true), n(true, false), n(false, false)])).toEqual({ done: 1, total: 3, state: 'active' })
+  })
+  it('calls a unit locked while its first lesson is locked', () => {
+    expect(unitProgress([n(false, false), n(false, false)])).toEqual({ done: 0, total: 2, state: 'locked' })
   })
 })

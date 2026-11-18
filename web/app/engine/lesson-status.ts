@@ -19,3 +19,13 @@ export function lessonsToReview(
     .slice(0, max)
     .map(l => l.id)
 }
+
+export type UnitState = 'done' | 'active' | 'locked'
+
+/** A unit on the path summary: lessons done out of its total, and whether it is done, open or still locked. */
+export function unitProgress(lessons: { unlocked: boolean, done: boolean }[]): { done: number, total: number, state: UnitState } {
+  const done = lessons.filter(l => l.done).length
+  const total = lessons.length
+  const state: UnitState = total > 0 && done === total ? 'done' : lessons[0]?.unlocked ? 'active' : 'locked'
+  return { done, total, state }
+}
