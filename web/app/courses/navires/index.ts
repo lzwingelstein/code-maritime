@@ -34,7 +34,7 @@ export const LESSONS: Lesson[] = [
   },
   {
     id: 'peche-pilote', title: 'Pêche et bateau pilote', icon: icon('🎣'), firstKind: 'identify',
-    plan: { cards: ['trawler', 'fishing', 'pilot'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
+    plan: { cards: ['trawler', 'fishing', 'pilot'], count: 10, kinds: ['identify', 'meaning', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🧠', title: 'Lis de haut en bas',
       text: 'Feux visibles **sur tout l’horizon**, lus **de haut en bas** :',
@@ -47,7 +47,7 @@ export const LESSONS: Lesson[] = [
   },
   {
     id: 'navires-genes', title: 'Mouillage et navires gênés', icon: icon('⚓'), firstKind: 'identify',
-    plan: { cards: ['anchor', 'nuc', 'ram', 'cbd'], count: 10, kinds: ['identify', 'identify', 'find', 'truefalse'], tip: true },
+    plan: { cards: ['anchor', 'nuc', 'ram', 'cbd'], count: 10, kinds: ['identify', 'meaning', 'find', 'truefalse'], tip: true },
     tip: {
       emoji: '🚨', title: 'Compte les rouges',
       text: 'Feux superposés, visibles sur tout l’horizon :',
@@ -77,7 +77,7 @@ export const LESSONS: Lesson[] = [
   },
   {
     id: 'revision-navires', title: 'Révision', icon: icon('🧭'), firstKind: 'identify',
-    plan: { cards: VESSEL_IDS, count: 12, kinds: ['identify', 'find', 'aspect', 'truefalse', 'dayshape', 'dayfind'], review: true },
+    plan: { cards: VESSEL_IDS, count: 12, kinds: ['identify', 'find', 'aspect', 'truefalse', 'dayshape', 'dayfind', 'meaning'], review: true },
   },
 ]
 

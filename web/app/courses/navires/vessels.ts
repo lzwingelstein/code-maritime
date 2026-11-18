@@ -28,6 +28,8 @@ export interface Vessel {
   shapesForward?: boolean
   /** Shown at night in the exam: false for a vessel only asked by day. */
   night: boolean
+  /** What the vessel's status means, in plain words (asked by the « meaning » exercise). */
+  meaning?: string
   intro: string
   statements: [string, boolean][]
 }
@@ -82,8 +84,9 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   anchor: {
     id: 'anchor', name: 'Navire au mouillage', hull: 'power', night: true,
+    meaning: 'Il est arrêté, retenu au fond par son ancre',
     lights: allRound(0.8, 2.4, 'white'), shapes: ['ball'], shapesForward: true,
-    intro: '**Un feu blanc visible sur tout l’horizon** à l’avant, et plus de feux de route. À partir de 50 m, un second feu blanc, plus bas, à l’arrière. De jour : **une boule noire** à l’avant.',
+    intro: 'Au mouillage, le navire est **retenu au fond par son ancre**. Il montre **un feu blanc visible sur tout l’horizon** à l’avant, et plus de feux de route. À partir de 50 m, un second feu blanc, plus bas, à l’arrière. De jour : **une boule noire** à l’avant.',
     statements: [
       ['Au mouillage, un navire de moins de 50 m montre un feu blanc visible sur tout l’horizon.', true],
       ['Au mouillage, on garde ses feux de côté allumés.', false],
@@ -92,8 +95,9 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   trawler: {
     id: 'trawler', name: 'Chalutier en pêche', hull: 'power', night: true,
+    meaning: 'Il pêche en traînant derrière lui un grand filet en forme de poche',
     lights: [...allRound(0.15, 3.8, 'green', 'white'), ...sides(0.1, 1.4), stern()], shapes: ['cone-down', 'cone-up'],
-    intro: '**Vert sur blanc** visibles sur tout l’horizon : chalutier en pêche. En route, il ajoute ses feux de côté et de poupe. De jour : **deux cônes réunis par la pointe**.',
+    intro: 'Un **chalutier** traîne derrière lui un grand filet en poche, le **chalut**. **Vert sur blanc** visibles sur tout l’horizon : chalutier en pêche. En route, il ajoute ses feux de côté et de poupe. De jour : **deux cônes réunis par la pointe**.',
     statements: [
       ['Vert sur blanc : chalutier en pêche.', true],
       ['Un chalutier en pêche montre blanc sur vert.', false],
@@ -102,6 +106,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   fishing: {
     id: 'fishing', name: 'Navire en pêche (autre que chalut)', hull: 'power', night: true,
+    meaning: 'Il pêche avec des filets ou des lignes qui le gênent pour manœuvrer',
     lights: [...allRound(0.15, 3.8, 'red', 'white'), ...sides(0.1, 1.4), stern()], shapes: ['cone-down', 'cone-up'],
     intro: '**Rouge sur blanc** visibles sur tout l’horizon : navire en pêche avec des filets ou des lignes (pas un chalut).',
     statements: [
@@ -111,8 +116,9 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   pilot: {
     id: 'pilot', name: 'Bateau pilote en service', hull: 'power', night: true,
+    meaning: 'Il amène aux grands navires le marin qui les guide dans le port',
     lights: [...allRound(0.2, 3.8, 'white', 'red'), ...sides(0.1, 1.4), stern()], shapes: null,
-    intro: '**Blanc sur rouge** visibles sur tout l’horizon : bateau pilote en service. En route, il ajoute ses feux de côté et de poupe.',
+    intro: 'Le **pilote** est le marin qui guide les grands navires à l’entrée et à la sortie du port ; le **bateau pilote** l’amène à bord. **Blanc sur rouge** visibles sur tout l’horizon : bateau pilote en service. En route, il ajoute ses feux de côté et de poupe.',
     statements: [
       ['Blanc sur rouge : bateau pilote en service.', true],
       ['Un pilote en service montre rouge sur blanc.', false],
@@ -120,6 +126,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   nuc: {
     id: 'nuc', name: 'Navire non maître de sa manœuvre', hull: 'power', night: true,
+    meaning: 'En avarie, il ne peut pas manœuvrer ni s’écarter de ta route',
     lights: [...allRound(0.15, 3.8, 'red', 'red'), ...sides(0.1, 1.4), stern()], shapes: ['ball', 'ball'],
     intro: '**Deux feux rouges** l’un au-dessus de l’autre : avarie, il ne peut pas manœuvrer. **Pas de feu de tête de mât** ; en route, il ajoute ses feux de côté et de poupe. De jour : **deux boules noires**.',
     statements: [
@@ -130,6 +137,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   ram: {
     id: 'ram', name: 'Navire à capacité de manœuvre restreinte', hull: 'power', night: true,
+    meaning: 'Son travail (câble, dragage, plongeurs…) l’empêche de s’écarter',
     lights: [...allRound(0, 5, 'red', 'white', 'red'), masthead(0.55, 2.2), ...sides(0.1, 1.4), stern()],
     shapes: ['ball', 'diamond', 'ball'],
     intro: '**Rouge, blanc, rouge** superposés : un navire gêné par son travail (dragage, câble, ravitaillement…). En route, il ajoute ses feux de tête de mât, de côté et de poupe. De jour : **boule, bicône (un losange), boule**.',
@@ -141,6 +149,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   cbd: {
     id: 'cbd', name: 'Navire handicapé par son tirant d’eau', hull: 'power', night: true,
+    meaning: 'Trop enfoncé dans l’eau, il doit rester dans le chenal',
     lights: [...allRound(0, 5, 'red', 'red', 'red'), masthead(0.55, 2.2), ...sides(0.1, 1.4), stern()],
     shapes: ['cylinder'],
     intro: 'Il **peut** montrer **trois feux rouges** superposés, en plus de ses feux de navire à moteur : trop profond pour s’écarter du chenal. De jour : **un cylindre noir**.',
@@ -152,6 +161,7 @@ export const VESSELS: Record<VesselId, Vessel> = {
   },
   motorsail: {
     id: 'motorsail', name: 'Voilier faisant route au moteur', hull: 'sail', night: false,
+    meaning: 'Voilier qui avance au moteur : il compte comme un navire à moteur',
     lights: [masthead(0.2, 3.2), ...sides(0.8, 0.9), stern(0.9)], shapes: ['cone-down'], shapesForward: true,
     intro: 'Un voilier qui avance au moteur, même voiles hissées, est un navire à moteur. De jour il le signale par **un cône noir pointe en bas**, à l’avant.',
     statements: [

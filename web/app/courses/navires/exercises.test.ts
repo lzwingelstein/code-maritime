@@ -63,4 +63,16 @@ describe('ship exercises', () => {
       expect(steps.filter(s => s.type === 'question')).toHaveLength(lesson.plan.count)
     }
   })
+
+  it('asks what a vessel status means, with four different meanings', () => {
+    const generate = exerciseGenerator(review)
+    for (const id of ['anchor', 'trawler', 'pilot', 'nuc', 'ram', 'cbd'] as const) {
+      const e = generate(id, 'meaning', rng)!
+      expect(e.choices).toHaveLength(4)
+      expect(e.choices.find(c => c.id === id)!.name).toBe(VESSELS[id].meaning)
+      expect(new Set(e.choices.map(c => c.name)).size).toBe(4)
+    }
+    expect(generate('power', 'meaning', rng)).toBeNull()
+  })
 })
+
