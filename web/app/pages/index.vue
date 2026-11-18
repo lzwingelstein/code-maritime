@@ -82,7 +82,7 @@ function onReset() {
 
     <template v-for="u in units" :key="u.course.id">
       <section class="unit" :class="{ locked: !u.nodes[0]?.unlocked }">
-        <small>{{ u.label }}</small>
+        <small>{{ u.label }}<template v-if="!u.nodes[0]?.unlocked"> · 🔒 verrouillée</template></small>
         <h1>{{ u.course.title }}</h1>
       </section>
 
@@ -136,14 +136,12 @@ function onReset() {
 .xp { color: var(--gold-text); }
 .goal { padding: 14px 18px 4px; }
 .lab { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-mute); margin-bottom: 6px; }
-.unit {
-  margin: 14px 16px 0; padding: 16px 18px; border-radius: 16px; color: #fff;
-  background: var(--primary); box-shadow: 0 4px 0 var(--primary-shadow);
-}
-.unit small { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-.unit h1 { margin: 2px 0 0; font-size: 20px; font-weight: 900; }
-.unit.locked { background: var(--ink-mute); box-shadow: 0 4px 0 var(--ink); }
-.path { display: flex; flex-direction: column; align-items: center; gap: 40px; padding: 62px 0 40px; }
+/* Unit headers are titles, not buttons: no fill, no raised shadow, a rule underneath. */
+.unit { margin: 26px 16px 0; padding: 0 2px 10px; border-bottom: 2px solid var(--line); }
+.unit small { font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }
+.unit h1 { margin: 2px 0 0; font-size: 20px; font-weight: 900; color: var(--ink); }
+.unit.locked small, .unit.locked h1 { color: var(--ink-mute); }
+.path { display: flex; flex-direction: column; align-items: center; gap: 62px; padding: 62px 0 40px; }
 .nwrap { display: flex; flex-direction: column; align-items: center; }
 .node {
   position: relative; display: flex; align-items: center; justify-content: center; width: 78px; height: 72px;
