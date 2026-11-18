@@ -82,7 +82,7 @@ const pct = (n: number, total: number) => (total ? n / total * 100 : 0)
         <div class="tile"><b>{{ acc === null ? '–' : `${acc} %` }}</b><span>🎯 de bonnes réponses</span></div>
         <div class="tile"><b>{{ all.right + all.wrong }}</b><span>✍️ réponses</span></div>
         <div class="tile"><b>{{ lessonsDone }} / {{ lessonsTotal }}</b><span>📚 leçons finies</span></div>
-        <div class="tile"><b>{{ progress.xp }}</b><span>⚡ XP</span></div>
+        <div class="tile"><b>{{ exams.length }}</b><span>🎓 examens blancs</span></div>
       </section>
 
       <!-- Activity -->

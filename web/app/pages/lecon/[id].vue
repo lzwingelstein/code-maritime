@@ -5,10 +5,9 @@ import { buildPractice, PRACTICE, PRACTICE_ID, practiceGenerator } from '~/cours
 import type { CourseExercise } from '~/courses/types'
 import { buildLesson, lessonXp } from '~/engine/builder'
 import { reviewWeight } from '~/engine/mastery'
-import { DAILY_GOAL, introduce, recordExam, recordLesson, todayXp } from '~/engine/progress'
+import { introduce, recordExam, recordLesson } from '~/engine/progress'
 import { pick, seeded } from '~/engine/random'
 import { advance, check, currentStep, progress as share, select, startSession, type Session } from '~/engine/session'
-import { dayKey } from '~/engine/streak'
 
 definePageMeta({ layout: false })
 const ready = useReadiness()
@@ -138,7 +137,6 @@ const detail = computed(() => {
   return `${answer} ${e.explanation}`
 })
 
-const today = dayKey(new Date())
 const LETTERS = ['A', 'B', 'C', 'D']
 const confetti = Array.from({ length: 40 }, (_, i) => ({
   left: (i * 41) % 100,
@@ -177,7 +175,6 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         </div>
         <p class="sub">
           {{ result.passed ? 'Comme à l’examen : 5 erreurs au plus.' : `Il faut 5 erreurs au plus : continue les révisions, les questions ratées reviendront plus souvent.` }}
-          · ⚡ {{ result.xp }} XP
         </p>
         <div class="endbtns">
           <button type="button" class="btn" :class="{ ok: result.passed }" @click="retry">Nouvel examen</button>
@@ -189,13 +186,11 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
         <div class="big" aria-hidden="true">🏆</div>
         <h1>{{ isPractice ? 'Entraînement terminé !' : 'Leçon terminée !' }}</h1>
         <div class="tiles">
-          <div class="tile gold"><b>XP gagnés</b><span>⚡ {{ result.xp }}</span></div>
           <div class="tile ok"><b>Précision</b><span>🎯 {{ result.accuracy }} %</span></div>
           <div class="tile blue"><b>Temps</b><span>⏱ {{ Math.floor(result.seconds / 60) }}:{{ String(result.seconds % 60).padStart(2, '0') }}</span></div>
         </div>
         <p class="sub">
-          🎯 Prêt à {{ ready.percent }} % pour l’examen · objectif du jour
-          {{ Math.min(todayXp(progress, today), DAILY_GOAL) }} / {{ DAILY_GOAL }} XP
+          🎯 Prêt à {{ ready.percent }} % pour l’examen
         </p>
         <NuxtLink to="/" class="btn ok">Continuer</NuxtLink>
       </template>

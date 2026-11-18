@@ -4,14 +4,13 @@ import { EXAM, EXAM_ID } from '~/courses/exam'
 import { PRACTICE, PRACTICE_ID, weakCards } from '~/courses/practice'
 import { lessonsToReview } from '~/engine/lesson-status'
 import { nextStep } from '~/engine/next'
-import { bestExam, DAILY_GOAL, isUnlocked, todayXp } from '~/engine/progress'
-import { dayKey } from '~/engine/streak'
+import { bestExam, isUnlocked } from '~/engine/progress'
 
 const { progress } = useProgress()
-const today = dayKey(new Date())
 
 const ready = useReadiness()
-const dayXp = computed(() => todayXp(progress.value, today))
+// Readiness ring: circumference of a 52 px radius circle.
+const RING = 2 * Math.PI * 52
 // Lessons are unlocked in path order, across units.
 const toReview = computed(() => lessonsToReview(
   COURSES.flatMap(c => c.lessons).map(l => ({ id: l.id, cards: l.plan.cards, done: !!progress.value.completions[l.id] })),
@@ -45,7 +44,7 @@ const reason = computed(() => {
 const link = (k: 'lesson' | 'practice') => `/lecon/${k === 'practice' ? PRACTICE_ID : LESSON_IDS[current.value]}`
 const label = (k: 'lesson' | 'practice') => (k === 'practice'
   ? (weak.value ? `Retravailler mes ${points(weak.value)}` : `S’entraîner (${PRACTICE.questions} questions)`)
-  : `Continuer : ${nextLesson.value?.lesson.title ?? ''}`)
+  : 'Continuer')
 const altLabel = (k: 'lesson' | 'practice') => (k === 'practice' ? 'Plutôt m’entraîner' : 'Plutôt avancer dans le parcours')
 const best = computed(() => bestExam(progress.value))
 const last = computed(() => progress.value.exams?.[0] ?? null)
@@ -56,25 +55,27 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 <template>
   <div class="shell">
     <header class="top">
-      <NuxtLink to="/stats" class="stat ready" :aria-label="`Prêt à ${ready.percent} % pour l’examen : voir le détail`">🎯 {{ ready.percent }} %</NuxtLink>
-      <span class="stat course">⛵ Permis côtier</span>
-      <span class="stat xp" :aria-label="`${progress.xp} points d’expérience`">⚡ {{ progress.xp }} XP</span>
+      <span class="course">⛵ Permis côtier</span>
     </header>
 
-    <section class="goal">
-      <div class="lab">
-        <span>Objectif du jour</span>
-        <span>{{ Math.min(dayXp, DAILY_GOAL) }} / {{ DAILY_GOAL }} XP</span>
-      </div>
-      <div class="bar" role="progressbar" :aria-valuenow="Math.min(dayXp, DAILY_GOAL)" :aria-valuemax="DAILY_GOAL">
-        <i :style="{ width: Math.min(100, dayXp / DAILY_GOAL * 100) + '%', background: 'var(--gold)' }" />
-      </div>
-    </section>
-
-    <section class="exam practice" aria-labelledby="next-title">
-      <h2 id="next-title">{{ next.main === 'practice' ? '🎯 On consolide' : '⛵ On avance' }}</h2>
-      <p>{{ reason }}</p>
-      <NuxtLink :to="link(next.main)" class="btn">{{ label(next.main) }}</NuxtLink>
+    <section class="hero" aria-labelledby="ready-title">
+      <h2 id="ready-title" class="kicker">Prêt pour l’examen</h2>
+      <NuxtLink to="/stats" class="gauge" :aria-label="`Prêt à ${ready.percent} % pour l’examen : voir le détail`">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="52" class="track" />
+          <circle v-if="ready.percent" cx="60" cy="60" r="52" class="fill" :stroke-dasharray="`${RING * ready.percent / 100} ${RING}`" />
+        </svg>
+        <b>{{ ready.percent }}<small>%</small></b>
+      </NuxtLink>
+      <p class="when">
+        <template v-if="ready.lessonsLeft">Encore {{ ready.lessonsLeft }} leçon{{ ready.lessonsLeft > 1 ? 's' : '' }} : fin du parcours {{ ready.endText }}.</template>
+        <template v-else>Parcours terminé : ancre tes fiches, puis vise un examen blanc.</template>
+      </p>
+      <NuxtLink :to="link(next.main)" class="btn main">
+        {{ label(next.main) }}
+        <span v-if="next.main === 'lesson' && nextLesson" class="sub">{{ nextLesson.course.title }} · {{ nextLesson.lesson.title }}</span>
+      </NuxtLink>
+      <p class="reason">{{ reason }}</p>
       <NuxtLink v-if="next.other" :to="link(next.other)" class="alt">{{ altLabel(next.other) }}</NuxtLink>
     </section>
 
@@ -123,15 +124,25 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 
 <style scoped>
 .top {
-  position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 18px; border-bottom: 2px solid var(--line); background: var(--surface);
+  position: sticky; top: 0; z-index: 5; display: flex; justify-content: center; align-items: center;
+  min-height: 52px; padding: 0 18px; border-bottom: 2px solid var(--line); background: var(--surface);
 }
-.stat { font-size: 17px; }
-.ready { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: none; }
-.course { color: var(--primary); font-weight: 900; }
-.xp { color: var(--gold-text); }
-.goal { padding: 14px 18px 4px; }
-.lab { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-mute); margin-bottom: 6px; }
+.course { color: var(--primary); font-size: 17px; font-weight: 900; }
+/* One main action: readiness first, then the single big button. */
+.hero { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 16px 16px 0; padding: 20px 18px; border: 2px solid var(--line); border-radius: 18px; text-align: center; }
+.kicker { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); }
+.gauge { position: relative; display: block; width: 136px; height: 136px; color: var(--ink); text-decoration: none; }
+.gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.gauge circle { fill: none; stroke-width: 12; }
+.gauge .track { stroke: var(--primary-soft); }
+.gauge .fill { stroke: var(--primary); stroke-linecap: round; }
+.gauge b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: 900; }
+.gauge b small { font-size: 18px; color: var(--ink-mute); margin-left: 2px; }
+.when { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--ink); }
+.hero .main { align-self: stretch; display: block; text-decoration: none; line-height: 28px; }
+.hero .main .sub { display: block; font-size: 14px; font-weight: 700; line-height: 20px; text-transform: none; }
+.reason { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.4; color: var(--ink-mute); }
+.hero .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: var(--primary); font-size: 15px; font-weight: 800; }
 /* Unit headers are titles, not buttons: no fill, no raised shadow, a rule underneath. */
 .unit { margin: 26px 16px 0; padding: 0 2px 10px; border-bottom: 2px solid var(--line); }
 .unit small { font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; }
@@ -170,7 +181,5 @@ const OFFSETS = [0, 52, 74, 52, 0, -52, -74, -52]
 .exam h2 { margin: 0 0 6px; font-size: 20px; font-weight: 900; }
 .exam p { margin: 0 0 12px; font-size: 15px; font-weight: 600; color: var(--ink-mute); line-height: 1.4; }
 .exam .score { color: var(--ink); font-weight: 800; }
-.exam.practice { margin: 14px 16px 0; }
-.exam .alt { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; color: var(--primary); font-size: 15px; font-weight: 800; }
 .exam .btn { display: block; text-decoration: none; line-height: 28px; }
 </style>

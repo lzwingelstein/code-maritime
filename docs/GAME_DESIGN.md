@@ -4,6 +4,11 @@
 On apprend le code du permis côtier par séries courtes de questions, avec les mécaniques de Duolingo.
 Les thèmes de l'examen deviennent des **unités** ; la première est le balisage, le plus visuel et le plus piégeux.
 
+## Accueil
+- En haut, une seule action : la jauge **« Prêt pour l’examen »** (pourcentage, leçons restantes et date de fin estimée ; touche → stats), puis **un gros bouton** « Continuer » (nom de la leçon dessous) ou « Retravailler mes points faibles », avec la raison en une ligne et une alternative en lien.
+- Le chemin des leçons vient dessous, puis l’examen blanc.
+- Ni XP ni objectif du jour à l’écran : ils encombraient sans aider à se préparer (l’XP reste compté dans les données).
+
 ## Parcours
 - Une unité = une suite de **leçons** débloquées dans l'ordre (la précédente finie une fois). Une leçon déjà faite reste ouverte, même si une leçon est ajoutée avant elle.
 - **Préparation à l’examen** (en-tête, stats, fin de leçon) : moyenne du parcours fait et des fiches maîtrisées (niveau 3 = sue) ; date de fin du parcours estimée à ton rythme (nouvelles leçons par jour sur 14 jours, au moins 3 jours comptés ; 2 par jour tant qu'il n'est pas connu). La flamme (série de jours) n’est plus affichée.
@@ -51,8 +56,8 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
   l'en-tête affiche le nombre de questions ratées encore à refaire. La barre de progression ne recule jamais.
 
 ## Progression
-- **XP** : 10 par leçon, +5 sans aucune erreur, +1 par série de 3 bonnes réponses (5 au plus).
-- **Objectif du jour** : 30 XP. **Série** : une flamme par jour avec au moins une leçon finie.
+- **XP** (compté, plus affiché) : 10 par leçon, +5 sans aucune erreur, +1 par série de 3 bonnes réponses (5 au plus).
+- **Objectif du jour** (30 XP) et **série** : comptés dans les données, plus affichés.
 - **Répétition espacée** (comme BirdGuessr) : bonne réponse → la marque monte d'un niveau et revient après
   1 jour, 3 jours, 1 semaine puis 3 semaines ; erreur → elle redescend et redevient à revoir. Sert aux révisions.
 - Tout est gardé dans le navigateur (pas de compte dans le prototype).
@@ -70,7 +75,7 @@ Les unités se suivent : la première leçon d'une unité s'ouvre quand la derni
 - Au format officiel : **40 questions**, **5 erreurs au plus**, environ **30 minutes** (chrono affiché, pas bloquant).
 - Questions tirées **à parts égales de toutes les unités** (leur leçon de révision), jamais deux fois la même.
 - Pas de cœurs ni de question qui revient : chaque erreur compte. On garde la correction après chaque réponse pour apprendre.
-- Résultat : « Reçu » ou « Pas encore », score, erreurs, temps ; 20 XP si reçu, 10 sinon. Les 10 derniers résultats sont gardés ; l'accueil affiche le meilleur et le dernier.
+- Résultat : « Reçu » ou « Pas encore », score, erreurs, temps (20 XP comptés si reçu, 10 sinon, non affichés). Les 10 derniers résultats sont gardés ; l'accueil affiche le meilleur et le dernier.
 - Toujours accessible, sous le parcours.
 
 ## Pistes
