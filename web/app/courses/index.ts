@@ -1,5 +1,7 @@
 /** All courses, in path order. A lesson id is unique across courses (it is the lesson URL). */
 import type { Random } from '~/engine/random'
+import { alphabet } from './alphabet'
+import { ALPHABET_CARDS } from './alphabet/letters'
 import { balisage } from './balisage'
 import { bases } from './bases'
 import { barre } from './barre'
@@ -14,13 +16,16 @@ import { vhf } from './vhf'
 import type { QuizCourse } from './quiz'
 import type { Course, CourseExercise, Generator, Lesson } from './types'
 
-export const COURSES: Course[] = [bases, balisage, navires, plages, barre, signaux, securite, reglementation, vhf, meteo, environnement]
+export const COURSES: Course[] = [bases, balisage, navires, plages, barre, signaux, securite, reglementation, vhf, alphabet, meteo, environnement]
 
 /** Courses written as authored quizzes: their content is checked by quiz.test.ts. */
 export const QUIZ_COURSES: QuizCourse[] = [bases, plages, barre, signaux, securite, reglementation, vhf, meteo, environnement]
 
 /** Courses the mock exam draws from: the official programme only (the boat basics are not an exam point). */
-export const EXAM_COURSES: Course[] = COURSES.filter(c => c.id !== bases.id)
+export const EXAM_COURSES: Course[] = COURSES.filter(c => c.id !== bases.id && c.id !== alphabet.id)
+
+/** Cards split since an earlier version: old id → new ids (progress is migrated on load). */
+export const CARD_RENAMES: Record<string, readonly string[]> = { alphabet: ALPHABET_CARDS }
 
 export const LESSON_IDS = COURSES.flatMap(c => c.lessons.map(l => l.id))
 

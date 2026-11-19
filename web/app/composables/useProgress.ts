@@ -1,10 +1,11 @@
 /** Progress kept in this browser only (no account in the prototype). */
-import { emptyProgress, parseProgress, type Progress } from '~/engine/progress'
+import { CARD_RENAMES } from '~/courses'
+import { emptyProgress, migrateCards, parseProgress, type Progress } from '~/engine/progress'
 
 const KEY = 'code-maritime:progress:v1'
 
 function load(): Progress {
-  try { return parseProgress(localStorage.getItem(KEY)) }
+  try { return migrateCards(parseProgress(localStorage.getItem(KEY)), CARD_RENAMES) }
   catch { return emptyProgress() }
 }
 

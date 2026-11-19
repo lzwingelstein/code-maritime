@@ -2,25 +2,10 @@
  * VHF, GMDSS basics and rescue organisation. Sources: ANFR / ministère de la Mer leaflet « La VHF » (2021),
  * CROSS Gris-Nez, ministère de la Mer (196). See docs/VERIFICATION.md.
  */
-import { quizCourse, type QuizQuestion } from '../quiz'
+import { quizCourse } from '../quiz'
 import { picto } from '../pictos'
 
 const e = (char: string) => ({ type: 'emoji' as const, char })
-
-/** International phonetic alphabet. */
-export const PHONETIC: [string, string][] = [
-  ['A', 'Alpha'], ['B', 'Bravo'], ['C', 'Charlie'], ['D', 'Delta'], ['E', 'Echo'], ['F', 'Foxtrot'], ['G', 'Golf'],
-  ['H', 'Hotel'], ['I', 'India'], ['J', 'Juliett'], ['K', 'Kilo'], ['L', 'Lima'], ['M', 'Mike'], ['N', 'November'],
-  ['O', 'Oscar'], ['P', 'Papa'], ['Q', 'Quebec'], ['R', 'Romeo'], ['S', 'Sierra'], ['T', 'Tango'], ['U', 'Uniform'],
-  ['V', 'Victor'], ['W', 'Whiskey'], ['X', 'X-ray'], ['Y', 'Yankee'], ['Z', 'Zulu'],
-]
-
-const alphabetQuestions: QuizQuestion[] = PHONETIC.map(([letter, word], i) => ({
-  prompt: `À la VHF, comment épelle-t-on la lettre « ${letter} » ?`,
-  answer: word,
-  wrong: [1, 7, 13].map(k => PHONETIC[(i + k) % PHONETIC.length]![1]),
-  explanation: `${letter} se dit « ${word} » dans l’alphabet phonétique international.`,
-}))
 
 const PRIORITY = { mayday: 'MAYDAY (détresse)', panpan: 'PAN PAN (urgence)', securite: 'SÉCURITÉ (sécurité)' }
 
@@ -131,16 +116,6 @@ export const vhf = quizCourse({
       ],
     },
     {
-      id: 'alphabet', name: 'L’alphabet phonétique', visual: picto('abc', 'vhf'),
-      intro: 'Pour **épeler** un nom à la VHF sans erreur, on utilise l’**alphabet phonétique international** : **A**lpha, **B**ravo, **C**harlie, **D**elta, **E**cho, **F**oxtrot, **G**olf, **H**otel, **I**ndia, **J**uliett, **K**ilo, **L**ima, **M**ike, **N**ovember, **O**scar, **P**apa, **Q**uebec, **R**omeo, **S**ierra, **T**ango, **U**niform, **V**ictor, **W**hiskey, **X**-ray, **Y**ankee, **Z**ulu.',
-      questions: alphabetQuestions,
-      statements: [
-        ['« Sierra » correspond à la lettre S.', true],
-        ['« Mike » correspond à la lettre N.', false],
-        ['« Golf » correspond à la lettre G.', true],
-      ],
-    },
-    {
       id: 'english', name: 'Anglais de base', visual: picto('english', 'vhf'),
       intro: 'Quelques mots à connaître : **Over** = « à vous » (j’attends la réponse), **Out** = « terminé », **Say again** = « répétez », **Roger** = « reçu », **Mayday relay** = relais d’un message de détresse.',
       questions: [
@@ -164,10 +139,10 @@ export const vhf = quizCourse({
       id: 'messages', title: 'MAYDAY, PAN PAN, SÉCURITÉ', icon: e('🆘'), cards: ['mayday', 'panpan', 'securite'], count: 10,
       tip: { emoji: '🆘', title: 'Trois niveaux', text: '**MAYDAY** : vie en danger, aide immédiate. **PAN PAN** : urgence sans danger immédiat pour la vie. **SÉCURITÉ** : information pour les autres navigateurs.' },
     },
-    { id: 'alphabet-anglais', title: 'Alphabet et anglais', icon: e('🔤'), cards: ['alphabet', 'english'], count: 10 },
+    { id: 'alphabet-anglais', title: 'Anglais de base', icon: e('🔤'), cards: ['english'], count: 8 },
     {
       id: 'revision-vhf', title: 'Révision', icon: e('🧭'), count: 12, review: true,
-      cards: ['ch16', 'ch-work', 'licence-vhf', 'asn', 'cross', 'mayday', 'panpan', 'securite', 'alphabet', 'english'],
+      cards: ['ch16', 'ch-work', 'licence-vhf', 'asn', 'cross', 'mayday', 'panpan', 'securite', 'english'],
     },
   ],
 })

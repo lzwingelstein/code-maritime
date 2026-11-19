@@ -58,6 +58,23 @@ export function parseProgress(raw: string | null): Progress {
   }
 }
 
+/**
+ * When content splits a card into several (one card per letter instead of one for the whole alphabet),
+ * the old card's mastery seeds each new card not seen yet, and the old card is dropped.
+ */
+export function migrateCards(p: Progress, renames: Record<string, readonly string[]>): Progress {
+  const stale = Object.keys(renames).filter(old => old in p.mastery || (p.cards && old in p.cards))
+  if (!stale.length) return p
+  const gone = new Set(stale)
+  const mastery = Object.fromEntries(Object.entries(p.mastery).filter(([id]) => !gone.has(id)))
+  const cards = Object.fromEntries(Object.entries(p.cards ?? {}).filter(([id]) => !gone.has(id)))
+  for (const old of stale) {
+    const m = p.mastery[old]
+    if (m) for (const id of renames[old]!) mastery[id] ??= { ...m }
+  }
+  return { ...p, mastery, cards }
+}
+
 export function todayXp(p: Progress, today: string): number {
   return p.daily[today] ?? 0
 }

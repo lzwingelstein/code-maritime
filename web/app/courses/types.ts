@@ -14,6 +14,10 @@ export type Visual =
   | { type: 'mark', markId: MarkId | ExtraMarkId, topOnly: boolean }
   | { type: 'light', markId: MarkId }
   | { type: 'ship', vesselId: VesselId, aspect: Aspect, mode: 'night' | 'day', silhouette?: boolean }
+  /** A letter tile (radio alphabet). */
+  | { type: 'letter', char: string }
+  /** A radio-alphabet word, shown and read aloud on demand. */
+  | { type: 'spoken', word: string }
   /** Illustration for sheets without a drawn scene, on the backdrop colour of its theme. */
   | { type: 'picto', name: PictoName, tone: PictoTone }
   /** Only for lesson icons, which the interface no longer shows. Never on a card. */
@@ -80,7 +84,10 @@ export interface CourseExercise extends BaseExercise {
   heading: string
   prompt: string
   visual: Visual | null
-  layout: 'list' | 'grid' | 'pair'
+  /** letters: big single-letter buttons; sequence: tap words in order to fill the slots. */
+  layout: 'list' | 'grid' | 'pair' | 'letters' | 'sequence'
+  /** sequence: one label per slot (the letters to spell). */
+  slots?: string[]
   choices: Choice[]
   /** Shown after a wrong answer. */
   explanation: string

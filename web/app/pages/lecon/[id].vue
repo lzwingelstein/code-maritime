@@ -138,6 +138,31 @@ const detail = computed(() => {
 })
 
 const LETTERS = ['A', 'B', 'C', 'D']
+
+// Sequence questions (spell a word): tap words in order; the answer is the words joined by spaces.
+const seq = ref<string[]>([])
+watch(() => s.value.index, () => { seq.value = [] })
+const slots = computed(() => exercise.value?.slots ?? [])
+function syncSeq() {
+  if (s.value.phase !== 'step') return
+  if (seq.value.length === slots.value.length) choose(seq.value.join(' '))
+  else s.value.selected = null
+}
+function addWord(w: string) {
+  if (s.value.verdict || seq.value.length >= slots.value.length) return
+  seq.value = [...seq.value, w]
+  syncSeq()
+}
+function undoWord() {
+  if (s.value.verdict || !seq.value.length) return
+  seq.value = seq.value.slice(0, -1)
+  syncSeq()
+}
+function slotState(i: number): 'good' | 'bad' | '' {
+  const v = s.value.verdict
+  if (!v) return ''
+  return seq.value[i] === v.expected.split(' ')[i] ? 'good' : 'bad'
+}
 const confetti = Array.from({ length: 40 }, (_, i) => ({
   left: (i * 41) % 100,
   delay: ((i * 7) % 10) / 25,
@@ -225,7 +250,21 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
           <div v-if="exercise.visual" class="visual" :class="`v-${exercise.visual.type}${exercise.visual.type === 'mark' && exercise.visual.topOnly ? '-top' : ''}`">
             <CardVisual :key="s.index" :visual="exercise.visual" />
           </div>
-          <div :class="['choices', exercise.layout, exercise.choices[0]?.visual ? `pics-${exercise.choices[0].visual.type}` : '', { tops: exercise.choices[0]?.visual?.type === 'mark' && exercise.choices[0].visual.topOnly }]">
+          <template v-if="exercise.layout === 'sequence'">
+            <ol class="slots" :style="{ gridTemplateColumns: `repeat(${slots.length}, minmax(0, 1fr))` }" aria-label="Ta réponse, mot par mot">
+              <li v-for="(l, i) in slots" :key="i" class="slot" :class="[slotState(i), { next: !s.verdict && i === seq.length }]">
+                <span class="sl display">{{ l }}</span>
+                <span class="sw">{{ slotState(i) === 'good' ? '✓ ' : slotState(i) === 'bad' ? '✗ ' : '' }}{{ seq[i] ?? '…' }}</span>
+              </li>
+            </ol>
+            <div class="seqbar">
+              <button type="button" class="undo" :disabled="!!s.verdict || !seq.length" @click="undoWord">↶ Effacer</button>
+            </div>
+            <div class="bank" role="group" aria-label="Mots de l’alphabet">
+              <button v-for="c in exercise.choices" :key="c.id" type="button" class="chip" :disabled="!!s.verdict || seq.length >= slots.length" @click="addWord(c.id)">{{ c.name }}</button>
+            </div>
+          </template>
+          <div v-else :class="['choices', exercise.layout, exercise.choices[0]?.visual ? `pics-${exercise.choices[0].visual.type}` : '', { tops: exercise.choices[0]?.visual?.type === 'mark' && exercise.choices[0].visual.topOnly }]">
             <button
               v-for="(c, i) in exercise.choices"
               :key="c.id"
@@ -286,6 +325,21 @@ const confetti = Array.from({ length: 40 }, (_, i) => ({
 .choices { display: flex; flex-direction: column; gap: 10px; }
 .choices.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .choices.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.choices.letters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.letters .choice { min-height: 72px; text-align: center; font-family: 'Space Grotesk Variable', 'Space Grotesk', sans-serif; font-size: 30px; }
+.slots { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.slot { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; padding: 10px 2px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); }
+.slot.next { border-style: dashed; border-color: var(--primary-soft-line); }
+.slot.good { border-color: var(--ok-fill); background: var(--ok-soft); color: var(--ok-text); }
+.slot.bad { border-color: var(--ko-fill); background: var(--ko-soft); color: var(--ko-text); }
+.sl { font-size: 22px; font-weight: 700; color: var(--primary); }
+.sw { max-width: 100%; overflow: hidden; font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.seqbar { display: flex; justify-content: flex-end; }
+.undo { min-height: 44px; padding: 0 12px; border: 0; background: none; color: var(--primary); font-size: 15px; font-weight: 600; }
+.undo:disabled { color: var(--ink-mute); }
+.bank { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { min-height: 48px; padding: 0 16px; border: 2px solid var(--line); border-radius: 24px; background: var(--surface); color: var(--ink); font-size: 16px; font-weight: 600; }
+.chip:disabled { color: var(--ink-mute); }
 .choice {
   position: relative; min-height: 56px; padding: 14px; border: 2px solid var(--line); border-radius: 14px;
   background: var(--surface); color: var(--ink); font-size: 17px; font-weight: 600; text-align: left;

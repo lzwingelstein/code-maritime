@@ -2,6 +2,7 @@
 import { COURSES } from '~/courses'
 import { revisionSheets } from '~/courses/sheets'
 import type { CardInfo, Tip } from '~/courses/types'
+import { PRACTICE, PRACTICE_ID } from '~/courses/practice'
 import { masteryStep, type MasteryStep } from '~/engine/mastery'
 
 const { progress } = useProgress()
@@ -50,7 +51,7 @@ const FILTERS = computed(() => [
 ])
 const keep = (it: Item) => filter.value === 'all' || ('cardId' in it && level(it.cardId).step === filter.value)
 const shownUnits = computed(() => units.value
-  .map(u => ({ ...u, shown: u.items.filter(keep), known: u.items.filter(i => 'cardId' in i && level(i.cardId).step === 'known').length, cards: u.items.filter(i => 'cardId' in i).length }))
+  .map(u => ({ ...u, seen: u.items.filter(i => 'cardId' in i && i.cardId in progress.value.mastery).length, shown: u.items.filter(keep), known: u.items.filter(i => 'cardId' in i && level(i.cardId).step === 'known').length, cards: u.items.filter(i => 'cardId' in i).length }))
   .filter(u => u.shown.length))
 const plainName = (s: string) => s.replaceAll('**', '')
 
@@ -108,6 +109,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
           <span><small>{{ u.label }}</small>{{ u.title }}</span>
           <span class="ucount">{{ u.known }} sue{{ u.known > 1 ? 's' : '' }} sur {{ u.cards }}</span>
         </h2>
+        <NuxtLink v-if="u.seen >= PRACTICE.unitMinCards" :to="`/lecon/${PRACTICE_ID}?unite=${u.id}`" class="drill">
+          <UiIcon name="refresh" /> S’entraîner sur ce thème
+        </NuxtLink>
         <ul class="grid">
           <li v-for="it in u.shown" :key="it.key">
             <button type="button" class="thumb" :class="['tip' in it ? 'tip' : level(it.cardId).step]" :aria-label="`${'tip' in it ? 'Astuce' : 'Fiche'} : ${plainName(it.title)}${'cardId' in it ? `, ${level(it.cardId).text}` : ''}`" @click="show(it.key)">
@@ -179,6 +183,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .pic :deep(svg) { max-height: 80px; width: auto; max-width: 100%; }
 .pic :deep(.horn .legend), .pic :deep(.horn .replay) { display: none; }
 .pic :deep(.emoji) { font-size: 40px; }
+.pic :deep(.letter-tile) { width: 64px; height: 64px; border-radius: 16px; font-size: 36px; }
+.drill { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: -4px 0 6px; color: var(--primary); font-size: 15px; font-weight: 600; text-decoration: none; }
 .bulb { color: var(--primary); }
 .name {
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;

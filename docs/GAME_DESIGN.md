@@ -48,6 +48,14 @@ poupe vers l'arrière, les autres sur tout l'horizon). Jamais de question d'iden
 presque tous les navires n'y montrent qu'un feu blanc. Deux navires aux mêmes marques de jour (chalutier et autre
 pêcheur) ne sont jamais proposés ensemble.
 
+### Unité · L’alphabet radio (après VHF et sauvetage)
+Une **fiche par lettre** (26), pour que la répétition espacée suive chaque lettre. Trois formes de question :
+lettre → mot (grande tuile, 4 mots), mot → lettre (le mot écrit, « Écouter » le lit en anglais, 6 lettres),
+épeler (« Épelle KAYAK » : on touche les mots dans l’ordre pour remplir une case par lettre, « Effacer » pour corriger).
+1. De A à I · 2. De J à R · 3. De S à Z · 4. Épeler un nom · 5. Révision
+Hors examen blanc : à parts égales, une unité de 26 lettres pèserait 4 questions sur 40. La leçon VHF « Alphabet et anglais » devient « Anglais de base ».
+L’ancienne fiche « alphabet » (une seule pour tout l’alphabet) est migrée au chargement : son niveau sert de départ à chaque lettre pas encore vue.
+
 Les unités se suivent : la première leçon d'une unité s'ouvre quand la dernière de la précédente est faite.
 
 ## Une leçon
